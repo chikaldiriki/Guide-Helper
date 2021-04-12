@@ -46,6 +46,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         emailTextView.setText(currentUser.getEmail());
         tagsTextView.setText("some tags"); //TODO
-        mobileNumberTextView.setText(currentUser.getPhoneNumber().isEmpty() ? "None" : currentUser.getPhoneNumber());
+        mobileNumberTextView.setText(currentUser.getPhoneNumber() == null ? "None" : currentUser.getPhoneNumber());
     }
 }
