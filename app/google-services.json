@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "168853815507",
+    "project_id": "guideme-4b64a",
+    "storage_bucket": "guideme-4b64a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168853815507:android:4e08724b034c6c36fd5426",
+        "android_client_info": {
+          "package_name": "ru.hse.guidehelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168853815507-b5k6rv7m23g6036oc3muika7si9e3748.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.hse.guidehelper",
+            "certificate_hash": "c4050b26d6b5f3c0df10a98ad8339c423756e582"
+          }
+        },
+        {
+          "client_id": "168853815507-t3l297u3dbhntqmcf5tpkv3in237tgj1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkogMTNR51ikDpeGnK8UeJgGQ3tR7Lbb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168853815507-t3l297u3dbhntqmcf5tpkv3in237tgj1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
