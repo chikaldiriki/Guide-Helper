@@ -16,20 +16,10 @@ import ru.hse.guidehelper.R;
 
 public class ExcursionFragment extends Fragment {
 
-    private ExcursionViewModel excursionViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        excursionViewModel =
-                new ViewModelProvider(this).get(ExcursionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_excursion, container, false);
         final TextView textView = root.findViewById(R.id.text_excursion);
-        excursionViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 }

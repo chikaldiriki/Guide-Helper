@@ -16,20 +16,10 @@ import ru.hse.guidehelper.R;
 
 public class SubscriptionsFragment extends Fragment {
 
-    private SubscriptionsViewModel subscriptionsViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        subscriptionsViewModel =
-                new ViewModelProvider(this).get(SubscriptionsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
-        subscriptionsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 }
