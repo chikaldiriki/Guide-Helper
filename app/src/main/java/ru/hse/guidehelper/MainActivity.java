@@ -2,7 +2,6 @@ package ru.hse.guidehelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import ru.hse.guidehelper.auth.SignInFragment;
-import ru.hse.guidehelper.chat.DialogsActivity;
+import ru.hse.guidehelper.chat.Chat;
+import ru.hse.guidehelper.chat.DialogFragment;
+import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
 import ru.hse.guidehelper.ui.bottomNavBar.orders.MyOrdersFragment;
 import ru.hse.guidehelper.ui.bottomNavBar.profile.ProfileFragment;
@@ -32,16 +33,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         button = findViewById(R.id.buttonToChat);
+
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        mAuth = FirebaseAuth.getInstance();
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, DialogsActivity.class));
+                navView.setVisibility(BottomNavigationView.INVISIBLE);
+                Fragment chosenFragment = new DialogFragment();
+                getSupportFragmentManager().beginTransaction().replace(currentFragmentId,
+                        chosenFragment).commit();
+
+                currentFragmentId = chosenFragment.getId();
             }
         });
 
         mAuth = FirebaseAuth.getInstance();
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
 
         navView.setOnNavigationItemSelectedListener(item -> {
             Fragment chosenFragment = null;

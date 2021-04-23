@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GuideHelper">
-        <activity android:name=".chat.MessagesActivity"></activity>
         <activity android:name=".chat.DialogsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

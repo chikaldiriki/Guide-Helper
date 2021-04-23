@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.2'
+    id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.android.application'
     id 'com.google.gms.google-services'
@@ -29,6 +29,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
         coreLibraryDesugaringEnabled true
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     packagingOptions {
@@ -83,20 +87,31 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:3.8.0'
 
     // CHAT WEBSOCKET
+
+    //implementation group: 'org.springframework', name: 'spring-websocket', version: '4.2.1.RELEASE'
+
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.4'
 
     implementation group: 'javax.xml', name: 'jaxp-api', version: '1.4.2'
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+     compileOnly 'org.projectlombok:lombok'
+     annotationProcessor 'org.projectlombok:lombok'
 
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
+     testCompileOnly 'org.projectlombok:lombok'
+     testAnnotationProcessor 'org.projectlombok:lombok'
 
     // CHAT GUI
     implementation 'com.github.stfalcon-studio:Chatkit:0.4.1'
 
-    implementation 'org.java-websocket:Java-WebSocket:1.5.1'
+    implementation platform('com.google.firebase:firebase-bom:27.0.0')
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.firebaseui:firebase-ui-database:7.1.1'
+
+    implementation 'com.google.firebase:firebase-database:19.7.0'
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation 'com.google.firebase:firebase-analytics:18.0.3'
 }

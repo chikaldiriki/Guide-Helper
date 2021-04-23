@@ -20,12 +20,12 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Chat implements IDialog {
 
-    private String id;
-    private String dialogName;
-    private String dialogPhoto;
-    private ArrayList<User> users;
-    private IMessage lastMessage;
-    private int unreadCount;
+    private String id; // id чата
+    private String dialogName; // имя собеседника
+    private String dialogPhoto; // фото собеседника
+    private ArrayList<User> users; // собеседник
+    private IMessage lastMessage; // последнее сообщение
+    private int unreadCount; // кол-во непрочитанных сообщений
 
     public Chat(String id, String name, String photo,
                 ArrayList<User> users, Message lastMessage, int unreadCount) {
