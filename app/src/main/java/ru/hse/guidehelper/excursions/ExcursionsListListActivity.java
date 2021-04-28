@@ -9,6 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -18,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import lombok.SneakyThrows;
 import ru.hse.guidehelper.R;
 
 import ru.hse.guidehelper.excursions.dummy.DummyContent;
@@ -32,13 +39,16 @@ import java.util.List;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
+
 public class ExcursionsListListActivity extends AppCompatActivity {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
-    private boolean mTwoPane;
+
+    RequestQueue queueRequest;
+    DummyContent dummy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +68,19 @@ public class ExcursionsListListActivity extends AppCompatActivity {
             }
         });
 
-        if (findViewById(R.id.excursionslist_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
-
         View recyclerView = findViewById(R.id.excursionslist_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
 
+
+        queueRequest = Volley.newRequestQueue(this);
+
+        System.out.println("00000000");
+
+        dummy = new DummyContent(queueRequest);
+
+        queueRequest.start();
+
+        setupRecyclerView((RecyclerView) recyclerView);
 
 //        Bundle bundle = getIntent().getExtras();
 //        if(bundle != null && bundle.getString("bot") != null) {
@@ -78,43 +89,36 @@ public class ExcursionsListListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, dummy.ITEMS, queueRequest));
     }
 
-    public static class SimpleItemRecyclerViewAdapter
+    public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
+        private String  url = "http://192.168.3.225:8080";
+        private RequestQueue queueRequest;
         private final ExcursionsListListActivity mParentActivity;
         private final List<DummyContent.DummyItem> mValues;
-        private final boolean mTwoPane;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
-                if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putString(ExcursionsListDetailFragment.ARG_ITEM_ID, item.id);
-                    ExcursionsListDetailFragment fragment = new ExcursionsListDetailFragment();
-                    fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.excursionslist_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, ExcursionsListDetailActivity.class);
-                    intent.putExtra(ExcursionsListDetailFragment.ARG_ITEM_ID, item.id);
-
-                    context.startActivity(intent);
-                }
-            }
-        };
+//        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+//
+//                Context context = view.getContext();
+//                Intent intent = new Intent(context, ExcursionsListDetailActivity.class);
+//                intent.putExtra(ExcursionsListDetailFragment.ARG_ITEM_ID, item.id);
+//
+//                context.startActivity(intent);
+//
+//            }
+//        };
 
         SimpleItemRecyclerViewAdapter(ExcursionsListListActivity parent,
                                       List<DummyContent.DummyItem> items,
-                                      boolean twoPane) {
+                                      RequestQueue queueRequest) {
             mValues = items;
             mParentActivity = parent;
-            mTwoPane = twoPane;
+            this.queueRequest = queueRequest;
         }
 
         @Override
@@ -126,11 +130,34 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Display the first 500 characters of the response string.
+                            holder.mContentView.setText(response);
+                            // textView.setText("Response is: "+ response.substring(0,12));
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    holder.mContentView.setText("22222222" + error.getMessage() + "\nLocal:\n" + error.getLocalizedMessage()
+                                    + "\nCause:\n" + error.getCause() + "\ntoString:\n" + error.toString());
+
+                    // textView.setText("That didn't work!\n" + error.getMessage() + "\nLocal:\n" + error.getLocalizedMessage()
+                    //        + "\nCause:\n" + error.getCause() + "\ntoString:\n" + error.toString());
+                }
+            });
+
+            queueRequest.add(stringRequest);
+
             holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            // holder.mContentView.setText(mValues.get(position).content);
 
             holder.itemView.setTag(mValues.get(position));
-            holder.itemView.setOnClickListener(mOnClickListener);
+
+
+            // holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override

@@ -59,6 +59,9 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
+
+            System.out.println("============== 1 ==============");
+
             Bundle arguments = new Bundle();
             arguments.putString(ExcursionsListDetailFragment.ARG_ITEM_ID,
                     getIntent().getStringExtra(ExcursionsListDetailFragment.ARG_ITEM_ID));

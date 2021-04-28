@@ -1,5 +1,12 @@
 package ru.hse.guidehelper.excursions.dummy;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,31 +20,36 @@ import java.util.Map;
  */
 public class DummyContent {
 
+    private RequestQueue queueRequest;
+    private String  url = "http://192.168.3.225:8080";
+
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
-
+    public final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
-    private static final int COUNT = 25;
+    private final int COUNT = 2;
 
-    static {
-        // Add some sample items.
+
+    public DummyContent(RequestQueue queueRequest) {
+        this.queueRequest = queueRequest;
+
         for (int i = 1; i <= COUNT; i++) {
             addItem(createDummyItem(i));
         }
     }
 
-    private static void addItem(DummyItem item) {
+    private void addItem(DummyItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private static DummyItem createDummyItem(int position) {
+    private DummyItem createDummyItem(int position) {
+
         return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
     }
 
