@@ -106,6 +106,12 @@ public class MessagesFragment extends Fragment {
         // подгружать мессаги не из Firebase, а из своей БД
         mBinding = FragmentMessagesBinding.inflate(inflater, container, false);
         view = mBinding.getRoot();
+
+        CircleImageView companionAvatar = view.findViewById(R.id.companionAvatar);
+        TextView companionName = view.findViewById(R.id.companionName);
+        Glide.with(MessagesFragment.this.getContext()).load(chat.getDialogPhoto()).into(companionAvatar);
+        companionName.setText(chat.getUsers().get(0).getName());
+
         mDatabase = FirebaseDatabase.getInstance();
         mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push();
         DatabaseReference messagesRef = mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId());
@@ -116,11 +122,6 @@ public class MessagesFragment extends Fragment {
             @Override
             public MessageViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                CircleImageView companionAvatar = MessagesFragment.this.getActivity().findViewById(R.id.companionAvatar);
-                TextView companionName = MessagesFragment.this.getActivity().findViewById(R.id.companionName);
-
-                Glide.with(MessagesFragment.this.getContext()).load(chat.getDialogPhoto()).into(companionAvatar);
-                companionName.setText(chat.getUsers().get(0).getName());
 
                 return new MessageViewHolder(inflater.inflate(R.layout.message, viewGroup, false));
             }

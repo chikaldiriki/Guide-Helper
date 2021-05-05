@@ -13,7 +13,6 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
@@ -56,11 +55,17 @@ public class Message implements IMessage {
 
     private String name;
     private String imageUrl;
+    private String dispatchTimeString;
 
     public Message(String text, String name, String imageUrl) {
         this.text = text;
         this.name = name;
         this.imageUrl = imageUrl;
+        this.dispatchTimeString = new Timestamp(System.currentTimeMillis()).toString();
+    }
+
+    public Message() {
+        this.dispatchTimeString = new Timestamp(System.currentTimeMillis()).toString();
     }
 
     public void setText(String text) {
@@ -81,6 +86,10 @@ public class Message implements IMessage {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getDispatchTimeString() {
+        return this.dispatchTimeString;
     }
 }
 
