@@ -40,11 +40,6 @@ import ru.hse.guidehelper.databinding.FragmentMessagesBinding;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MessagesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MessagesFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -132,7 +127,6 @@ public class MessagesFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(MessageViewHolder viewHolder, int position, Message message) {
-                mBinding.progressBar.setVisibility(ProgressBar.INVISIBLE);
                 viewHolder.bindMessage(message);
             }
         };
@@ -146,7 +140,7 @@ public class MessagesFragment extends Fragment {
         mBinding.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Message message = new Message(mBinding.messageEditText.getText().toString(), getUserName(), getUserPhotoUrl(), null);
+                Message message = new Message(mBinding.messageEditText.getText().toString(), getUserName(), getUserPhotoUrl());
                 mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push().setValue(message);
                 chat.setLastMessage(message);
                 // отправить мессагу в БД
@@ -192,7 +186,7 @@ public class MessagesFragment extends Fragment {
                 Log.d(TAG, "Uri: " + uri.toString());
                 final FirebaseUser user = mFirebaseAuth.getCurrentUser();
                 //Message tempMessage = new Message();
-                Message tempMessage = new Message(null, getUserName(), getUserPhotoUrl(), uri.toString());
+                Message tempMessage = new Message(null, getUserName(), getUserPhotoUrl());
                 mDatabase.getReference().child(MESSAGES_CHILD).push()
                         .setValue(tempMessage, new DatabaseReference.CompletionListener() {
                             @Override
@@ -220,7 +214,7 @@ public class MessagesFragment extends Fragment {
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        Message message = new Message(null, getUserName(), getUserPhotoUrl(), uri.toString());
+                                        Message message = new Message(null, getUserName(), getUserPhotoUrl());
                                         mDatabase.getReference().child(MESSAGES_CHILD).child(key).setValue(message);
                                     }
                                 });

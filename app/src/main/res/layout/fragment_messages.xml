@@ -4,40 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/chat_background"
+    android:orientation="vertical"
     tools:context="ru.hse.guidehelper.chat.MessagesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark_mint"
+        android:layout_weight="1"
+        android:background="@color/colorUserInDialogBackground"
         android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:orientation="horizontal"
+            android:src="@drawable/ic_arrow_back" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/companionAvatar"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/companionName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:layout_marginStart="10dp"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messageRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="40"
         android:paddingHorizontal="16dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
         android:background="@color/colorLightGray"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp">
@@ -53,30 +63,23 @@
             android:id="@+id/messageEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
             android:layout_gravity="center"
-            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
             android:background="@drawable/edit_text_shadow"
             android:hint="Say something..."
-            android:inputType="text" />
+            android:inputType="text"
+            android:padding="10dp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:enabled="false"
-            android:src="@drawable/outline_send_gray_24" />
+            android:background="@null"
+            android:visibility="invisible"
+            android:src="@drawable/outline_send_24" />
 
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
 
 </LinearLayout>

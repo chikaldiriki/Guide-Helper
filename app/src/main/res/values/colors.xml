@@ -15,4 +15,6 @@
     <color name="colorGray">#dedede</color>
     <color name="colorDarkGray">#b4b4b4</color>
     <color name="colorBlue">#2962FF</color>
+    <color name="colorSenderMessage">#D4EBCD</color>
+    <color name="colorUserInDialogBackground">#E0CFB1</color>
 </resources>

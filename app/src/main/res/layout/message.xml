@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="right"
+        android:gravity="end"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -25,7 +25,7 @@
                 android:textAlignment="gravity"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                android:background="@color/teal_200"/>
+                android:background="@drawable/sender_message_layout"/>
 
             <ImageView
                 android:id="@+id/messageRightImageView"
@@ -59,7 +59,7 @@
                 android:layout_weight="0"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                android:background="@color/colorLightGray"/>
+                android:background="@drawable/receiver_message_layout"/>
 
             <ImageView
                 android:id="@+id/messageLeftImageView"
