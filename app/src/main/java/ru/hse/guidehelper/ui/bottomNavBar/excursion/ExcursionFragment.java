@@ -30,8 +30,8 @@ public class ExcursionFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_excursion, container, false); //  fragment_excursion | activity_main
 
-        Intent in = new Intent(getActivity(), ExcursionsListListActivity.class);
-        startActivity(in);
+        //Intent in = new Intent(getActivity(), ExcursionsListListActivity.class);
+        //startActivity(in);
 
         return root;
     }

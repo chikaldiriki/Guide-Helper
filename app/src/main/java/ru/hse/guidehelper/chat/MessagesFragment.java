@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -57,6 +59,7 @@ public class MessagesFragment extends Fragment {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseRecyclerAdapter<Message, MessageViewHolder> mFirebaseAdapter;
     private View view;
+    private ImageButton mBackButton;
 
     private static Chat chat = null;
     private static final String TAG = "MainActivity";
@@ -157,6 +160,15 @@ public class MessagesFragment extends Fragment {
                 startActivityForResult(intent, REQUEST_IMAGE);
             }
         });
+
+        mBackButton = view.findViewById(R.id.backButton);
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return view;
     }
 
