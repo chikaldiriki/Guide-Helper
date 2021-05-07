@@ -1,5 +1,7 @@
 package ru.hse.guidehelper.excursions;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -24,8 +26,10 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.springframework.boot.convert.DurationUnit;
 
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.excursions.dummy.DummyContent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +39,9 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An activity representing a list of ExcursionsList. This activity
@@ -93,7 +99,7 @@ public class ExcursionsListListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, queueRequest));
     }
 
-    public class SimpleItemRecyclerViewAdapter
+    public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         // private String  url = "http://192.168.3.225:8080";
@@ -101,47 +107,58 @@ public class ExcursionsListListActivity extends AppCompatActivity {
         private RequestQueue queueRequest;
         private final ExcursionsListListActivity mParentActivity;
         private final List<DummyItem> mValues;
-        private int cntOfTours = 1;
         private final String suffTours = "/tours";
 
-        // private JSONArray arrOfTours = null; 1
+        private JSONArray arrOfTours = null;
+        public static Map<String, DummyItem> itemMap = new HashMap<String, DummyItem>();
 
-//        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
-//
-//                Context context = view.getContext();
-//                Intent intent = new Intent(context, ExcursionsListDetailActivity.class);
-//                intent.putExtra(ExcursionsListDetailFragment.ARG_ITEM_ID, item.id);
-//
-//                context.startActivity(intent);
-//
-//            }
-//        };
+        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DummyItem item = (DummyItem) view.getTag();
+
+                Context context = view.getContext();
+                Intent intent = new Intent(context, ExcursionsListDetailActivity.class);
+                intent.putExtra(ExcursionsListDetailFragment.ARG_ITEM_ID, item.id);
+
+                context.startActivity(intent);
+
+            }
+        };
 
         SimpleItemRecyclerViewAdapter(ExcursionsListListActivity parent,
                                       RequestQueue queueRequest) {
             mValues = new ArrayList<>();
             for(int i = 1; i <= 100; i++) {
-                mValues.add(new DummyItem());
+                DummyItem item = new DummyItem(String.valueOf(i));
+                mValues.add(item);
+                itemMap.put(item.id, item);
+
             }
             mParentActivity = parent;
             this.queueRequest = queueRequest;
 
-            new AsyncRequestGetCntOfTours().execute("");
-//            while(arrOfTours == null) { 1
-//                System.out.println(0);
-//            }
-//
-//            for(int i = 0; i < 3; i++) {
-//                try {
-//                    System.out.println("1 " + arrOfTours.getJSONObject(i).getString("title"));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
 
+            new AsyncRequestGetCntOfTours().execute("");
+
+            synchronized (JSONArray.class) {
+                while(arrOfTours == null) {
+                    try {
+                        JSONArray.class.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // clear
+                for(int i = 0; i < 3; i++) {
+                    try {
+                        System.out.println("1 " + arrOfTours.getJSONObject(i).getString("title"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         @Override
@@ -153,42 +170,27 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url + suffTours, null, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    try {
-                        cntOfTours = response.length();
-                        holder.mContentView.setText(response.getJSONObject(position).getString("title"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    holder.mContentView.setText("Error Cause:\n" + error.getCause() + "\n");
-                }
-            });
-
-            queueRequest.add(request);
-
-//            try {
-//                holder.mContentView.setText(arrOfTours.getJSONObject(position).getString("title"));
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-
+            try {
+                holder.mContentView.setText(arrOfTours.getJSONObject(position).getString("title"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             holder.mIdView.setText(String.valueOf(position + 1));
-            // holder.itemView.setTag(mValues.get(position)); // tag ???
 
-
-            // holder.itemView.setOnClickListener(mOnClickListener);
+            try {
+                mValues.get(position).details = arrOfTours.getJSONObject(position).getString("description");
+                mValues.get(position).content = arrOfTours.getJSONObject(position).getString("title") + " - " +
+                        arrOfTours.getJSONObject(position).getString("city");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            holder.itemView.setTag(mValues.get(position));
+            holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override
         public int getItemCount() {
-            return cntOfTours;
+            return arrOfTours.length();
         }
 
         private class AsyncRequestGetCntOfTours extends AsyncTask<String, Integer, Integer> {
@@ -196,7 +198,6 @@ public class ExcursionsListListActivity extends AppCompatActivity {
             @Override
             protected Integer doInBackground(String... arg) {
                 try {
-                    cntOfTours = readJsonFromUrl().length();
                     return readJsonFromUrl().length();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -221,7 +222,10 @@ public class ExcursionsListListActivity extends AppCompatActivity {
             } finally {
                 is.close();
             }
-            // arrOfTours = json; 1
+            arrOfTours = json;
+            synchronized (JSONArray.class) {
+                JSONArray.class.notifyAll();
+            }
             return json;
         }
 
@@ -249,6 +253,10 @@ public class ExcursionsListListActivity extends AppCompatActivity {
             public String id;
             public String content;
             public String details;
+
+            public DummyItem(String id) {
+                this.id = id;
+            }
 
             @Override
             public String toString() {
