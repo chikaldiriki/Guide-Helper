@@ -53,7 +53,7 @@ public class DummyContent {
         return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
     }
 
-    private static String makeDetails(int position) {
+    private static String makeDetails(int position) { // desciption
         StringBuilder builder = new StringBuilder();
         builder.append("Details about Item: ").append(position);
         for (int i = 0; i < position; i++) {

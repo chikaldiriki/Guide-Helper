@@ -1,7 +1,6 @@
 package ru.hse.guidehelper.excursions;
 
-import android.content.Context;
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,8 +13,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,17 +21,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import lombok.SneakyThrows;
 import ru.hse.guidehelper.R;
 
-import ru.hse.guidehelper.excursions.dummy.DummyContent;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +54,6 @@ public class ExcursionsListListActivity extends AppCompatActivity {
      */
 
     RequestQueue queueRequest;
-    DummyContent dummy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +79,6 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 
         queueRequest = Volley.newRequestQueue(this);
 
-        dummy = new DummyContent(queueRequest);
-
         queueRequest.start();
 
         setupRecyclerView((RecyclerView) recyclerView);
@@ -93,7 +90,7 @@ public class ExcursionsListListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, dummy.ITEMS, queueRequest));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, queueRequest));
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -103,11 +100,16 @@ public class ExcursionsListListActivity extends AppCompatActivity {
         private String  url = "http://192.168.0.137:8080";
         private RequestQueue queueRequest;
         private final ExcursionsListListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<DummyItem> mValues;
+        private int cntOfTours = 1;
+        private final String suffTours = "/tours";
+
+        // private JSONArray arrOfTours = null; 1
+
 //        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+//                // DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
 //
 //                Context context = view.getContext();
 //                Intent intent = new Intent(context, ExcursionsListDetailActivity.class);
@@ -119,11 +121,27 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 //        };
 
         SimpleItemRecyclerViewAdapter(ExcursionsListListActivity parent,
-                                      List<DummyContent.DummyItem> items,
                                       RequestQueue queueRequest) {
-            mValues = items;
+            mValues = new ArrayList<>();
+            for(int i = 1; i <= 100; i++) {
+                mValues.add(new DummyItem());
+            }
             mParentActivity = parent;
             this.queueRequest = queueRequest;
+
+            new AsyncRequestGetCntOfTours().execute("");
+//            while(arrOfTours == null) { 1
+//                System.out.println(0);
+//            }
+//
+//            for(int i = 0; i < 3; i++) {
+//                try {
+//                    System.out.println("1 " + arrOfTours.getJSONObject(i).getString("title"));
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+
         }
 
         @Override
@@ -135,11 +153,11 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url + "/tours", null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url + suffTours, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     try {
-
+                        cntOfTours = response.length();
                         holder.mContentView.setText(response.getJSONObject(position).getString("title"));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -155,8 +173,14 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 
             queueRequest.add(request);
 
+//            try {
+//                holder.mContentView.setText(arrOfTours.getJSONObject(position).getString("title"));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+
             holder.mIdView.setText(String.valueOf(position + 1));
-            holder.itemView.setTag(mValues.get(position)); // tag ???
+            // holder.itemView.setTag(mValues.get(position)); // tag ???
 
 
             // holder.itemView.setOnClickListener(mOnClickListener);
@@ -164,7 +188,50 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            return cntOfTours;
+        }
+
+        private class AsyncRequestGetCntOfTours extends AsyncTask<String, Integer, Integer> {
+
+            @Override
+            protected Integer doInBackground(String... arg) {
+                try {
+                    cntOfTours = readJsonFromUrl().length();
+                    return readJsonFromUrl().length();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return 10;
+            }
+
+            @Override
+            protected void onPostExecute(Integer s) {
+                super.onPostExecute(s);
+            }
+        }
+
+        private JSONArray readJsonFromUrl() throws IOException, JSONException {
+            InputStream is = new URL(url + suffTours).openStream();
+            JSONArray json;
+            try {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+                json = new JSONArray(readAll(rd));
+            } finally {
+                is.close();
+            }
+            // arrOfTours = json; 1
+            return json;
+        }
+
+        private String readAll(Reader rd) throws IOException {
+            StringBuilder sb = new StringBuilder();
+            int cp;
+            while ((cp = rd.read()) != -1) {
+                sb.append((char) cp);
+            }
+            return sb.toString();
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
@@ -177,5 +244,17 @@ public class ExcursionsListListActivity extends AppCompatActivity {
                 mContentView = (TextView) view.findViewById(R.id.content);
             }
         }
+
+        public class DummyItem {
+            public String id;
+            public String content;
+            public String details;
+
+            @Override
+            public String toString() {
+                return content;
+            }
+        }
+
     }
 }
