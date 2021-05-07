@@ -66,18 +66,13 @@ public class ExcursionsListListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_excursionslist_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         View recyclerView = findViewById(R.id.excursionslist_list);
         assert recyclerView != null;
@@ -88,11 +83,6 @@ public class ExcursionsListListActivity extends AppCompatActivity {
         queueRequest.start();
 
         setupRecyclerView((RecyclerView) recyclerView);
-
-//        Bundle bundle = getIntent().getExtras();
-//        if(bundle != null && bundle.getString("bot") != null) {
-//            Toast.makeText(getApplicationContext(), bundle.getString("bot"), Toast.LENGTH_SHORT).show();
-//        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -102,39 +92,29 @@ public class ExcursionsListListActivity extends AppCompatActivity {
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        // private String  url = "http://192.168.3.225:8080";
-        private String  url = "http://192.168.0.137:8080";
-        private RequestQueue queueRequest;
+        // private final String  url = "http://192.168.3.225:8080";
+        private final String  url = "http://192.168.0.137:8080";
+        private final RequestQueue queueRequest;
         private final ExcursionsListListActivity mParentActivity;
         private final List<DummyItem> mValues;
         private final String suffTours = "/tours";
 
         private JSONArray arrOfTours = null;
-        public static Map<String, DummyItem> itemMap = new HashMap<String, DummyItem>();
+        public static Map<String, DummyItem> itemMap = new HashMap<>();
 
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DummyItem item = (DummyItem) view.getTag();
+        private final View.OnClickListener mOnClickListener = view -> {
+            DummyItem item = (DummyItem) view.getTag();
 
-                Context context = view.getContext();
-                Intent intent = new Intent(context, ExcursionsListDetailActivity.class);
-                intent.putExtra(ExcursionsListDetailFragment.ARG_ITEM_ID, item.id);
+            Context context = view.getContext();
+            Intent intent = new Intent(context, ExcursionsListDetailActivity.class);
+            intent.putExtra(ExcursionsListDetailFragment.ARG_ITEM_ID, item.id);
 
-                context.startActivity(intent);
-
-            }
+            context.startActivity(intent);
         };
 
         SimpleItemRecyclerViewAdapter(ExcursionsListListActivity parent,
                                       RequestQueue queueRequest) {
             mValues = new ArrayList<>();
-            for(int i = 1; i <= 100; i++) {
-                DummyItem item = new DummyItem(String.valueOf(i));
-                mValues.add(item);
-                itemMap.put(item.id, item);
-
-            }
             mParentActivity = parent;
             this.queueRequest = queueRequest;
 
@@ -150,13 +130,10 @@ public class ExcursionsListListActivity extends AppCompatActivity {
                     }
                 }
 
-                // clear
-                for(int i = 0; i < 3; i++) {
-                    try {
-                        System.out.println("1 " + arrOfTours.getJSONObject(i).getString("title"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                for(int i = 1; i <= arrOfTours.length(); i++) {
+                    DummyItem item = new DummyItem(String.valueOf(i));
+                    mValues.add(item);
+                    itemMap.put(item.id, item);
                 }
             }
         }
@@ -199,12 +176,10 @@ public class ExcursionsListListActivity extends AppCompatActivity {
             protected Integer doInBackground(String... arg) {
                 try {
                     return readJsonFromUrl().length();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
-                return 10;
+                return 0;
             }
 
             @Override
@@ -244,8 +219,8 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mIdView = view.findViewById(R.id.id_text);
+                mContentView = view.findViewById(R.id.content);
             }
         }
 
