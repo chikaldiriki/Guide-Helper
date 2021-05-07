@@ -13,6 +13,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,6 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import lombok.SneakyThrows;
 import ru.hse.guidehelper.R;
@@ -74,8 +80,6 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 
         queueRequest = Volley.newRequestQueue(this);
 
-        System.out.println("00000000");
-
         dummy = new DummyContent(queueRequest);
 
         queueRequest.start();
@@ -95,7 +99,8 @@ public class ExcursionsListListActivity extends AppCompatActivity {
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private String  url = "http://192.168.3.225:8080";
+        // private String  url = "http://192.168.3.225:8080";
+        private String  url = "http://192.168.0.137:8080";
         private RequestQueue queueRequest;
         private final ExcursionsListListActivity mParentActivity;
         private final List<DummyContent.DummyItem> mValues;
@@ -130,31 +135,28 @@ public class ExcursionsListListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            holder.mContentView.setText(response);
-                            // textView.setText("Response is: "+ response.substring(0,12));
-                        }
-                    }, new Response.ErrorListener() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url + "/tours", null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    try {
+
+                        holder.mContentView.setText(response.getJSONObject(position).getString("title"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            },
+            new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    holder.mContentView.setText("22222222" + error.getMessage() + "\nLocal:\n" + error.getLocalizedMessage()
-                                    + "\nCause:\n" + error.getCause() + "\ntoString:\n" + error.toString());
-
-                    // textView.setText("That didn't work!\n" + error.getMessage() + "\nLocal:\n" + error.getLocalizedMessage()
-                    //        + "\nCause:\n" + error.getCause() + "\ntoString:\n" + error.toString());
+                    holder.mContentView.setText("Error Cause:\n" + error.getCause() + "\n");
                 }
             });
 
-            queueRequest.add(stringRequest);
+            queueRequest.add(request);
 
-            holder.mIdView.setText(mValues.get(position).id);
-            // holder.mContentView.setText(mValues.get(position).content);
-
-            holder.itemView.setTag(mValues.get(position));
+            holder.mIdView.setText(String.valueOf(position + 1));
+            holder.itemView.setTag(mValues.get(position)); // tag ???
 
 
             // holder.itemView.setOnClickListener(mOnClickListener);

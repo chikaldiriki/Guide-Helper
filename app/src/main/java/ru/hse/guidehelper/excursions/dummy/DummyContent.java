@@ -32,7 +32,7 @@ public class DummyContent {
      */
     public final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
-    private final int COUNT = 2;
+    private final int COUNT = 3;
 
 
     public DummyContent(RequestQueue queueRequest) {
