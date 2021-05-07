@@ -29,7 +29,6 @@ import org.json.JSONException;
 import org.springframework.boot.convert.DurationUnit;
 
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.excursions.dummy.DummyContent;
 
 import java.io.BufferedReader;
 import java.io.IOException;

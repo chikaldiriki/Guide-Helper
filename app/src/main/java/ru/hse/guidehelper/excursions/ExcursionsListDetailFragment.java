@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.excursions.dummy.DummyContent;
 
 /**
  * A fragment representing a single ExcursionsList detail screen.
