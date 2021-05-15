@@ -114,8 +114,8 @@ public class DialogFragment extends Fragment
                 new ArrayList<>(Collections.singletonList(new User("228", "Ilya2", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
                 null, 0));
 
-        adapter.addItem(new Chat("3", "Ilya2", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
-                new ArrayList<>(Collections.singletonList(new User("322", "Ilya1", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
+        adapter.addItem(new Chat("5", "TestUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
+                new ArrayList<>(Collections.singletonList(new User("322", "TestUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
                 null, 0));
 
         addAllChatsInAdapter();

@@ -32,8 +32,6 @@ public class ProfileFragment extends Fragment {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        System.out.println(currentUser);
-
         View root = inflater.inflate(R.layout.activity_profile, container, false);
 
         String personImage = Objects.requireNonNull(currentUser.getPhotoUrl()).toString();

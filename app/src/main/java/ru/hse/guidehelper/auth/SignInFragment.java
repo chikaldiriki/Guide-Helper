@@ -59,7 +59,6 @@ public class SignInFragment extends Fragment {
         login = root.findViewById(R.id.signInGoogle);
         login.setOnClickListener(view -> signIn());
 
-        System.out.println("AUE");
         return root;
     }
 
@@ -70,7 +69,6 @@ public class SignInFragment extends Fragment {
 
 
     private void signIn() {
-        System.out.println("111");
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -106,6 +104,8 @@ public class SignInFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            // делаем addUser в базу данных
+
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("LoginActivity", "signInWithCredential:success");
                             // startActivity(new Intent(getActivity().getApplicationContext(), ProfileActivity.class));

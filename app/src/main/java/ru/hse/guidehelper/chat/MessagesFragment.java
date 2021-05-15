@@ -196,7 +196,6 @@ public class MessagesFragment extends Fragment {
                 final Uri uri = data.getData();
                 Log.d(TAG, "Uri: " + uri.toString());
                 final FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                //Message tempMessage = new Message();
                 Message tempMessage = new Message(null, getUserName(), getUserPhotoUrl());
                 mDatabase.getReference().child(MESSAGES_CHILD).push()
                         .setValue(tempMessage, new DatabaseReference.CompletionListener() {
@@ -231,12 +230,8 @@ public class MessagesFragment extends Fragment {
                                 });
                     }
                 })
-                .addOnFailureListener((Activity) view.getContext(), new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Image upload task was not successful.", e);
-                    }
-                });
+                .addOnFailureListener((Activity) view.getContext(),
+                        e -> Log.w(TAG, "Image upload task was not successful.", e));
     }
 
     @Nullable
@@ -255,5 +250,4 @@ public class MessagesFragment extends Fragment {
         }
         return ANONYMOUS;
     }
-
 }
