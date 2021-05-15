@@ -60,7 +60,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-    implementation 'com.google.firebase:firebase-storage:19.2.2'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
 
@@ -80,12 +80,12 @@ dependencies {
     // FIREBASE
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-auth:20.0.4'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     // CIRCLE AVATAR
-    implementation 'de.hdodenhof:circleimageview:1.1.0'
-    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 
     // FLEXBOX
     implementation 'com.google.android:flexbox:2.0.1'
@@ -115,7 +115,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.firebaseui:firebase-ui-database:7.1.1'
 
-    implementation 'com.google.firebase:firebase-database:19.7.0'
-    implementation 'com.google.firebase:firebase-messaging:21.1.0'
-    implementation 'com.google.firebase:firebase-analytics:18.0.3'
+    implementation 'com.google.firebase:firebase-database:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+
+    // GUIDE INFO VALIDATION
+    implementation 'com.basgeekball:awesome-validation:1.3'
 }
