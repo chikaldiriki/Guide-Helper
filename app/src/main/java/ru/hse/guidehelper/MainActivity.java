@@ -28,29 +28,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         navView = findViewById(R.id.nav_view);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home,
-                R.id.navigation_dashboard,
-                R.id.navigation_notifications,
-                R.id.navigation_profile
-        ).build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
 
         mButtonToChat = findViewById(R.id.buttonToChat);
         mAuth = FirebaseAuth.getInstance();
-
-        /*button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //navView.setVisibility(BottomNavigationView.INVISIBLE);
-                Fragment chosenFragment = new DialogFragment();
-                getSupportFragmentManager().beginTransaction().replace(currentFragmentId,
-                        chosenFragment).commit();
-
-                currentFragmentId = chosenFragment.getId();
-            }
-        });*/
 
         mButtonToChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,37 +42,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
-
-        /*navView.setOnNavigationItemSelectedListener(item -> {
-            Fragment chosenFragment = null;
-            FirebaseUser currentUser = mAuth.getCurrentUser();
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    chosenFragment = new ExcursionFragment();
-                    break;
-                case R.id.navigation_dashboard:
-                    chosenFragment = new MyOrdersFragment();
-                    break;
-                case R.id.navigation_notifications:
-                    chosenFragment = new SubscriptionsFragment();
-                    break;
-                case R.id.navigation_profile:
-                    if (currentUser != null) {
-                        chosenFragment = new ProfileFragment();
-                    } else {
-                        chosenFragment = new SignInFragment();
-                    }
-                    break;
-            }
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(currentFragmentId, chosenFragment).commit();
-
-            currentFragmentId = chosenFragment.getId();
-
-            return true;
-        });*/
     }
 
     @Override

@@ -24,8 +24,10 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.MessageFormat;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -118,6 +121,9 @@ public class MessagesFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push();
         DatabaseReference messagesRef = mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId());
+        System.out.println(mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).get());
+
+
         FirebaseRecyclerOptions<Message> options =
                 new FirebaseRecyclerOptions.Builder<Message>().setQuery(messagesRef, Message.class).build();
 
@@ -151,23 +157,15 @@ public class MessagesFragment extends Fragment {
                 mBinding.messageEditText.setText("");
             }
         });
-        mBinding.addMessageImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
-                startActivityForResult(intent, REQUEST_IMAGE);
-            }
+        mBinding.addMessageImageView.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            startActivityForResult(intent, REQUEST_IMAGE);
         });
 
         mBackButton = view.findViewById(R.id.backButton);
-        mBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        mBackButton.setOnClickListener(view -> MessagesFragment.this.requireActivity().onBackPressed());
 
         return view;
     }
