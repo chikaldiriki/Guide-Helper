@@ -38,4 +38,9 @@
         android:name="ru.hse.guidehelper.chat.MessagesFragment"
         android:label="fragment_messages"
         tools:layout="@layout/fragment_messages" />
+    <fragment
+        android:id="@+id/guideInfoFragment"
+        android:name="ru.hse.guidehelper.auth.GuideInfoFragment"
+        android:label="fragment_guide_info"
+        tools:layout="@layout/fragment_guide_info" />
 </navigation>
