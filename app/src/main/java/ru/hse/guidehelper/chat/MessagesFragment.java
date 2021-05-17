@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,8 +24,10 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.MessageFormat;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -40,11 +45,6 @@ import ru.hse.guidehelper.databinding.FragmentMessagesBinding;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MessagesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MessagesFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -62,6 +62,7 @@ public class MessagesFragment extends Fragment {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseRecyclerAdapter<Message, MessageViewHolder> mFirebaseAdapter;
     private View view;
+    private ImageButton mBackButton;
 
     private static Chat chat = null;
     private static final String TAG = "MainActivity";
@@ -111,9 +112,18 @@ public class MessagesFragment extends Fragment {
         // подгружать мессаги не из Firebase, а из своей БД
         mBinding = FragmentMessagesBinding.inflate(inflater, container, false);
         view = mBinding.getRoot();
+
+        CircleImageView companionAvatar = view.findViewById(R.id.companionAvatar);
+        TextView companionName = view.findViewById(R.id.companionName);
+        Glide.with(MessagesFragment.this.getContext()).load(chat.getDialogPhoto()).into(companionAvatar);
+        companionName.setText(chat.getUsers().get(0).getName());
+
         mDatabase = FirebaseDatabase.getInstance();
         mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push();
         DatabaseReference messagesRef = mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId());
+        System.out.println(mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).get());
+
+
         FirebaseRecyclerOptions<Message> options =
                 new FirebaseRecyclerOptions.Builder<Message>().setQuery(messagesRef, Message.class).build();
 
@@ -121,18 +131,12 @@ public class MessagesFragment extends Fragment {
             @Override
             public MessageViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                CircleImageView companionAvatar = MessagesFragment.this.getActivity().findViewById(R.id.companionAvatar);
-                TextView companionName = MessagesFragment.this.getActivity().findViewById(R.id.companionName);
-
-                Glide.with(MessagesFragment.this.getContext()).load(chat.getDialogPhoto()).into(companionAvatar);
-                companionName.setText(chat.getUsers().get(0).getName());
 
                 return new MessageViewHolder(inflater.inflate(R.layout.message, viewGroup, false));
             }
 
             @Override
             protected void onBindViewHolder(MessageViewHolder viewHolder, int position, Message message) {
-                mBinding.progressBar.setVisibility(ProgressBar.INVISIBLE);
                 viewHolder.bindMessage(message);
             }
         };
@@ -146,22 +150,23 @@ public class MessagesFragment extends Fragment {
         mBinding.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Message message = new Message(mBinding.messageEditText.getText().toString(), getUserName(), getUserPhotoUrl(), null);
+                Message message = new Message(mBinding.messageEditText.getText().toString(), getUserName(), getUserPhotoUrl());
                 mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push().setValue(message);
                 chat.setLastMessage(message);
                 // отправить мессагу в БД
                 mBinding.messageEditText.setText("");
             }
         });
-        mBinding.addMessageImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
-                startActivityForResult(intent, REQUEST_IMAGE);
-            }
+        mBinding.addMessageImageView.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            startActivityForResult(intent, REQUEST_IMAGE);
         });
+
+        mBackButton = view.findViewById(R.id.backButton);
+        mBackButton.setOnClickListener(view -> MessagesFragment.this.requireActivity().onBackPressed());
+
         return view;
     }
 
@@ -191,8 +196,7 @@ public class MessagesFragment extends Fragment {
                 final Uri uri = data.getData();
                 Log.d(TAG, "Uri: " + uri.toString());
                 final FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                //Message tempMessage = new Message();
-                Message tempMessage = new Message(null, getUserName(), getUserPhotoUrl(), uri.toString());
+                Message tempMessage = new Message(null, getUserName(), getUserPhotoUrl());
                 mDatabase.getReference().child(MESSAGES_CHILD).push()
                         .setValue(tempMessage, new DatabaseReference.CompletionListener() {
                             @Override
@@ -220,18 +224,14 @@ public class MessagesFragment extends Fragment {
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        Message message = new Message(null, getUserName(), getUserPhotoUrl(), uri.toString());
+                                        Message message = new Message(null, getUserName(), getUserPhotoUrl());
                                         mDatabase.getReference().child(MESSAGES_CHILD).child(key).setValue(message);
                                     }
                                 });
                     }
                 })
-                .addOnFailureListener((Activity) view.getContext(), new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Image upload task was not successful.", e);
-                    }
-                });
+                .addOnFailureListener((Activity) view.getContext(),
+                        e -> Log.w(TAG, "Image upload task was not successful.", e));
     }
 
     @Nullable
@@ -250,5 +250,4 @@ public class MessagesFragment extends Fragment {
         }
         return ANONYMOUS;
     }
-
 }

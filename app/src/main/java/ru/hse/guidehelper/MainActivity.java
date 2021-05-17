@@ -1,5 +1,7 @@
 package ru.hse.guidehelper;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -8,77 +10,105 @@ import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import ru.hse.guidehelper.auth.SignInFragment;
-import ru.hse.guidehelper.chat.Chat;
-import ru.hse.guidehelper.chat.DialogFragment;
-import ru.hse.guidehelper.chat.MessagesFragment;
-import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
-import ru.hse.guidehelper.ui.bottomNavBar.orders.MyOrdersFragment;
-import ru.hse.guidehelper.ui.bottomNavBar.profile.ProfileFragment;
-import ru.hse.guidehelper.ui.bottomNavBar.subscriptions.SubscriptionsFragment;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.util.Objects;
+
+import ru.hse.guidehelper.auth.GuideInfoFragment;
+import ru.hse.guidehelper.config.ApplicationConfig;
+import ru.hse.guidehelper.dto.UserDTO;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private Button button;
+    private Button mButtonToChat;
     public static int currentFragmentId = R.id.nav_host_fragment;
+    private NavController navController;
+    private BottomNavigationView navView;
+    public static UserDTO currentUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button = findViewById(R.id.buttonToChat);
+        navView = findViewById(R.id.nav_view);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(navView, navController);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        mButtonToChat = findViewById(R.id.buttonToChat);
         mAuth = FirebaseAuth.getInstance();
 
-        button.setOnClickListener(new View.OnClickListener() {
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull @NotNull NavController controller,
+                                             @NonNull @NotNull NavDestination destination,
+                                             @Nullable @org.jetbrains.annotations.Nullable Bundle arguments) {
+                if (Objects.equals(FirebaseAuth.getInstance().getCurrentUser(), null) && (destination.getId() == R.id.navigation_profile ||
+                        destination.getId() == R.id.navigation_notifications ||
+                        destination.getId() == R.id.navigation_dashboard)) {
+                    navController.navigate(R.id.signInFragment);
+                }
+            }
+        });
+
+        mButtonToChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navView.setVisibility(BottomNavigationView.INVISIBLE);
-                Fragment chosenFragment = new DialogFragment();
-                getSupportFragmentManager().beginTransaction().replace(currentFragmentId,
-                        chosenFragment).commit();
-
-                currentFragmentId = chosenFragment.getId();
+                navController.navigate(R.id.dialogFragment2);
             }
         });
 
-        mAuth = FirebaseAuth.getInstance();
+        File cacheFile = new File(getCacheDir(), "userCache.txt");
+        ApplicationConfig.setCachedUserDTOfile(cacheFile);
 
-        navView.setOnNavigationItemSelectedListener(item -> {
-            Fragment chosenFragment = null;
-            FirebaseUser currentUser = mAuth.getCurrentUser();
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    chosenFragment = new ExcursionFragment();
-                    break;
-                case R.id.navigation_dashboard:
-                    chosenFragment = new MyOrdersFragment();
-                    break;
-                case R.id.navigation_notifications:
-                    chosenFragment = new SubscriptionsFragment();
-                    break;
-                case R.id.navigation_profile:
-                    if (currentUser != null) {
-                        chosenFragment = new ProfileFragment();
-                    } else {
-                        chosenFragment = new SignInFragment();
-                    }
-                    break;
+        if (!ApplicationConfig.cachedUserDTOfile.exists()) {
+            try {
+                Files.createFile(ApplicationConfig.cachedUserDTOfile.toPath());
+            } catch (IOException e) {
+
             }
+            System.out.println(1);
+        } else {
+            System.out.println(2);
+            currentUser = readUserFromFile(ApplicationConfig.cachedUserDTOfile);
+        }
+    }
 
-            getSupportFragmentManager().beginTransaction().replace(currentFragmentId,
-                    chosenFragment).commit();
+    public static void writeUserToFile(File file, UserDTO userDTO) {
+        try (FileOutputStream outputStream = new FileOutputStream(file);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
+            objectOutputStream.writeObject(userDTO);
+        } catch (IOException e) {
+        }
+    }
 
-            currentFragmentId = chosenFragment.getId();
+    public static UserDTO readUserFromFile(File file) {
+        try (FileInputStream fileInputStream = new FileInputStream(file);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            System.out.println(new String(Files.readAllBytes(file.toPath())));
+            return (UserDTO) objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return null;
+            //throw new RuntimeException();
+        }
+    }
 
-            return true;
-        });
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

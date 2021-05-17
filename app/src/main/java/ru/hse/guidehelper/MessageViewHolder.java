@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,84 +31,41 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 
     TextView messageLeftTextView, messageRightTextView;
     ImageView messageLeftImageView, messageRightImageView;
+    TextView messageLeftTime, messageRightTime;
+    FlexboxLayout leftBubble, rightBubble;
 
     public MessageViewHolder(View v) {
         super(v);
-        messageLeftTextView = (TextView) itemView.findViewById(R.id.messageLeftTextView);
-        messageLeftImageView = (ImageView) itemView.findViewById(R.id.messageLeftImageView);
-        messageRightTextView = (TextView) itemView.findViewById(R.id.messageRightTextView);
-        messageRightImageView = (ImageView) itemView.findViewById(R.id.messageRightImageView);
+        messageLeftTextView = itemView.findViewById(R.id.messageLeftTextView);
+        messageLeftImageView = itemView.findViewById(R.id.messageLeftImageView);
+        messageLeftTime = itemView.findViewById(R.id.leftMessageTime);
+        messageRightTextView = itemView.findViewById(R.id.messageRightTextView);
+        messageRightImageView = itemView.findViewById(R.id.messageRightImageView);
+        messageRightTime = itemView.findViewById(R.id.rightMessageTime);
+        leftBubble = itemView.findViewById(R.id.leftBubble);
+        rightBubble = itemView.findViewById(R.id.rightBubble);
     }
 
     public void bindMessage(Message message) {
+        System.out.println(message.getDispatchTime());
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (message.getName().equals(user.getEmail())) {
-            messageLeftTextView.setVisibility(TextView.INVISIBLE);
-            messageLeftImageView.setVisibility(ImageView.INVISIBLE);
+            messageRightTime.setText(message.getDispatchTimeString());
+            leftBubble.setVisibility(FlexboxLayout.INVISIBLE);
+            rightBubble.setVisibility(FlexboxLayout.VISIBLE);
             if (message.getText() != null) {
                 messageRightTextView.setText(message.getText());
-                messageRightTextView.setVisibility(TextView.VISIBLE);
-                messageRightImageView.setVisibility(ImageView.GONE);
             } else if (message.getImageUrl() != null) {
-                String imageUrl = message.getImageUrl();
-                if (imageUrl.startsWith("gs://")) {
-                    StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
-                    storageReference.getDownloadUrl()
-                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String downloadUrl = uri.toString();
-                                    Glide
-                                            .with(messageRightImageView.getContext())
-                                            .load(downloadUrl)
-                                            .into(messageRightImageView);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Getting download url was not successful.", e);
-                                }
-                            });
-                } else {
-                    Glide.with(messageRightImageView.getContext()).load(message.getImageUrl()).into(messageRightImageView);
-                }
-                messageRightImageView.setVisibility(ImageView.VISIBLE);
-                messageRightTextView.setVisibility(TextView.GONE);
+                Glide.with(messageRightImageView.getContext()).load(message.getImageUrl()).into(messageRightImageView);
             }
         } else {
-            messageRightTextView.setVisibility(TextView.INVISIBLE);
-            messageRightImageView.setVisibility(ImageView.INVISIBLE);
+            messageLeftTime.setText(message.getDispatchTimeString());
+            leftBubble.setVisibility(FlexboxLayout.VISIBLE);
+            rightBubble.setVisibility(FlexboxLayout.INVISIBLE);
             if (message.getText() != null) {
                 messageLeftTextView.setText(message.getText());
-                messageLeftTextView.setVisibility(TextView.VISIBLE);
-                messageLeftImageView.setVisibility(ImageView.GONE);
             } else if (message.getImageUrl() != null) {
-                String imageUrl = message.getImageUrl();
-                if (imageUrl.startsWith("gs://")) {
-                    StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
-                    storageReference.getDownloadUrl()
-                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String downloadUrl = uri.toString();
-                                    Glide
-                                            .with(messageLeftImageView.getContext())
-                                            .load(downloadUrl)
-                                            .into(messageLeftImageView);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Getting download url was not successful.", e);
-                                }
-                            });
-                } else {
-                    Glide.with(messageLeftImageView.getContext()).load(message.getImageUrl()).into(messageLeftImageView);
-                }
-                messageLeftImageView.setVisibility(ImageView.VISIBLE);
-                messageLeftTextView.setVisibility(TextView.GONE);
+                Glide.with(messageLeftImageView.getContext()).load(message.getImageUrl()).into(messageLeftImageView);
             }
         }
     }

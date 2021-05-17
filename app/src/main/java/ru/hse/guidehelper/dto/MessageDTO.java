@@ -10,10 +10,6 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class MessageDTO {
-    private String id;
-
-    private String chatId;
-
     private String senderMail;
 
     private String receiverMail;

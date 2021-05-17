@@ -8,8 +8,6 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class ChatDTO {
-    private String id;
-
     private String firstUserMail;
 
     private String secondUserMail;

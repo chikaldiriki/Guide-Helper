@@ -1,17 +1,26 @@
 package ru.hse.guidehelper.chat;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
@@ -81,7 +90,6 @@ public class DialogFragment extends Fragment
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dialog, container, false);
 
-
         ImageLoader imageLoader = new ImageLoader() {
             @Override
             public void loadImage(ImageView imageView, @Nullable String url, @Nullable Object payload) {
@@ -100,6 +108,14 @@ public class DialogFragment extends Fragment
                 null, 0));
         adapter.addItem(new Chat("2", "SecondUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
                 new ArrayList<>(Collections.singletonList(new User("2", "aziz", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
+                null, 0));
+
+        adapter.addItem(new Chat("3", "Ilya1", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
+                new ArrayList<>(Collections.singletonList(new User("228", "Ilya2", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
+                null, 0));
+
+        adapter.addItem(new Chat("5", "TestUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
+                new ArrayList<>(Collections.singletonList(new User("322", "TestUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
                 null, 0));
 
         addAllChatsInAdapter();
@@ -139,10 +155,15 @@ public class DialogFragment extends Fragment
     @Override
     public void onDialogClick(Chat chat) {
         MessagesFragment.setChat(chat);
-        Fragment chosenFragment = new MessagesFragment();
+        /*Fragment chosenFragment = new MessagesFragment();
         this.getActivity().getSupportFragmentManager().beginTransaction().replace(currentFragmentId,
                 chosenFragment).commit();
 
-        currentFragmentId = chosenFragment.getId();
+        currentFragmentId = chosenFragment.getId();*/
+        BottomNavigationView navView = (BottomNavigationView) getActivity().findViewById(R.id.nav_view);
+        navView.setVisibility(BottomNavigationView.INVISIBLE);
+
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        navController.navigate(R.id.messagesFragment2);
     }
 }

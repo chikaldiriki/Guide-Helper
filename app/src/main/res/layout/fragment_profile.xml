@@ -43,16 +43,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/role"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:textColor="#fff"
-                android:textSize="16sp" />
-
-            <TextView
                 android:id="@+id/role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,10 +51,18 @@
                 android:layout_marginTop="0dp"
                 android:textColor="#fff"
                 android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/becomeGuideButton"
+                android:layout_width="90dp"
+                android:layout_height="60dp"
+                android:text="Стать гидом" />
+
         </RelativeLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profileGuideInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/profile_layout"
@@ -82,40 +80,12 @@
                 android:id="@+id/textViewEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:text="Email: "
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Электронная почта: "
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewTags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:text="Тэги: "
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
-
-            <TextView
-                android:id="@+id/textViewMobile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
-                android:clickable="true"
-                android:text="Mobile: "
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewTags" />
 
             <TextView
                 android:id="@+id/email"
@@ -123,33 +93,72 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
-                android:clickable="true"
-                android:text="marothiatechs@gmail.com"
-                app:layout_constraintLeft_toRightOf="@+id/textViewEmail"
+                app:layout_constraintWidth_max="200dp"
+                app:layout_constraintStart_toEndOf="@+id/textViewEmail"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tags"
+                android:id="@+id/textViewLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
-                android:clickable="true"
-                android:text="люблю кушать"
-                app:layout_constraintLeft_toRightOf="@+id/textViewTags"
+                android:text="Локация: "
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/email" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintWidth_max="200dp"
+                app:layout_constraintStart_toEndOf="@+id/textViewEmail"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
+
+            <TextView
+                android:id="@+id/textViewMobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Мобильный номер: "
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/location" />
 
             <TextView
                 android:id="@+id/mobileNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:text="3228"
-                app:layout_constraintLeft_toRightOf="@+id/textViewMobile"
-                app:layout_constraintTop_toBottomOf="@id/tags" />
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintWidth_max="200dp"
+                app:layout_constraintStart_toEndOf="@+id/textViewEmail"
+                app:layout_constraintTop_toBottomOf="@id/location" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:text="Описание: "
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mobileNumber" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintWidth_max="200dp"
+                app:layout_constraintStart_toEndOf="@+id/textViewEmail"
+                app:layout_constraintTop_toBottomOf="@id/mobileNumber" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
