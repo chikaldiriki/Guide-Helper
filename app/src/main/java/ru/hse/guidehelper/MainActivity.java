@@ -77,13 +77,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (!ApplicationConfig.cachedUserDTOfile.exists()) {
             try {
-                Files.createFile(ApplicationConfig.cachedUserDTOfile.toPath());
+                ApplicationConfig.cachedUserDTOfile.createNewFile();
             } catch (IOException e) {
-
             }
-            System.out.println(1);
         } else {
-            System.out.println(2);
             currentUser = readUserFromFile(ApplicationConfig.cachedUserDTOfile);
         }
     }
@@ -99,11 +96,9 @@ public class MainActivity extends AppCompatActivity {
     public static UserDTO readUserFromFile(File file) {
         try (FileInputStream fileInputStream = new FileInputStream(file);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-            System.out.println(new String(Files.readAllBytes(file.toPath())));
             return (UserDTO) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
             return null;
-            //throw new RuntimeException();
         }
     }
 
