@@ -9,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +31,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.config.ApplicationConfig;
 import ru.hse.guidehelper.ui.bottomNavBar.profile.ProfileFragment;
 
 public class SignInFragment extends Fragment {
@@ -105,12 +109,15 @@ public class SignInFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // делаем addUser в базу данных
-
+                            MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("LoginActivity", "signInWithCredential:success");
                             // startActivity(new Intent(getActivity().getApplicationContext(), ProfileActivity.class));
-                            SignInFragment.this.getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.nav_host_fragment, new ProfileFragment()).commit();
+
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                            SignInFragment.this.requireActivity().onBackPressed();
+
+                            navController.navigate(R.id.navigation_profile);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LoginActivity", "signInWithCredential:failure", task.getException());

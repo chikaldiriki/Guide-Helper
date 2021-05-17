@@ -20,8 +20,10 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.chat.MessagesFragment;
+import ru.hse.guidehelper.config.ApplicationConfig;
 import ru.hse.guidehelper.dto.UserDTO;
 import ru.hse.guidehelper.ui.bottomNavBar.profile.ProfileFragment;
 
@@ -44,11 +46,6 @@ public class GuideInfoFragment extends Fragment {
     private EditText editLocation, editMobilePhone, editDescription;
     private Button saveСhangesButton;
     private AwesomeValidation awesomeValidation;
-    private static UserDTO userDTO;
-
-    public static void setUserDTO(UserDTO userDTO) {
-        GuideInfoFragment.userDTO = userDTO;
-    }
 
     public GuideInfoFragment() {
         // Required empty public constructor
@@ -90,8 +87,19 @@ public class GuideInfoFragment extends Fragment {
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
         editLocation = root.findViewById(R.id.editLocation);
+        if (!Objects.equals(MainActivity.currentUser.getCity(), null)) {
+            editLocation.setText(MainActivity.currentUser.getCity());
+        }
+
         editMobilePhone = root.findViewById(R.id.editMobilePhone);
+        if (!Objects.equals(MainActivity.currentUser.getPhoneNumber(), null)) {
+            editMobilePhone.setText(MainActivity.currentUser.getPhoneNumber());
+        }
+
         editDescription = root.findViewById(R.id.editDescription);
+        if (!Objects.equals(MainActivity.currentUser.getDescription(), null)) {
+            editDescription.setText(MainActivity.currentUser.getDescription());
+        }
 
         saveСhangesButton = root.findViewById(R.id.saveChangesButton);
         saveСhangesButton.setOnClickListener(new View.OnClickListener() {
@@ -100,12 +108,15 @@ public class GuideInfoFragment extends Fragment {
                 if (awesomeValidation.validate()) {
                     Toast.makeText(GuideInfoFragment.this.getActivity(), "Registration Successfull", Toast.LENGTH_LONG).show();
                     // обновить пользователя в БД
-                    UserDTO userDTO = GuideInfoFragment.userDTO
+                    MainActivity.currentUser
                             .setCity(editLocation.getText().toString())
                             .setPhoneNumber(editMobilePhone.getText().toString())
                             .setDescription(editDescription.getText().toString())
                             .setGuide(true);
-                    // updateUser(userDTO.getEmail,userDTO);
+
+                    MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
+
+                    // updateUser(MainActivity.currentUser.getEmail,MainActivity.currentUser);
                     GuideInfoFragment.this.requireActivity().onBackPressed();
                     GuideInfoFragment.this.requireActivity().onBackPressed();
                     GuideInfoFragment.this.getActivity().findViewById(R.id.buttonToChat).setVisibility(View.VISIBLE);
