@@ -43,4 +43,8 @@
         android:name="ru.hse.guidehelper.auth.GuideInfoFragment"
         android:label="fragment_guide_info"
         tools:layout="@layout/fragment_guide_info" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="ru.hse.guidehelper.auth.SignInFragment"
+        android:label="SignInFragment" />
 </navigation>
