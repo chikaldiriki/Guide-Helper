@@ -10,11 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -26,7 +22,6 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.springframework.boot.convert.DurationUnit;
 
 import ru.hse.guidehelper.R;
 
@@ -42,21 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * An activity representing a list of ExcursionsList. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link ExcursionsListDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
-
-public class ExcursionsListListActivity extends AppCompatActivity {
-
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
+public class ExcursionsListActivity extends AppCompatActivity {
 
     RequestQueue queueRequest;
 
@@ -91,10 +72,9 @@ public class ExcursionsListListActivity extends AppCompatActivity {
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        // private final String  url = "http://192.168.3.225:8080";
-        private final String  url = "http://192.168.0.137:8080";
+        private final String  url = "http://192.168.0.62:8080";
         private final RequestQueue queueRequest;
-        private final ExcursionsListListActivity mParentActivity;
+        private final ExcursionsListActivity mParentActivity;
         private final List<DummyItem> mValues;
         private final String suffTours = "/tours";
 
@@ -111,7 +91,7 @@ public class ExcursionsListListActivity extends AppCompatActivity {
             context.startActivity(intent);
         };
 
-        SimpleItemRecyclerViewAdapter(ExcursionsListListActivity parent,
+        SimpleItemRecyclerViewAdapter(ExcursionsListActivity parent,
                                       RequestQueue queueRequest) {
             mValues = new ArrayList<>();
             mParentActivity = parent;
