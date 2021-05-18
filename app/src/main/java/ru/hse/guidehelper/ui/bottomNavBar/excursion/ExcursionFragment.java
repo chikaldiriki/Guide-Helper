@@ -51,14 +51,13 @@ public class ExcursionFragment extends Fragment {
 //        Intent in = new Intent(getActivity(), ExcursionsListDetailActivity.class);
 //        startActivity(in);
 
-        if(this.getActivity() == null) {
+        if (this.getActivity() == null) {
             System.out.println(1);
         }
         System.out.println("!!!!!!");
 
         // ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         // setSupportActionBar(toolbar); ??
-
 
 
         FloatingActionButton fab = root.findViewById(R.id.fab);
@@ -84,7 +83,7 @@ public class ExcursionFragment extends Fragment {
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final String  url = "http://192.168.0.62:8080";
+        private final String url = "http://192.168.3.17:8080";
         private final RequestQueue queueRequest;
         private final ExcursionFragment mParentActivity;
         private final List<SimpleItemRecyclerViewAdapter.DummyItem> mValues;
@@ -112,7 +111,7 @@ public class ExcursionFragment extends Fragment {
             new SimpleItemRecyclerViewAdapter.AsyncRequestGetTours().execute("");
 
             synchronized (JSONArray.class) {
-                while(arrOfTours == null) {
+                while (arrOfTours == null) {
                     try {
                         JSONArray.class.wait();
                     } catch (InterruptedException e) {
@@ -120,7 +119,7 @@ public class ExcursionFragment extends Fragment {
                     }
                 }
 
-                for(int i = 1; i <= arrOfTours.length(); i++) {
+                for (int i = 1; i <= arrOfTours.length(); i++) {
                     SimpleItemRecyclerViewAdapter.DummyItem item = new SimpleItemRecyclerViewAdapter.DummyItem(String.valueOf(i));
                     mValues.add(item);
                     itemMap.put(item.id, item);
@@ -148,6 +147,7 @@ public class ExcursionFragment extends Fragment {
                 mValues.get(position).details = arrOfTours.getJSONObject(position).getString("description");
                 mValues.get(position).content = arrOfTours.getJSONObject(position).getString("title") + " - " +
                         arrOfTours.getJSONObject(position).getString("city");
+                mValues.get(position).guideMail = arrOfTours.getJSONObject(position).getString("guide");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -213,6 +213,7 @@ public class ExcursionFragment extends Fragment {
             public String id;
             public String content;
             public String details;
+            public String guideMail;
 
             public DummyItem(String id) {
                 this.id = id;

@@ -28,6 +28,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.Objects;
 
+import okhttp3.OkHttpClient;
 import ru.hse.guidehelper.auth.GuideInfoFragment;
 import ru.hse.guidehelper.config.ApplicationConfig;
 import ru.hse.guidehelper.dto.UserDTO;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button mButtonToChat;
     public static int currentFragmentId = R.id.nav_host_fragment;
-    private NavController navController;
+    public static NavController navController;
     private BottomNavigationView navView;
     public static UserDTO currentUser = null;
 

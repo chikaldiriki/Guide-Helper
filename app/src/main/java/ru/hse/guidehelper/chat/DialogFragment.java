@@ -160,7 +160,7 @@ public class DialogFragment extends Fragment
                 chosenFragment).commit();
 
         currentFragmentId = chosenFragment.getId();*/
-        BottomNavigationView navView = (BottomNavigationView) getActivity().findViewById(R.id.nav_view);
+        BottomNavigationView navView = getActivity().findViewById(R.id.nav_view);
         navView.setVisibility(BottomNavigationView.INVISIBLE);
 
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
