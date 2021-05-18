@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="700dp"
-    android:fitsSystemWindows="true"
+    android:layout_height="wrap_content"
     tools:context=".ui.bottomNavBar.excursion.ExcursionFragment">
 
 
@@ -26,8 +25,8 @@
 
     <include
         layout="@layout/excursionslist_list"
-        android:layout_width="380dp"
-        android:layout_height="651dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_anchor="@+id/frameLayout"
         app:layout_anchorGravity="center" />
 
