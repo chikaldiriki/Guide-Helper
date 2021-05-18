@@ -13,10 +13,6 @@
         <activity android:name=".chat.DialogsActivity" />
 
         <activity
-            android:name=".excursions.ExcursionsListActivity"
-            android:label="@string/title_excursionslist_list"
-            android:theme="@style/Theme.GuideHelper.NoActionBar"></activity>
-        <activity
             android:name=".excursions.ExcursionsListDetailActivity"
             android:label="@string/title_excursionslist_detail"
             android:parentActivityName=".excursions.ExcursionsListActivity"
