@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,7 +44,7 @@ public class ExcursionFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //View root = inflater.inflate(R.layout.fragment_excursion, container, false);
-        View root = inflater.inflate(R.layout.activity_excursionslist_list, container, false);
+        View root = inflater.inflate(R.layout.activity_excursionslist, container, false);
 
 //        Intent in = new Intent(getActivity(), ExcursionsListDetailActivity.class);
 //        startActivity(in);
