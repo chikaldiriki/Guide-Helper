@@ -69,7 +69,6 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
                         .setDescription((String) jsonObject.get("description"))
                         .setGuide((boolean) jsonObject.get("guide"));
             }
-
         });
 
 
