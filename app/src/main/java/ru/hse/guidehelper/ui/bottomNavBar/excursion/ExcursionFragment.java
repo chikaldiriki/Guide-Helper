@@ -2,7 +2,6 @@ package ru.hse.guidehelper.ui.bottomNavBar.excursion;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -26,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -84,7 +83,23 @@ public class ExcursionFragment extends Fragment {
             mValues = new ArrayList<>();
             mParentActivity = parent;
 
-            new SimpleItemRecyclerViewAdapter.AsyncRequestGetTours().execute("");
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(() -> {
+                Request request = new Request.Builder()
+                        .url(ClientUtils.url + ClientUtils.suffTours)
+                        .build();
+
+                try (Response response = ClientUtils.httpClient.newCall(request).execute()) {
+                    String res = response.body().string();
+
+                    arrOfTours = new JSONArray(res);
+                    synchronized (JSONArray.class) {
+                        JSONArray.class.notifyAll();
+                    }
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            });
 
             synchronized (JSONArray.class) {
                 while (arrOfTours == null) {
@@ -134,40 +149,6 @@ public class ExcursionFragment extends Fragment {
         @Override
         public int getItemCount() {
             return arrOfTours.length();
-        }
-
-        private class AsyncRequestGetTours extends AsyncTask<String, Integer, Integer> {
-
-            @Override
-            protected Integer doInBackground(String... arg) {
-                try {
-                    getTours(ClientUtils.httpClient);
-                    return 1;
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-                return 0;
-            }
-
-            @Override
-            protected void onPostExecute(Integer s) {
-                super.onPostExecute(s);
-            }
-        }
-
-        private void getTours(OkHttpClient client) throws IOException, JSONException {
-            Request request = new Request.Builder()
-                    .url(ClientUtils.url + ClientUtils.suffTours)
-                    .build();
-
-            try (Response response = client.newCall(request).execute()) {
-                String res = response.body().string();
-
-                arrOfTours = new JSONArray(res);
-                synchronized (JSONArray.class) {
-                    JSONArray.class.notifyAll();
-                }
-            }
         }
 
 
