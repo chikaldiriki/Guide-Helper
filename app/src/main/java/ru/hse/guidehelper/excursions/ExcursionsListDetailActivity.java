@@ -16,6 +16,7 @@ import androidx.appcompat.app.ActionBar;
 import android.view.MenuItem;
 
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
 
 public class ExcursionsListDetailActivity extends AppCompatActivity {
 
@@ -59,7 +60,7 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            navigateUpTo(new Intent(this, ExcursionsListActivity.class));
+            navigateUpTo(new Intent(this, ExcursionFragment.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

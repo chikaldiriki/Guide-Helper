@@ -13,12 +13,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
 
 public class ExcursionsListDetailFragment extends Fragment {
 
     public static final String ARG_ITEM_ID = "item_id";
 
-    private ExcursionsListActivity.SimpleItemRecyclerViewAdapter.DummyItem mItem;
+    private ExcursionFragment.SimpleItemRecyclerViewAdapter.DummyItem mItem;
 
     public ExcursionsListDetailFragment() {
     }
@@ -29,7 +30,7 @@ public class ExcursionsListDetailFragment extends Fragment {
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
 
-            mItem = ExcursionsListActivity.SimpleItemRecyclerViewAdapter.itemMap.get(getArguments().getString(ARG_ITEM_ID));
+            mItem = ExcursionFragment.SimpleItemRecyclerViewAdapter.itemMap.get(getArguments().getString(ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
