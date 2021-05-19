@@ -183,7 +183,7 @@ public class ExcursionFragment extends Fragment {
 
         private void getTours(OkHttpClient client) throws IOException, JSONException {
             Request request = new Request.Builder()
-                    .url(url + suffTours)
+                    .url(url + suffTours + "/all")
                     .build();
 
             try (Response response = client.newCall(request).execute()) {

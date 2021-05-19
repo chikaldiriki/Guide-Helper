@@ -1,7 +1,6 @@
 package ru.hse.guidehelper.model;
 
 import com.stfalcon.chatkit.commons.models.IDialog;
-import com.stfalcon.chatkit.commons.models.IMessage;
 
 import java.util.ArrayList;
 
@@ -10,32 +9,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import ru.hse.guidehelper.model.Message;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Accessors(chain = true)
-public class Chat implements IDialog {
+public class Chat implements IDialog<Message> {
 
     private String id; // id чата
     private String dialogName; // имя собеседника
     private String dialogPhoto; // фото собеседника
     private ArrayList<User> users; // собеседник
-    private IMessage lastMessage; // последнее сообщение
+    private Message lastMessage; // последнее сообщение
     private int unreadCount; // кол-во непрочитанных сообщений
-
-    public Chat(String id, String name, String photo,
-                ArrayList<User> users, Message lastMessage, int unreadCount) {
-
-        this.id = id;
-        this.dialogName = name;
-        this.dialogPhoto = photo;
-        this.users = users;
-        this.lastMessage = lastMessage;
-        this.unreadCount = unreadCount;
-    }
 
     @Override
     public String getId() {
@@ -58,13 +45,13 @@ public class Chat implements IDialog {
     }
 
     @Override
-    public IMessage getLastMessage() {
+    public Message getLastMessage() {
         return lastMessage;
     }
 
     @Override
-    public void setLastMessage(IMessage message) {
-        this.lastMessage = message;
+    public void setLastMessage(Message message) {
+
     }
 
     @Override

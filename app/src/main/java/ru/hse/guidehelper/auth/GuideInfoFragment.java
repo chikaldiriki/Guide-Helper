@@ -24,55 +24,17 @@ import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.config.ApplicationConfig;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link GuideInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class GuideInfoFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private EditText editLocation, editMobilePhone, editDescription;
-    private Button saveСhangesButton;
     private AwesomeValidation awesomeValidation;
 
     public GuideInfoFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GuideInfoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static GuideInfoFragment newInstance(String param1, String param2) {
-        GuideInfoFragment fragment = new GuideInfoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -98,28 +60,25 @@ public class GuideInfoFragment extends Fragment {
             editDescription.setText(MainActivity.currentUser.getDescription());
         }
 
-        saveСhangesButton = root.findViewById(R.id.saveChangesButton);
-        saveСhangesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (awesomeValidation.validate()) {
-                    Toast.makeText(GuideInfoFragment.this.getActivity(), "Сохранено", Toast.LENGTH_LONG).show();
-                    // обновить пользователя в БД
-                    MainActivity.currentUser
-                            .setCity(editLocation.getText().toString())
-                            .setPhoneNumber(editMobilePhone.getText().toString())
-                            .setDescription(editDescription.getText().toString())
-                            .setGuide(true);
+        Button saveChangesButton = root.findViewById(R.id.saveChangesButton);
+        saveChangesButton.setOnClickListener(view -> {
+            if (awesomeValidation.validate()) {
+                Toast.makeText(GuideInfoFragment.this.getActivity(), "Сохранено", Toast.LENGTH_LONG).show();
+                // обновить пользователя в БД
+                MainActivity.currentUser
+                        .setCity(editLocation.getText().toString())
+                        .setPhoneNumber(editMobilePhone.getText().toString())
+                        .setDescription(editDescription.getText().toString())
+                        .setGuide(true);
 
-                    MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
+                MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
 
-                    GuideInfoFragment.this.requireActivity().onBackPressed();
-                    GuideInfoFragment.this.requireActivity().onBackPressed();
-                    GuideInfoFragment.this.requireActivity().findViewById(R.id.buttonToChat).setVisibility(View.VISIBLE);
+                GuideInfoFragment.this.requireActivity().onBackPressed();
+                GuideInfoFragment.this.requireActivity().onBackPressed();
+                GuideInfoFragment.this.requireActivity().findViewById(R.id.buttonToChat).setVisibility(View.VISIBLE);
 
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-                    navController.navigate(R.id.navigation_profile);
-                }
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.navigation_profile);
             }
         });
 

@@ -26,11 +26,6 @@ import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
-    private CircleImageView profileImageView;
-    private TextView nameTextView, roleTextView;
-    private TextView emailTextView, locationTextView, mobileNumberTextView, descriptionTextView;
-    private Button becomeGuideButton;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -39,7 +34,7 @@ public class ProfileFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         if (Objects.equals(MainActivity.currentUser, null)) {
-            MainActivity.currentUser = new User() // TODO only for test
+            MainActivity.currentUser = new User()
                     .setUserMail(currentUser.getEmail())
                     .setGuide(false)
                     .setName(currentUser.getDisplayName())
@@ -47,15 +42,15 @@ public class ProfileFragment extends Fragment {
         }
 
         String personImage = MainActivity.currentUser.getPhotoUrl();
-        profileImageView = root.findViewById(R.id.profile_image);
+        CircleImageView profileImageView = root.findViewById(R.id.profile_image);
         Glide.with(root.getContext()).load(personImage).into(profileImageView);
 
-        nameTextView = root.findViewById(R.id.name);
-        roleTextView = root.findViewById(R.id.role);
+        TextView nameTextView = root.findViewById(R.id.name);
+        TextView roleTextView = root.findViewById(R.id.role);
         nameTextView.setText(currentUser.getDisplayName());
         roleTextView.setText(MainActivity.currentUser.isGuide() ? "Guide" : "Tripper");
 
-        becomeGuideButton = root.findViewById(R.id.becomeGuideButton);
+        Button becomeGuideButton = root.findViewById(R.id.becomeGuideButton);
         becomeGuideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,10 +66,10 @@ public class ProfileFragment extends Fragment {
         }
 
         becomeGuideButton.setText("Редактировать профиль");
-        emailTextView = root.findViewById(R.id.email);
-        locationTextView = root.findViewById(R.id.location);
-        mobileNumberTextView = root.findViewById(R.id.mobileNumber);
-        descriptionTextView = root.findViewById(R.id.description);
+        TextView emailTextView = root.findViewById(R.id.email);
+        TextView locationTextView = root.findViewById(R.id.location);
+        TextView mobileNumberTextView = root.findViewById(R.id.mobileNumber);
+        TextView descriptionTextView = root.findViewById(R.id.description);
 
         emailTextView.setText(currentUser.getEmail());
         locationTextView.setText(MainActivity.currentUser.getCity());
