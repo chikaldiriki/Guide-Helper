@@ -1,4 +1,6 @@
-package ru.hse.guidehelper.dto;
+package ru.hse.guidehelper.model;
+
+import com.stfalcon.chatkit.commons.models.IUser;
 
 import java.io.Serializable;
 
@@ -9,7 +11,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class UserDTO implements Serializable {
+public class User implements IUser, Serializable {
     private String userMail;
 
     private boolean isGuide;
@@ -23,4 +25,14 @@ public class UserDTO implements Serializable {
     private String description; // для гидов
 
     private String photoUrl;
+
+    @Override
+    public String getId() {
+        return userMail;
+    }
+
+    @Override
+    public String getAvatar() {
+        return photoUrl;
+    }
 }

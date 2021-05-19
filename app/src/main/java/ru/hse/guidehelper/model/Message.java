@@ -1,4 +1,4 @@
-package ru.hse.guidehelper.chat;
+package ru.hse.guidehelper.model;
 
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.IUser;

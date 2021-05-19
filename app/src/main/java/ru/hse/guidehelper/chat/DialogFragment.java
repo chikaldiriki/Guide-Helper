@@ -1,26 +1,19 @@
 package ru.hse.guidehelper.chat;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
@@ -31,8 +24,7 @@ import java.util.List;
 
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.dto.ChatDTO;
-
-import static ru.hse.guidehelper.MainActivity.currentFragmentId;
+import ru.hse.guidehelper.model.Chat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -103,7 +95,7 @@ public class DialogFragment extends Fragment
 
         adapter = new DialogsListAdapter<>(imageLoader);
 
-        adapter.addItem(new Chat("1", "FirstUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
+       /* adapter.addItem(new Chat("1", "FirstUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
                 new ArrayList<>(Collections.singletonList(new User("1", "aziz", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
                 null, 0));
         adapter.addItem(new Chat("2", "SecondUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
@@ -116,7 +108,7 @@ public class DialogFragment extends Fragment
 
         adapter.addItem(new Chat("5", "TestUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
                 new ArrayList<>(Collections.singletonList(new User("322", "TestUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
-                null, 0));
+                null, 0));*/
 
         addAllChatsInAdapter();
 

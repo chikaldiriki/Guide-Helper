@@ -24,7 +24,6 @@ import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.config.ApplicationConfig;
-import ru.hse.guidehelper.dto.UserDTO;
 import ru.hse.guidehelper.ui.bottomNavBar.profile.ProfileFragment;
 
 /**

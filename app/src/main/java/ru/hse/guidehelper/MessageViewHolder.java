@@ -1,30 +1,17 @@
 package ru.hse.guidehelper;
 
-import android.app.Activity;
-import android.net.Uri;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.flexbox.FlexboxLayout;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.util.Objects;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-import ru.hse.guidehelper.chat.Message;
+import ru.hse.guidehelper.model.Message;
 
 public class MessageViewHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "MessageViewHolder";

@@ -24,7 +24,7 @@ import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.auth.GuideInfoFragment;
 import ru.hse.guidehelper.auth.SignInFragment;
-import ru.hse.guidehelper.dto.UserDTO;
+import ru.hse.guidehelper.model.User;
 
 import java.util.Objects;
 
@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment {
             sleep(1sec);
         } */
         if (Objects.equals(MainActivity.currentUser, null)) {
-            MainActivity.currentUser = new UserDTO() // TODO only for test
+            MainActivity.currentUser = new User() // TODO only for test
                     .setUserMail(currentUser.getEmail())
                     .setGuide(false)
                     .setName("Me")
