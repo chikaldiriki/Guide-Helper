@@ -22,9 +22,7 @@ import java.util.regex.Pattern;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.config.ApplicationConfig;
-import ru.hse.guidehelper.ui.bottomNavBar.profile.ProfileFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +79,7 @@ public class GuideInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_guide_info, container, false);
-        this.getActivity().findViewById(R.id.buttonToChat).setVisibility(View.INVISIBLE);
+        this.requireActivity().findViewById(R.id.buttonToChat).setVisibility(View.INVISIBLE);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
@@ -105,7 +103,7 @@ public class GuideInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (awesomeValidation.validate()) {
-                    Toast.makeText(GuideInfoFragment.this.getActivity(), "Registration Successfull", Toast.LENGTH_LONG).show();
+                    Toast.makeText(GuideInfoFragment.this.getActivity(), "Сохранено", Toast.LENGTH_LONG).show();
                     // обновить пользователя в БД
                     MainActivity.currentUser
                             .setCity(editLocation.getText().toString())
@@ -115,10 +113,9 @@ public class GuideInfoFragment extends Fragment {
 
                     MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
 
-                    // updateUser(MainActivity.currentUser.getEmail,MainActivity.currentUser);
                     GuideInfoFragment.this.requireActivity().onBackPressed();
                     GuideInfoFragment.this.requireActivity().onBackPressed();
-                    GuideInfoFragment.this.getActivity().findViewById(R.id.buttonToChat).setVisibility(View.VISIBLE);
+                    GuideInfoFragment.this.requireActivity().findViewById(R.id.buttonToChat).setVisibility(View.VISIBLE);
 
                     NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                     navController.navigate(R.id.navigation_profile);
@@ -126,9 +123,9 @@ public class GuideInfoFragment extends Fragment {
             }
         });
 
-        awesomeValidation.addValidation(editLocation, Pattern.compile("^((\\s*)[^\\s]+(\\s*))+$"), "Локация не должна быть пустой!");
+        awesomeValidation.addValidation(editLocation, Pattern.compile(getString(R.string.NonEmptyStringRegexp)), "Локация не должна быть пустой!");
         awesomeValidation.addValidation(editMobilePhone, Patterns.PHONE, "Введите корректный номер!");
-        awesomeValidation.addValidation(editDescription, Pattern.compile("^((\\s*)[^\\s]+(\\s*))+$"), "Описание не должно быть пустым!");
+        awesomeValidation.addValidation(editDescription, Pattern.compile(getString(R.string.NonEmptyStringRegexp)), "Описание не должно быть пустым!");
 
         return root;
     }

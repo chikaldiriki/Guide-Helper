@@ -14,29 +14,22 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import lombok.SneakyThrows;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.auth.GuideInfoFragment;
-import ru.hse.guidehelper.auth.SignInFragment;
 import ru.hse.guidehelper.model.User;
 
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
-    // PROFILE
     private CircleImageView profileImageView;
     private TextView nameTextView, roleTextView;
     private TextView emailTextView, locationTextView, mobileNumberTextView, descriptionTextView;
     private Button becomeGuideButton;
-
-    // СТАЛО
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,16 +38,11 @@ public class ProfileFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        //UserDTO userDTO = null;
-        /* while (!userDTO) {
-            UserDTO = server.getUser(currentUser.getEmail());
-            sleep(1sec);
-        } */
         if (Objects.equals(MainActivity.currentUser, null)) {
             MainActivity.currentUser = new User() // TODO only for test
                     .setUserMail(currentUser.getEmail())
                     .setGuide(false)
-                    .setName("Me")
+                    .setName(currentUser.getDisplayName())
                     .setPhotoUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
         }
 
@@ -71,7 +59,7 @@ public class ProfileFragment extends Fragment {
         becomeGuideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.guideInfoFragment);
             }
         });

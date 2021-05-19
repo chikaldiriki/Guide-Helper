@@ -29,6 +29,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import ru.hse.guidehelper.MessageViewHolder;
 import ru.hse.guidehelper.R;
@@ -102,13 +104,12 @@ public class MessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // подгружать мессаги не из Firebase, а из своей БД
         mBinding = FragmentMessagesBinding.inflate(inflater, container, false);
         view = mBinding.getRoot();
 
         CircleImageView companionAvatar = view.findViewById(R.id.companionAvatar);
         TextView companionName = view.findViewById(R.id.companionName);
-        Glide.with(MessagesFragment.this.getContext()).load(chat.getDialogPhoto()).into(companionAvatar);
+        Glide.with(MessagesFragment.this.requireContext()).load(chat.getDialogPhoto()).into(companionAvatar);
         companionName.setText(chat.getUsers().get(0).getName());
 
         mDatabase = FirebaseDatabase.getInstance();
@@ -129,7 +130,7 @@ public class MessagesFragment extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(MessageViewHolder viewHolder, int position, Message message) {
+            protected void onBindViewHolder(MessageViewHolder viewHolder, int position, @NotNull Message message) {
                 viewHolder.bindMessage(message);
             }
         };
@@ -143,7 +144,7 @@ public class MessagesFragment extends Fragment {
         mBinding.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Message message = new Message(mBinding.messageEditText.getText().toString(), getUserName(), getUserPhotoUrl());
+                Message message = new Message(mBinding.messageEditText.getText().toString(), getUserMail(), getUserPhotoUrl());
                 mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push().setValue(message);
                 chat.setLastMessage(message);
                 // отправить мессагу в БД
@@ -189,7 +190,7 @@ public class MessagesFragment extends Fragment {
                 final Uri uri = data.getData();
                 Log.d(TAG, "Uri: " + uri.toString());
                 final FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                Message tempMessage = new Message(null, getUserName(), getUserPhotoUrl());
+                Message tempMessage = new Message(null, getUserMail(), getUserPhotoUrl());
                 mDatabase.getReference().child(MESSAGES_CHILD).push()
                         .setValue(tempMessage, new DatabaseReference.CompletionListener() {
                             @Override
@@ -217,7 +218,7 @@ public class MessagesFragment extends Fragment {
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        Message message = new Message(null, getUserName(), getUserPhotoUrl());
+                                        Message message = new Message(null, getUserMail(), getUserPhotoUrl());
                                         mDatabase.getReference().child(MESSAGES_CHILD).child(key).setValue(message);
                                     }
                                 });
@@ -236,7 +237,7 @@ public class MessagesFragment extends Fragment {
         return null;
     }
 
-    private String getUserName() {
+    private String getUserMail() {
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         if (user != null) {
             return user.getEmail();

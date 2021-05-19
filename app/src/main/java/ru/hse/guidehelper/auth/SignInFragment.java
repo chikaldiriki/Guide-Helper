@@ -1,8 +1,5 @@
 package ru.hse.guidehelper.auth;
 
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -28,13 +25,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.config.ApplicationConfig;
-import ru.hse.guidehelper.ui.bottomNavBar.profile.ProfileFragment;
 
 public class SignInFragment extends Fragment {
 
@@ -112,7 +107,6 @@ public class SignInFragment extends Fragment {
                             MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("LoginActivity", "signInWithCredential:success");
-                            // startActivity(new Intent(getActivity().getApplicationContext(), ProfileActivity.class));
 
                             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                             SignInFragment.this.requireActivity().onBackPressed();
