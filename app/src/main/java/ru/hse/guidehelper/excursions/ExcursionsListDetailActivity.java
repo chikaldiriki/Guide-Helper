@@ -79,7 +79,7 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
 
     private String getChatId(OkHttpClient client, String firstUserMail, String secondUserMail) throws IOException, ExecutionException, InterruptedException {
         Request request = new Request.Builder()
-                .url(ClientUtils.url + ClientUtils.suffMessages + ClientUtils.suffChat + "/"
+                .url(ClientUtils.url + ClientUtils.suffChat + "/"
                         + firstUserMail + "/" + secondUserMail)
                 .build();
 
