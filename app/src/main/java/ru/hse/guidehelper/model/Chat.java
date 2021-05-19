@@ -51,7 +51,7 @@ public class Chat implements IDialog<Message> {
 
     @Override
     public void setLastMessage(Message message) {
-
+        this.lastMessage = message;
     }
 
     @Override
