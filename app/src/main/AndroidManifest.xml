@@ -13,7 +13,7 @@
         <activity android:name=".chat.DialogsActivity" />
 
         <activity
-            android:name=".excursions.ExcursionsListDetailActivity"
+            android:name=".excursions.ExcursionsListDetailFragment"
             android:label="@string/title_excursionslist_detail"
             android:parentActivityName=".excursions.ExcursionsListActivity"
             android:theme="@style/Theme.GuideHelper.NoActionBar">

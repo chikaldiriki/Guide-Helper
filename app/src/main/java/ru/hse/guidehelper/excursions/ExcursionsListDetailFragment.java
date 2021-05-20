@@ -9,8 +9,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -52,8 +55,7 @@ import ru.hse.guidehelper.dto.UserDTO;
 import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
 import  ru.hse.guidehelper.utils.ClientUtils;
 
-public class ExcursionsListDetailActivity extends AppCompatActivity {
-
+public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
     private ExcursionFragment.SimpleItemRecyclerViewAdapter.DummyItem mItem;
 
@@ -105,14 +107,20 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
         return task.get();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_excursionslist_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
 
-        ActionBar actionBar = getSupportActionBar();
+        super.onCreate(savedInstanceState);
+
+        View root = inflater.inflate(R.layout.activity_excursionslist_detail, container, false);
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.detail_toolbar);
+        //setSupportActionBar(toolbar);
+
+        AppCompatActivity activity = (AppCompatActivity) this.getActivity();
+        assert activity != null;
+        activity.setSupportActionBar(toolbar);
+
+        ActionBar actionBar = activity.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -123,13 +131,12 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
 
             Bundle arguments = new Bundle();
             arguments.putString(ARG_ITEM_ID,
-                    getIntent().getStringExtra(ARG_ITEM_ID));
+                    MainActivity.currentTourId);
 
             ExcursionFragment.SimpleItemRecyclerViewAdapter.DummyItem curItem =
                     ExcursionFragment.SimpleItemRecyclerViewAdapter.itemMap
-                            .get(getIntent().getStringExtra(ARG_ITEM_ID));
-
-            FloatingActionButton fab = findViewById(R.id.fab);
+                            .get(MainActivity.currentTourId);
+            FloatingActionButton fab = root.findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
                 @SneakyThrows
                 @Override
@@ -150,9 +157,11 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
 
                     MessagesFragment.setChat(chat);
 
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.excursionslist_detail_container, new MessagesFragment())
-                            .commit();
+//                    activity.getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.excursionslist_detail_container, new MessagesFragment())
+//                            .commit();
+
+                    MainActivity.navController.navigate(R.id.messagesFragment2);
                 }
             });
 
@@ -160,40 +169,35 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
 
                 mItem = ExcursionFragment.SimpleItemRecyclerViewAdapter.itemMap.get(arguments.getString(ARG_ITEM_ID));
 
-                Activity activity = this;
-                CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+                CollapsingToolbarLayout appBarLayout = root.findViewById(R.id.toolbar_layout);
                 if (appBarLayout != null) {
                     appBarLayout.setTitle(mItem.content);
                 }
             }
 
-//            ExcursionsListDetailFragment fragment = new ExcursionsListDetailFragment();
-//            fragment.setArguments(arguments);
-//            View rootView = inflater.inflate(R.layout.excursionslist_detail, container, false);
-
-//            findViewById(R.layout.excursionslist_detail);
-//            if(rootView == null) {
-//                throw new UnsupportedOperationException();
-//            }
             if (mItem != null) {
-                ((TextView) findViewById(R.id.excursionslist_detail_container)).setText(mItem.details);
+                ((TextView) root.findViewById(R.id.excursionslist_detail_container)).setText(mItem.details);
             }
-
-
-
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.excursionslist_detail_container, new Fragment())
-//                    .commit();
         }
+
+
+        return root;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            navigateUpTo(new Intent(this, ExcursionFragment.class));
+            ExcursionsListDetailFragment.this.requireActivity().onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

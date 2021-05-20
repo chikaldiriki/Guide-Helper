@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static NavController navController;
     private BottomNavigationView navView;
     public static UserDTO currentUser = null;
+    public static String currentTourId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

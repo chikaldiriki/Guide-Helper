@@ -98,17 +98,20 @@ public class MessagesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        System.out.println("== 101 ==");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         mFirebaseAuth = FirebaseAuth.getInstance();
+        System.out.println("== 102 ==");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("== 103 ==");
         // подгружать мессаги не из Firebase, а из своей БД
         mBinding = FragmentMessagesBinding.inflate(inflater, container, false);
         view = mBinding.getRoot();
@@ -167,23 +170,28 @@ public class MessagesFragment extends Fragment {
         mBackButton = view.findViewById(R.id.backButton);
         mBackButton.setOnClickListener(view -> MessagesFragment.this.requireActivity().onBackPressed());
 
+        System.out.println("== 104 ==");
+
         return view;
     }
 
     @Override
     public void onPause() {
+        System.out.println("1");
         mFirebaseAdapter.stopListening();
         super.onPause();
     }
 
     @Override
     public void onResume() {
+        System.out.println("2");
         super.onResume();
         mFirebaseAdapter.startListening();
     }
 
     @Override
     public void onDestroy() {
+        System.out.println("3");
         super.onDestroy();
     }
 
@@ -236,6 +244,7 @@ public class MessagesFragment extends Fragment {
 
     @Nullable
     private String getUserPhotoUrl() {
+        System.out.println("4");
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         if (user != null && user.getPhotoUrl() != null) {
             return user.getPhotoUrl().toString();
@@ -244,6 +253,7 @@ public class MessagesFragment extends Fragment {
     }
 
     private String getUserName() {
+        System.out.println("5");
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         if (user != null) {
             return user.getEmail();
