@@ -3,12 +3,11 @@ package ru.hse.guidehelper.chat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 public class MyButtonObserver implements TextWatcher {
 
-    private ImageButton mImageButton;
+    private final ImageButton mImageButton;
 
     public MyButtonObserver(ImageButton imageButton) {
         this.mImageButton = imageButton;

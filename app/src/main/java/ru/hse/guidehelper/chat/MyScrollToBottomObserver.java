@@ -4,9 +4,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MyScrollToBottomObserver extends RecyclerView.AdapterDataObserver {
-    private RecyclerView mRecycler;
-    private RecyclerView.Adapter<?> mAdapter;
-    private LinearLayoutManager mManager;
+    private final RecyclerView mRecycler;
+    private final RecyclerView.Adapter<?> mAdapter;
+    private final LinearLayoutManager mManager;
 
     public MyScrollToBottomObserver(RecyclerView recycler, RecyclerView.Adapter<?> adapter, LinearLayoutManager manager) {
         this.mRecycler = recycler;

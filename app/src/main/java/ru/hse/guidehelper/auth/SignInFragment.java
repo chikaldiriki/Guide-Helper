@@ -1,8 +1,5 @@
 package ru.hse.guidehelper.auth;
 
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,29 +20,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.config.ApplicationConfig;
-import ru.hse.guidehelper.ui.bottomNavBar.profile.ProfileFragment;
 
 public class SignInFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient googleSignInClient;
-    private ImageButton login;
     int RC_SIGN_IN = 120;
-
-    public static SignInFragment newInstance() {
-        return new SignInFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -60,7 +48,7 @@ public class SignInFragment extends Fragment {
 
         googleSignInClient = GoogleSignIn.getClient(root.getContext(), gso);
 
-        login = root.findViewById(R.id.signInGoogle);
+        ImageButton login = root.findViewById(R.id.signInGoogle);
         login.setOnClickListener(view -> signIn());
 
         return root;
@@ -89,14 +77,16 @@ public class SignInFragment extends Fragment {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     GoogleSignInAccount account = task.getResult(ApiException.class);
-                    Log.d("LoginActivity", "firebaseAuthWithGoogle:" + account.getId());
-                    firebaseAuthWithGoogle(account.getIdToken());
+                    if (account != null) {
+                        Log.d("LoginActivity", "firebaseAuthWithGoogle:" + account.getId());
+                        firebaseAuthWithGoogle(account.getIdToken());
+                    }
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
                     Log.w("LoginActivity", "Google sign in failed", e);
                 }
             } else {
-                Log.w("LoginActivity", exception.toString());
+                Log.w("LoginActivity", exception);
             }
         }
     }
@@ -104,24 +94,20 @@ public class SignInFragment extends Fragment {
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // делаем addUser в базу данных
-                            MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("LoginActivity", "signInWithCredential:success");
-                            // startActivity(new Intent(getActivity().getApplicationContext(), ProfileActivity.class));
+                .addOnCompleteListener(requireActivity(), task -> {
+                    if (task.isSuccessful()) {
+                        // делаем addUser в базу данных
+                        MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("LoginActivity", "signInWithCredential:success");
 
-                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-                            SignInFragment.this.requireActivity().onBackPressed();
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                        SignInFragment.this.requireActivity().onBackPressed();
 
-                            navController.navigate(R.id.navigation_profile);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("LoginActivity", "signInWithCredential:failure", task.getException());
-                        }
+                        navController.navigate(R.id.navigation_profile);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("LoginActivity", "signInWithCredential:failure", task.getException());
                     }
                 });
     }

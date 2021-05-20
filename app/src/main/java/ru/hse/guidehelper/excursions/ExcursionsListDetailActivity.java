@@ -3,9 +3,7 @@ package ru.hse.guidehelper.excursions;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -13,26 +11,19 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.view.MenuItem;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
@@ -40,28 +31,26 @@ import okhttp3.Request;
 import okhttp3.Response;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.chat.Chat;
-import ru.hse.guidehelper.chat.Message;
+import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
-import ru.hse.guidehelper.chat.User;
-import ru.hse.guidehelper.dto.UserDTO;
+import ru.hse.guidehelper.model.User;
 import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
 
 public class ExcursionsListDetailActivity extends AppCompatActivity {
-    private UserDTO getUser(OkHttpClient client, String userMail) throws IOException, JSONException, ExecutionException, InterruptedException {
+    private User getUser(OkHttpClient client, String userMail) throws IOException, JSONException, ExecutionException, InterruptedException {
         Request request = new Request.Builder()
                 .url("http://192.168.3.17:8080/users/" + userMail)
                 .build();
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future<UserDTO> task = executorService.submit(() -> {
+        Future<User> task = executorService.submit(() -> {
             try (Response response = client.newCall(request).execute()) {
                 String res = response.body().string();
                 System.out.println(res);
 
                 JSONObject jsonObject = new JSONObject(res);
 
-                return new UserDTO()
+                return new User()
                         .setUserMail(userMail)
                         .setName(jsonObject.get("firstName") + (String) jsonObject.get("lastName"))
                         .setPhoneNumber((String) jsonObject.get("phoneNumber"))
@@ -69,14 +58,13 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
                         .setDescription((String) jsonObject.get("description"))
                         .setGuide((boolean) jsonObject.get("guide"));
             }
-
         });
 
 
         return task.get();
     }
 
-    private String getChatId(OkHttpClient client, String firstUserMail, String secondUserMail) throws IOException, ExecutionException, InterruptedException {
+    private String getChatId(OkHttpClient client, String firstUserMail, String secondUserMail) throws ExecutionException, InterruptedException {
         Request request = new Request.Builder()
                 .url("http://192.168.3.17:8080/messages/chat/" + firstUserMail + "/" + secondUserMail)
                 .build();
@@ -131,11 +119,11 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
 
                     OkHttpClient client = new OkHttpClient();
                     String chatId = getChatId(client, guideMail, userMail);
-                    UserDTO guide = getUser(client, guideMail);
+                    User guide = getUser(client, guideMail);
                     Chat chat = new Chat(chatId,
                             guideMail,
                             guide.getPhotoUrl(),
-                            new ArrayList<>(Collections.singletonList(new User(guide.getUserMail(), guide.getName(), guide.getPhotoUrl()))),
+                            new ArrayList<>(Collections.singletonList(guide)),
                             null,
                             0);
 

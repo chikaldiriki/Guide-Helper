@@ -1,15 +1,13 @@
-package ru.hse.guidehelper.chat;
+package ru.hse.guidehelper.model;
 
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.IUser;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.io.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
