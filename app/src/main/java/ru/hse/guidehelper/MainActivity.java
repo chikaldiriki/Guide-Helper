@@ -28,8 +28,6 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.Objects;
 
-import okhttp3.OkHttpClient;
-import ru.hse.guidehelper.auth.GuideInfoFragment;
 import ru.hse.guidehelper.config.ApplicationConfig;
 import ru.hse.guidehelper.dto.UserDTO;
 
