@@ -35,15 +35,21 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <TextView
-        android:id="@+id/excursionslist_detail_container"
-        style="?android:attr/textAppearanceLarge"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:textIsSelectable="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <TextView
+            android:id="@+id/excursionslist_detail_container"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:textIsSelectable="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </androidx.core.widget.NestedScrollView>
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
