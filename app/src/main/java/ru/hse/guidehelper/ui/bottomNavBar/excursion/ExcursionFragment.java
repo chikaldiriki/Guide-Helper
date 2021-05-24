@@ -1,6 +1,5 @@
 package ru.hse.guidehelper.ui.bottomNavBar.excursion;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.excursions.ExcursionsListDetailFragment;
 import ru.hse.guidehelper.utils.ClientUtils;
 
 
