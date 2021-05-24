@@ -27,6 +27,7 @@ import ru.hse.guidehelper.model.User;
 public class MainActivity extends AppCompatActivity {
     public static NavController navController;
     public static User currentUser = null;
+    public static String currentTourId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

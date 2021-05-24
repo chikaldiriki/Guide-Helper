@@ -10,19 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GuideHelper"
         android:usesCleartextTraffic="true">
-        <activity android:name=".chat.DialogsActivity" />
-
-        <activity
-            android:name=".excursions.ExcursionsListDetailActivity"
-            android:label="@string/title_excursionslist_detail"
-            android:parentActivityName=".excursions.ExcursionsListActivity"
-            android:theme="@style/Theme.GuideHelper.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.hse.guidehelper.excursions.ExcursionsListActivity" />
-        </activity>
-        <activity android:name=".auth.ProfileActivity" />
-        <activity android:name=".auth.SignInActivity" />
       
         <activity android:name=".MainActivity">
             <intent-filter>
