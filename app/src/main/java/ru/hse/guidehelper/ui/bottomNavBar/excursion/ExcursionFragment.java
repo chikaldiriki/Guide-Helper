@@ -1,7 +1,6 @@
 package ru.hse.guidehelper.ui.bottomNavBar.excursion;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +27,9 @@ import java.util.concurrent.Executors;
 
 import okhttp3.Request;
 import okhttp3.Response;
+import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.excursions.ExcursionsListDetailActivity;
+import ru.hse.guidehelper.excursions.ExcursionsListDetailFragment;
 import ru.hse.guidehelper.utils.ClientUtils;
 
 
@@ -71,11 +71,8 @@ public class ExcursionFragment extends Fragment {
         private final View.OnClickListener mOnClickListener = view -> {
             SimpleItemRecyclerViewAdapter.DummyItem item = (SimpleItemRecyclerViewAdapter.DummyItem) view.getTag();
 
-            Context context = view.getContext();
-            Intent intent = new Intent(context, ExcursionsListDetailActivity.class);
-            intent.putExtra(ExcursionsListDetailActivity.ARG_ITEM_ID, item.id);
-
-            context.startActivity(intent);
+            MainActivity.currentTourId = item.id;
+            MainActivity.navController.navigate(R.id.excursionsListDetailActivity);
         };
 
         SimpleItemRecyclerViewAdapter(ExcursionFragment parent) {

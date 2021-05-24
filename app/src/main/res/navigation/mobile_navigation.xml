@@ -47,9 +47,9 @@
         android:id="@+id/signInFragment"
         android:name="ru.hse.guidehelper.auth.SignInFragment"
         android:label="SignInFragment" />
-    <activity
+    <fragment
         android:id="@+id/excursionsListDetailActivity"
-        android:name="ru.hse.guidehelper.excursions.ExcursionsListDetailActivity"
+        android:name="ru.hse.guidehelper.excursions.ExcursionsListDetailFragment"
         android:label="activity_excursionslist_detail"
         tools:layout="@layout/activity_excursionslist_detail" />
 </navigation>
