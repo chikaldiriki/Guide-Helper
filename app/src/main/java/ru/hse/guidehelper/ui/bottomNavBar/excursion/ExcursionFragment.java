@@ -33,29 +33,17 @@ import okhttp3.Response;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.excursions.ExcursionsListDetailActivity;
 import ru.hse.guidehelper.excursions.ExcursionsListDetailFragment;
+import ru.hse.guidehelper.utils.ClientUtils;
+
 
 public class ExcursionFragment extends Fragment {
-
-    RequestQueue queueRequest;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        //View root = inflater.inflate(R.layout.fragment_excursion, container, false);
         View root = inflater.inflate(R.layout.activity_excursionslist, container, false);
-
-//        Intent in = new Intent(getActivity(), ExcursionsListDetailActivity.class);
-//        startActivity(in);
-
-        if (this.getActivity() == null) {
-            System.out.println(1);
-        }
-        System.out.println("!!!!!!");
-
-        // ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        // setSupportActionBar(toolbar); ??
 
 
         FloatingActionButton fab = root.findViewById(R.id.fab);
@@ -65,27 +53,20 @@ public class ExcursionFragment extends Fragment {
         View recyclerView = root.findViewById(R.id.excursionslist_list);
         assert recyclerView != null;
 
-        queueRequest = Volley.newRequestQueue(root.getContext());
-
-        queueRequest.start();
-
         setupRecyclerView((RecyclerView) recyclerView);
 
         return root;
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, queueRequest));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this));
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final String url = "http://192.168.3.17:8080";
-        private final RequestQueue queueRequest;
         private final ExcursionFragment mParentActivity;
         private final List<SimpleItemRecyclerViewAdapter.DummyItem> mValues;
-        private final String suffTours = "/tours";
 
         private JSONArray arrOfTours = null;
         public static Map<String, SimpleItemRecyclerViewAdapter.DummyItem> itemMap = new HashMap<>();
@@ -100,11 +81,9 @@ public class ExcursionFragment extends Fragment {
             context.startActivity(intent);
         };
 
-        SimpleItemRecyclerViewAdapter(ExcursionFragment parent,
-                                      RequestQueue queueRequest) {
+        SimpleItemRecyclerViewAdapter(ExcursionFragment parent) {
             mValues = new ArrayList<>();
             mParentActivity = parent;
-            this.queueRequest = queueRequest;
 
             new SimpleItemRecyclerViewAdapter.AsyncRequestGetTours().execute("");
 
@@ -160,12 +139,10 @@ public class ExcursionFragment extends Fragment {
 
         private class AsyncRequestGetTours extends AsyncTask<String, Integer, Integer> {
 
-            private OkHttpClient client = new OkHttpClient();
-
             @Override
             protected Integer doInBackground(String... arg) {
                 try {
-                    getTours(client);
+                    getTours(ClientUtils.httpClient);
                     return 1;
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -181,7 +158,7 @@ public class ExcursionFragment extends Fragment {
 
         private void getTours(OkHttpClient client) throws IOException, JSONException {
             Request request = new Request.Builder()
-                    .url(url + suffTours + "/all")
+                    .url(ClientUtils.url + ClientUtils.suffTours)
                     .build();
 
             try (Response response = client.newCall(request).execute()) {

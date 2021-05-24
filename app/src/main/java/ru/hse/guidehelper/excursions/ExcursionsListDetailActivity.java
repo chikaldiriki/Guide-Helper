@@ -35,11 +35,12 @@ import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.model.User;
 import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
+import ru.hse.guidehelper.utils.ClientUtils;
 
 public class ExcursionsListDetailActivity extends AppCompatActivity {
     private User getUser(OkHttpClient client, String userMail) throws IOException, JSONException, ExecutionException, InterruptedException {
         Request request = new Request.Builder()
-                .url("http://192.168.3.17:8080/users/" + userMail)
+                .url(ClientUtils.url + ClientUtils.suffUsers + "/" + userMail)
                 .build();
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -66,7 +67,8 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
 
     private String getChatId(OkHttpClient client, String firstUserMail, String secondUserMail) throws ExecutionException, InterruptedException {
         Request request = new Request.Builder()
-                .url("http://192.168.3.17:8080/messages/chat/" + firstUserMail + "/" + secondUserMail)
+                .url(ClientUtils.url + ClientUtils.suffMessages + ClientUtils.suffChat + "/"
+                        + firstUserMail + "/" + secondUserMail)
                 .build();
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -117,9 +119,8 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
                     System.out.println(guideMail);
                     System.out.println(userMail);
 
-                    OkHttpClient client = new OkHttpClient();
-                    String chatId = getChatId(client, guideMail, userMail);
-                    User guide = getUser(client, guideMail);
+                    String chatId = getChatId(ClientUtils.httpClient, guideMail, userMail);
+                    User guide =  getUser(ClientUtils.httpClient, guideMail);
                     Chat chat = new Chat(chatId,
                             guideMail,
                             guide.getPhotoUrl(),
