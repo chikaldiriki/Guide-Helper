@@ -1,8 +1,10 @@
 package ru.hse.guidehelper.excursions;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.widget.Toolbar;
@@ -11,8 +13,12 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +44,10 @@ import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
 import ru.hse.guidehelper.utils.ClientUtils;
 
 public class ExcursionsListDetailActivity extends AppCompatActivity {
+
+    public static final String ARG_ITEM_ID = "item_id";
+    private ExcursionFragment.SimpleItemRecyclerViewAdapter.DummyItem mItem;
+
     private User getUser(OkHttpClient client, String userMail) throws IOException, JSONException, ExecutionException, InterruptedException {
         Request request = new Request.Builder()
                 .url(ClientUtils.url + ClientUtils.suffUsers + "/" + userMail)
@@ -102,12 +112,12 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
             System.out.println("============== 1 ==============");
 
             Bundle arguments = new Bundle();
-            arguments.putString(ExcursionsListDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ExcursionsListDetailFragment.ARG_ITEM_ID));
+            arguments.putString(ARG_ITEM_ID,
+                    getIntent().getStringExtra(ARG_ITEM_ID));
 
             ExcursionFragment.SimpleItemRecyclerViewAdapter.DummyItem curItem =
                     ExcursionFragment.SimpleItemRecyclerViewAdapter.itemMap
-                            .get(getIntent().getStringExtra(ExcursionsListDetailFragment.ARG_ITEM_ID));
+                            .get(getIntent().getStringExtra(ARG_ITEM_ID));
 
             FloatingActionButton fab = findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -136,11 +146,20 @@ public class ExcursionsListDetailActivity extends AppCompatActivity {
                 }
             });
 
-            ExcursionsListDetailFragment fragment = new ExcursionsListDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.excursionslist_detail_container, fragment)
-                    .commit();
+            if (arguments.containsKey(ARG_ITEM_ID)) {
+
+                mItem = ExcursionFragment.SimpleItemRecyclerViewAdapter.itemMap.get(arguments.getString(ARG_ITEM_ID));
+
+                Activity activity = this;
+                CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+                if (appBarLayout != null) {
+                    appBarLayout.setTitle(mItem.content);
+                }
+            }
+
+            if (mItem != null) {
+                ((TextView) findViewById(R.id.excursionslist_detail_container)).setText(mItem.details);
+            }
         }
     }
 

@@ -35,7 +35,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <TextView
         android:id="@+id/excursionslist_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

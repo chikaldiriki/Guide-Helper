@@ -26,12 +26,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.excursions.ExcursionsListDetailActivity;
-import ru.hse.guidehelper.excursions.ExcursionsListDetailFragment;
 import ru.hse.guidehelper.utils.ClientUtils;
 
 
@@ -75,7 +73,7 @@ public class ExcursionFragment extends Fragment {
 
             Context context = view.getContext();
             Intent intent = new Intent(context, ExcursionsListDetailActivity.class);
-            intent.putExtra(ExcursionsListDetailFragment.ARG_ITEM_ID, item.id);
+            intent.putExtra(ExcursionsListDetailActivity.ARG_ITEM_ID, item.id);
 
             context.startActivity(intent);
         };
