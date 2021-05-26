@@ -21,5 +21,5 @@ public class Tour {
 
     private Long cost;
 
-    private Byte[] image;
+    private byte[] image;
 }

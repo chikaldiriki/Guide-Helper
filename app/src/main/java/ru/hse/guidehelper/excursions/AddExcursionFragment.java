@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +16,20 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.auth.GuideInfoFragment;
-import ru.hse.guidehelper.config.ApplicationConfig;
+import ru.hse.guidehelper.api.TourAPI;
+import ru.hse.guidehelper.mapper.Mapper;
 import ru.hse.guidehelper.model.Tour;
+import ru.hse.guidehelper.utils.ClientUtils;
 
 public class AddExcursionFragment extends Fragment {
-    private EditText editTitle, editCity, editDescription, editCost, editImage;
+    private EditText editTitle;
+    private EditText editCity;
+    private EditText editDescription;
+    private EditText editCost;
     private AwesomeValidation awesomeValidation;
 
     public AddExcursionFragment() {
@@ -48,7 +50,6 @@ public class AddExcursionFragment extends Fragment {
         editCity = root.findViewById(R.id.editCity);
         editDescription = root.findViewById(R.id.editDescription);
         editCost = root.findViewById(R.id.editСost);
-        editImage = root.findViewById(R.id.editImage);
 
         this.requireActivity().findViewById(R.id.buttonToChat).setVisibility(View.INVISIBLE);
 
@@ -66,12 +67,12 @@ public class AddExcursionFragment extends Fragment {
                         .setGuide(MainActivity.currentUser.getUserMail())
                         .setDescription(editDescription.getText().toString())
                         .setCost(Long.parseLong(editCost.getText().toString()))
-                        .setImage(new Byte[3]);// TODO
+                        .setImage("test".getBytes()); // TODO
 
-                // добавить tour в БД
+                TourAPI.addTour(ClientUtils.httpClient, Mapper.tourToJson(addedTour));
+
                 AddExcursionFragment.this.requireActivity().onBackPressed();
                 AddExcursionFragment.this.requireActivity().onBackPressed();
-                AddExcursionFragment.this.requireActivity().findViewById(R.id.buttonToChat).setVisibility(View.VISIBLE);
 
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.navigation_profile);
