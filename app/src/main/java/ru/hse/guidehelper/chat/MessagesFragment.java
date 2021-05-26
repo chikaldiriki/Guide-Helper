@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
@@ -74,6 +75,9 @@ public class MessagesFragment extends Fragment {
                              Bundle savedInstanceState) {
         mBinding = FragmentMessagesBinding.inflate(inflater, container, false);
         view = mBinding.getRoot();
+
+        BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
+        navView.setVisibility(BottomNavigationView.INVISIBLE);
 
         CircleImageView companionAvatar = view.findViewById(R.id.companionAvatar);
         TextView companionName = view.findViewById(R.id.companionName);
