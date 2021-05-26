@@ -59,9 +59,19 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        Button addExcursionButton = root.findViewById(R.id.addExcursionButton);
+        addExcursionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.addExcursionFragment);
+            }
+        });
+
         if (!MainActivity.currentUser.isGuide()) {
             ConstraintLayout layout = root.findViewById(R.id.profileGuideInfoLayout);
             layout.setVisibility(View.INVISIBLE);
+            addExcursionButton.setVisibility(View.INVISIBLE);
             return root;
         }
 

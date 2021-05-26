@@ -161,5 +161,12 @@
                 app:layout_constraintTop_toBottomOf="@id/mobileNumber" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/addExcursionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Добавить экскурсию"
+            android:layout_below="@+id/profileGuideInfoLayout" />
     </RelativeLayout>
 </ScrollView>
