@@ -14,7 +14,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ru.hse.guidehelper.utils.ClientUtils;
 
-public class TourAPI {
+public class TourApiUtils {
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
 

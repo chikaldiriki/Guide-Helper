@@ -20,8 +20,8 @@ import java.util.regex.Pattern;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.api.TourAPI;
-import ru.hse.guidehelper.mapper.Mapper;
+import ru.hse.guidehelper.api.TourApiUtils;
+import ru.hse.guidehelper.utils.MapperUtils;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.utils.ClientUtils;
 
@@ -31,10 +31,6 @@ public class AddExcursionFragment extends Fragment {
     private EditText editDescription;
     private EditText editCost;
     private AwesomeValidation awesomeValidation;
-
-    public AddExcursionFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +65,7 @@ public class AddExcursionFragment extends Fragment {
                         .setCost(Long.parseLong(editCost.getText().toString()))
                         .setImage("test".getBytes()); // TODO
 
-                TourAPI.addTour(ClientUtils.httpClient, Mapper.tourToJson(addedTour));
+                TourApiUtils.addTour(ClientUtils.httpClient, MapperUtils.tourToJson(addedTour));
 
                 AddExcursionFragment.this.requireActivity().onBackPressed();
                 AddExcursionFragment.this.requireActivity().onBackPressed();

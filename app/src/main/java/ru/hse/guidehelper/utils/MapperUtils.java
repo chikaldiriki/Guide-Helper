@@ -1,4 +1,4 @@
-package ru.hse.guidehelper.mapper;
+package ru.hse.guidehelper.utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import ru.hse.guidehelper.model.Tour;
 
-public class Mapper {
+public class MapperUtils {
     @SuppressWarnings("unused")
     public static Tour jsonToTour(JSONObject jsonObject) {
         try {
