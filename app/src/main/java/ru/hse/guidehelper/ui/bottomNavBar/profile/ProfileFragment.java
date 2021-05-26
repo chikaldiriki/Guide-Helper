@@ -50,6 +50,11 @@ public class ProfileFragment extends Fragment {
         nameTextView.setText(currentUser.getDisplayName());
         roleTextView.setText(MainActivity.currentUser.isGuide() ? "Guide" : "Tripper");
 
+
+        Button buttonToChat = root.findViewById(R.id.buttonToChat);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        buttonToChat.setOnClickListener(view -> navController.navigate(R.id.dialogFragment2));
+
         Button becomeGuideButton = root.findViewById(R.id.becomeGuideButton);
         becomeGuideButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,9 +64,19 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        Button addExcursionButton = root.findViewById(R.id.addExcursionButton);
+        addExcursionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.addExcursionFragment);
+            }
+        });
+
         if (!MainActivity.currentUser.isGuide()) {
             ConstraintLayout layout = root.findViewById(R.id.profileGuideInfoLayout);
             layout.setVisibility(View.INVISIBLE);
+            addExcursionButton.setVisibility(View.INVISIBLE);
             return root;
         }
 

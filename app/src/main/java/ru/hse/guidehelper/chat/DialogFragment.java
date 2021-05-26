@@ -105,9 +105,6 @@ public class DialogFragment extends Fragment
     public void onDialogClick(Chat chat) {
         MessagesFragment.setChat(chat);
 
-        BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
-        navView.setVisibility(BottomNavigationView.INVISIBLE);
-
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigate(R.id.messagesFragment2);
     }
