@@ -50,6 +50,11 @@ public class ProfileFragment extends Fragment {
         nameTextView.setText(currentUser.getDisplayName());
         roleTextView.setText(MainActivity.currentUser.isGuide() ? "Guide" : "Tripper");
 
+
+        Button buttonToChat = root.findViewById(R.id.buttonToChat);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        buttonToChat.setOnClickListener(view -> navController.navigate(R.id.dialogFragment2));
+
         Button becomeGuideButton = root.findViewById(R.id.becomeGuideButton);
         becomeGuideButton.setOnClickListener(new View.OnClickListener() {
             @Override

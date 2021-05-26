@@ -41,7 +41,6 @@ public class GuideInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_guide_info, container, false);
-        this.requireActivity().findViewById(R.id.buttonToChat).setVisibility(View.INVISIBLE);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
@@ -75,7 +74,6 @@ public class GuideInfoFragment extends Fragment {
 
                 GuideInfoFragment.this.requireActivity().onBackPressed();
                 GuideInfoFragment.this.requireActivity().onBackPressed();
-                GuideInfoFragment.this.requireActivity().findViewById(R.id.buttonToChat).setVisibility(View.VISIBLE);
 
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.navigation_profile);

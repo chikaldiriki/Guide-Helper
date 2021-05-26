@@ -58,6 +58,13 @@
                 android:layout_height="60dp"
                 android:text="Стать гидом" />
 
+            <Button
+                android:id="@+id/buttonToChat"
+                android:layout_width="90dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:text="Чат"/>
+
         </RelativeLayout>
 
 

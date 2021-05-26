@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
 
-        Button mButtonToChat = findViewById(R.id.buttonToChat);
-
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (Objects.equals(FirebaseAuth.getInstance().getCurrentUser(), null) && (destination.getId() == R.id.navigation_profile ||
                     destination.getId() == R.id.navigation_notifications ||
@@ -47,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
                 navController.navigate(R.id.signInFragment);
             }
         });
-
-        mButtonToChat.setOnClickListener(view -> navController.navigate(R.id.dialogFragment2));
 
         File cacheFile = new File(getCacheDir(), "userCache.txt");
         ApplicationConfig.setCachedUserDTOfile(cacheFile);
