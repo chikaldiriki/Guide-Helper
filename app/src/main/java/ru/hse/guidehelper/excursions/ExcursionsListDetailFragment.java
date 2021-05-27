@@ -19,80 +19,21 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import lombok.SneakyThrows;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.model.User;
 import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
-import  ru.hse.guidehelper.utils.ClientUtils;
 
 public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
     private ExcursionFragment.SimpleItemRecyclerViewAdapter.DummyItem mItem;
-
-    private User getUser(OkHttpClient client, String userMail) throws IOException, JSONException, ExecutionException, InterruptedException {
-        Request request = new Request.Builder()
-                .url(ClientUtils.url + ClientUtils.suffUsers + "/" + userMail)
-                .build();
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future<User>  task = executorService.submit(() -> {
-            try (Response response = client.newCall(request).execute()) {
-                String res = response.body().string();
-                System.out.println(res);
-
-                JSONObject jsonObject = new JSONObject(res);
-
-                return new User()
-                        .setUserMail(userMail)
-                        .setName(jsonObject.get("firstName") + (String) jsonObject.get("lastName"))
-                        .setPhoneNumber((String) jsonObject.get("phoneNumber"))
-                        .setCity((String) jsonObject.get("city"))
-                        .setDescription((String) jsonObject.get("description"))
-                        .setGuide((boolean) jsonObject.get("guide"));
-            }
-
-        });
-
-
-        return task.get();
-    }
-
-    private String getChatId(OkHttpClient client, String firstUserMail, String secondUserMail) throws IOException, ExecutionException, InterruptedException {
-        Request request = new Request.Builder()
-                .url(ClientUtils.url + ClientUtils.suffChat + "/"
-                        + firstUserMail + "/" + secondUserMail)
-                .build();
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future<String> task = executorService.submit(() -> {
-            try (Response response = client.newCall(request).execute()) {
-                String res = response.body().string();
-                System.out.println(res);
-
-                return res;
-            }
-        });
-
-
-        return task.get();
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -133,8 +74,8 @@ public class ExcursionsListDetailFragment extends Fragment {
                     System.out.println(guideMail);
                     System.out.println(userMail);
 
-                    String chatId = getChatId(ClientUtils.httpClient, guideMail, userMail);
-                    User guide = getUser(ClientUtils.httpClient, guideMail);
+                    String chatId = RequestHelper.getChatId(guideMail, userMail);
+                    User guide = RequestHelper.getUser(guideMail);
                     Chat chat = new Chat(chatId,
                             guideMail,
                             guide.getPhotoUrl(),
