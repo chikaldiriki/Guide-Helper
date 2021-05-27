@@ -60,10 +60,6 @@ public class MessagesFragment extends Fragment {
         MessagesFragment.chat = chat;
     }
 
-    public MessagesFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,26 +153,24 @@ public class MessagesFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
-        if (requestCode == REQUEST_IMAGE) {
-            if (resultCode == RESULT_OK && data != null) {
-                final Uri uri = data.getData();
-                Log.d(TAG, "Uri: " + uri.toString());
-                final FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                Message tempMessage = new Message(null, getUserMail(), getUserPhotoUrl());
-                mDatabase.getReference().child(MESSAGES_CHILD).push()
-                        .setValue(tempMessage, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(DatabaseError databaseError, @NotNull DatabaseReference databaseReference) {
-                                if (databaseError != null) {
-                                    Log.w(TAG, "Unable to write message to database.", databaseError.toException());
-                                    return;
-                                }
-                                String key = databaseReference.getKey();
-                                StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getUid()).child(key).child(uri.getLastPathSegment());
-                                putImageInStorage(storageReference, uri, key);
+        if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK && data != null) {
+            final Uri uri = data.getData();
+            Log.d(TAG, "Uri: " + uri.toString());
+            final FirebaseUser user = mFirebaseAuth.getCurrentUser();
+            Message tempMessage = new Message(null, getUserMail(), getUserPhotoUrl());
+            mDatabase.getReference().child(MESSAGES_CHILD).push()
+                    .setValue(tempMessage, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, @NotNull DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                Log.w(TAG, "Unable to write message to database.", databaseError.toException());
+                                return;
                             }
-                        });
-            }
+                            String key = databaseReference.getKey();
+                            StorageReference storageReference = FirebaseStorage.getInstance().getReference(user.getUid()).child(key).child(uri.getLastPathSegment());
+                            putImageInStorage(storageReference, uri, key);
+                        }
+                    });
         }
     }
 

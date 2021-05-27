@@ -5,7 +5,9 @@ import android.util.Log;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,29 +17,17 @@ import ru.hse.guidehelper.model.User;
 
 public class RequestHelper {
 
-    @SuppressWarnings("unused")
     public static List<Tour> getAllTours() {
-        AtomicReference<List<Tour>> result = new AtomicReference<>();
-        Api.getInstance()
-                .getTourService()
-                .getAllTours()
-                .enqueue(new Callback<List<Tour>>() {
-                    @Override
-                    public void onResponse(@NotNull Call<List<Tour>> call, @NotNull Response<List<Tour>> response) {
-                        if (response.isSuccessful()) {
-                            result.set(response.body());
-                        } else {
-                            Log.e(String.valueOf(response.code()), "getAllTours");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<List<Tour>> call, @NotNull Throwable t) {
-                        Log.e("error", "getAllTours");
-                    }
-                });
-
-        return result.get();
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getTourService()
+                    .getAllTours().execute().body())
+                    .get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getAllTours");
+            throw new RuntimeException();
+        }
     }
 
     public static void addTour(Tour tour) {
@@ -60,52 +50,28 @@ public class RequestHelper {
     }
 
     public static User getUser(String userId) {
-        AtomicReference<User> result = new AtomicReference<>();
-
-        Api.getInstance()
-                .getUserService()
-                .getUser(userId)
-                .enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
-                        if (response.isSuccessful()) {
-                            result.set(response.body());
-                        } else {
-                            Log.e(String.valueOf(response.code()), "getUser");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
-                        Log.e("error", "getUser");
-                    }
-                });
-
-        return result.get();
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getUserService()
+                    .getUser(userId).execute().body())
+                    .get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getAllTours");
+            throw new RuntimeException();
+        }
     }
 
     public static String getChatId(String firstUserId, String secondUserId) {
-        AtomicReference<String> result = new AtomicReference<>();
-
-        Api.getInstance()
-                .getChatService()
-                .getChatId(firstUserId, secondUserId)
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
-                        if (response.isSuccessful()) {
-                            result.set(response.body());
-                        } else {
-                            Log.e(String.valueOf(response.code()), "getChatId");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
-                        Log.e("error", "getChatId");
-                    }
-                });
-
-        return result.get();
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return String.valueOf(singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getChatService()
+                    .getChatId(firstUserId, secondUserId).execute().body())
+                    .get());
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getAllTours");
+            throw new RuntimeException();
+        }
     }
 }

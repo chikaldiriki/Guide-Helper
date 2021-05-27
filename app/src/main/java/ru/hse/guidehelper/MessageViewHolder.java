@@ -14,12 +14,14 @@ import com.google.firebase.auth.FirebaseUser;
 import ru.hse.guidehelper.model.Message;
 
 public class MessageViewHolder extends RecyclerView.ViewHolder {
-    private static final String TAG = "MessageViewHolder";
-
-    TextView messageLeftTextView, messageRightTextView;
-    ImageView messageLeftImageView, messageRightImageView;
-    TextView messageLeftTime, messageRightTime;
-    FlexboxLayout leftBubble, rightBubble;
+    TextView messageLeftTextView;
+    TextView messageRightTextView;
+    ImageView messageLeftImageView;
+    ImageView messageRightImageView;
+    TextView messageLeftTime;
+    TextView messageRightTime;
+    FlexboxLayout leftBubble;
+    FlexboxLayout rightBubble;
 
     public MessageViewHolder(View v) {
         super(v);

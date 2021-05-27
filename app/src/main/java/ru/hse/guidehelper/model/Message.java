@@ -31,6 +31,12 @@ public class Message implements IMessage {
 
     private IUser user;
 
+    private String name;
+
+    private String imageUrl;
+
+    private String dispatchTimeString;
+
     @Override
     public String getId() {
         return id;
@@ -50,10 +56,6 @@ public class Message implements IMessage {
     public Date getCreatedAt() {
         return dispatchTime;
     }
-
-    private String name;
-    private String imageUrl;
-    private String dispatchTimeString;
 
     public Message(String text, String name, String imageUrl) {
         this.text = text;

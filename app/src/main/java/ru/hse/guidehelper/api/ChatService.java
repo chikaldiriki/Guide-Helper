@@ -7,5 +7,5 @@ import retrofit2.http.Path;
 public interface ChatService {
 
     @GET("chat/{firstUserId}/{secondUserId}")
-    Call<String> getChatId(@Path("firstUserId") String firstUserId, @Path("secondUserId") String secondUserId);
+    Call<Long> getChatId(@Path("firstUserId") String firstUserId, @Path("secondUserId") String secondUserId);
 }

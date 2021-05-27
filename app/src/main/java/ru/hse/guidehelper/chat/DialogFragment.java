@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
@@ -29,7 +28,6 @@ import ru.hse.guidehelper.model.User;
 public class DialogFragment extends Fragment
         implements DialogsListAdapter.OnDialogClickListener<Chat> {
 
-    private DialogsList chatList;
     private DialogsListAdapter<Chat> adapter;
 
     public DialogFragment() {
@@ -51,7 +49,7 @@ public class DialogFragment extends Fragment
                 .load("https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg")
                 .into(imageView);
 
-        chatList = root.findViewById(R.id.chatList);
+        DialogsList chatList = root.findViewById(R.id.chatList);
 
         adapter = new DialogsListAdapter<>(imageLoader);
 
