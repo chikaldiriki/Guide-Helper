@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.Api;
+import ru.hse.guidehelper.api.RequestSender;
 import ru.hse.guidehelper.model.Tour;
 
 public class AddExcursionFragment extends Fragment {
@@ -63,7 +64,7 @@ public class AddExcursionFragment extends Fragment {
                         .setCost(Long.parseLong(editCost.getText().toString()))
                         .setImage("test".getBytes()); // TODO
 
-                Api.getInstance().getTourService().addTour(addedTour);
+                RequestSender.addTour(addedTour);
 
                 AddExcursionFragment.this.requireActivity().onBackPressed();
                 AddExcursionFragment.this.requireActivity().onBackPressed();
