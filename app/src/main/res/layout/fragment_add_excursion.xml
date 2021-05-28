@@ -43,12 +43,36 @@
         android:hint="Введите описание экскурсии"
         android:inputType="text" />
 
-    <EditText
-        android:id="@+id/editImage"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Вставьте картинку экскурсии (опционально)"
-        android:inputType="text" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/buttonAddImage"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:text="Вставьте картинку экскурсии"/>
+
+        <ImageButton
+            android:id="@+id/buttonDeleteImage"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:layout_marginStart="10dp"
+            android:visibility="invisible"
+            android:layout_toEndOf="@+id/buttonAddImage"
+            android:src="@drawable/ic_baseline_delete_24"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/addedImage"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true" />
 
     <Button
         android:id="@+id/saveChangesButton"
