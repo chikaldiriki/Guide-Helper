@@ -23,11 +23,16 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.Objects;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.config.ApplicationConfig;
+import ru.hse.guidehelper.model.User;
 
 public class SignInFragment extends Fragment {
 
@@ -79,7 +84,13 @@ public class SignInFragment extends Fragment {
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     if (account != null) {
                         Log.d("LoginActivity", "firebaseAuthWithGoogle:" + account.getId());
+                        if(MainActivity.currentUser == null) {
+                            System.out.println("Очко 1");
+                        }
                         firebaseAuthWithGoogle(account.getIdToken());
+                        if(MainActivity.currentUser == null) {
+                            System.out.println("Очко 2");
+                        }
                     }
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
@@ -97,6 +108,19 @@ public class SignInFragment extends Fragment {
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
                         // делаем addUser в базу данных
+                        FirebaseUser currentUser = mAuth.getCurrentUser();
+                        if (Objects.equals(MainActivity.currentUser, null)) {
+                            MainActivity.currentUser = new User()
+                                    .setUserMail(currentUser.getEmail())
+                                    .setGuide(false)
+                                    .setName(currentUser.getDisplayName())
+                                    .setPhotoUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
+                            System.out.println("--------- Photo ---------");
+                            System.out.println(currentUser.getPhotoUrl().toString());
+                            System.out.println(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
+                        }
+                        System.out.println(MainActivity.currentUser.getAvatar());
+                        RequestHelper.addUser(MainActivity.currentUser);
                         MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("LoginActivity", "signInWithCredential:success");

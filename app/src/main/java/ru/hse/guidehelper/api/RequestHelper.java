@@ -74,4 +74,43 @@ public class RequestHelper {
             throw new RuntimeException();
         }
     }
+
+    public static void addUser(User user) {
+        Api.getInstance()
+                .getUserService()
+                .addUser(user)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e(String.valueOf(response.code()), "addUser");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                        Log.e("error", "addUser");
+                    }
+                });
+    }
+
+    public static void updateUser(User user, String userId) {
+        Api.getInstance()
+                .getUserService()
+                .updateUser(user, userId)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e(String.valueOf(response.code()), "updateUser");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                        Log.e("error", "updateUser");
+                    }
+                });
+
+    }
 }

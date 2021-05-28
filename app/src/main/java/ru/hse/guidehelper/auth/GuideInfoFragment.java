@@ -22,7 +22,9 @@ import java.util.regex.Pattern;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.config.ApplicationConfig;
+import ru.hse.guidehelper.model.User;
 
 public class GuideInfoFragment extends Fragment {
     private EditText editLocation, editMobilePhone, editDescription;
@@ -58,7 +60,6 @@ public class GuideInfoFragment extends Fragment {
         if (!Objects.equals(MainActivity.currentUser.getDescription(), null)) {
             editDescription.setText(MainActivity.currentUser.getDescription());
         }
-
         Button saveChangesButton = root.findViewById(R.id.saveChangesButton);
         saveChangesButton.setOnClickListener(view -> {
             if (awesomeValidation.validate()) {
@@ -69,6 +70,7 @@ public class GuideInfoFragment extends Fragment {
                         .setPhoneNumber(editMobilePhone.getText().toString())
                         .setDescription(editDescription.getText().toString())
                         .setGuide(true);
+                RequestHelper.updateUser(MainActivity.currentUser, MainActivity.currentUser.getId());
 
                 MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
 
