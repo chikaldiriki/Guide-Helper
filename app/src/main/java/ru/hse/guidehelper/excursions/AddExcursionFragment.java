@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,8 +40,8 @@ public class AddExcursionFragment extends Fragment {
     private Button buttonAddImage;
     public static final int ADD_TOUR_IMAGE_REQUEST_CODE = 1;
 
-
-    public ImageView addedImage = null;
+    private ImageView addedImage = null;
+    private ImageButton buttonDeleteImage;
     private AwesomeValidation awesomeValidation;
 
     @Override
@@ -58,6 +59,7 @@ public class AddExcursionFragment extends Fragment {
         editDescription = root.findViewById(R.id.editDescription);
         editCost = root.findViewById(R.id.editСost);
         buttonAddImage = root.findViewById(R.id.buttonAddImage);
+        buttonDeleteImage = root.findViewById(R.id.buttonDeleteImage);
         buttonAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +68,16 @@ public class AddExcursionFragment extends Fragment {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
 
                 startActivityForResult(intent, ADD_TOUR_IMAGE_REQUEST_CODE);
+            }
+        });
+
+        buttonDeleteImage = root.findViewById(R.id.buttonDeleteImage);
+        buttonDeleteImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addedImage.setImageBitmap(null);
+                buttonAddImage.setText("Вставьте картинку экскурсии");
+                buttonDeleteImage.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -120,6 +132,8 @@ public class AddExcursionFragment extends Fragment {
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
                     addedImage.setImageBitmap(bitmap);
+                    buttonAddImage.setText("Замените картинку экскурсии");
+                    buttonDeleteImage.setVisibility(View.VISIBLE);
                 } catch (FileNotFoundException e) {
 
                 }
