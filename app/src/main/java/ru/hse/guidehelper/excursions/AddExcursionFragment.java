@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -135,20 +134,18 @@ public class AddExcursionFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        if (resultCode == -1) {
-            if (requestCode == ADD_TOUR_IMAGE_REQUEST_CODE) {
-                try {
-                    System.out.println(data.getData());
-                    InputStream inputStream = requireActivity().getContentResolver().openInputStream(data.getData());
+        if (resultCode == -1 && requestCode == ADD_TOUR_IMAGE_REQUEST_CODE) {
+            try {
+                System.out.println(data.getData());
+                InputStream inputStream = requireActivity().getContentResolver().openInputStream(data.getData());
 
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                    addedImage.setImageBitmap(bitmap);
-                    buttonAddImage.setText("Замените картинку экскурсии");
-                    buttonDeleteImage.setVisibility(View.VISIBLE);
-                } catch (FileNotFoundException ignored) {
+                addedImage.setImageBitmap(bitmap);
+                buttonAddImage.setText("Замените картинку экскурсии");
+                buttonDeleteImage.setVisibility(View.VISIBLE);
+            } catch (FileNotFoundException ignored) {
 
-                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
