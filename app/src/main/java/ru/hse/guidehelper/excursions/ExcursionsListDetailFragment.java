@@ -3,6 +3,7 @@ package ru.hse.guidehelper.excursions;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.MenuItem;
@@ -26,6 +28,7 @@ import lombok.SneakyThrows;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
+import ru.hse.guidehelper.auth.SignInFragment;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.model.User;
@@ -35,10 +38,20 @@ public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
     private ExcursionFragment.SimpleItemRecyclerViewAdapter.DummyItem mItem;
 
+    private static int it_ = 1;
+
+    public ExcursionsListDetailFragment() {
+        System.out.println(it_++);
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
+        navView.setVisibility(BottomNavigationView.INVISIBLE);
+
 
         View root = inflater.inflate(R.layout.activity_excursionslist_detail, container, false);
         Toolbar toolbar = (Toolbar) root.findViewById(R.id.detail_toolbar);
@@ -93,6 +106,28 @@ public class ExcursionsListDetailFragment extends Fragment {
                 }
             });
 
+            FloatingActionButton fabSub = root.findViewById(R.id.fab_subscriptions);
+
+            fabSub.setOnClickListener(new View.OnClickListener() {
+                boolean isAddedToFavorite = true; // TODO get состояние
+                @Override
+                public void onClick(View v) {
+                    if(MainActivity.currentUser == null) {
+                        MainActivity.navController.navigate(R.id.signInFragment);
+                        return;
+                    }
+                    if(isAddedToFavorite) {
+                        // TODO change состояние
+                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
+                        isAddedToFavorite = false;
+                    } else {
+                        // TODO change состояние
+                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
+                        isAddedToFavorite = true;
+                    }
+                }
+            });
+
             if (arguments.containsKey(ARG_ITEM_ID)) {
 
                 mItem = ExcursionFragment.SimpleItemRecyclerViewAdapter.itemMap.get(arguments.getString(ARG_ITEM_ID));
@@ -121,6 +156,9 @@ public class ExcursionsListDetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
+        navView.setVisibility(BottomNavigationView.VISIBLE);
+
         if (id == android.R.id.home) {
             ExcursionsListDetailFragment.this.requireActivity().onBackPressed();
             return true;
