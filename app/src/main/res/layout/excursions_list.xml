@@ -10,4 +10,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.bottomNavBar.excursion.ExcursionFragment"
-    tools:listitem="@layout/excursionslist_list_content" />
+    tools:listitem="@layout/excursions_list_content" />

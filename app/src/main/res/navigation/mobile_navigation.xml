@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home"
         android:name="ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment"
         android:label="@string/title_excursion"
-        tools:layout="@layout/activity_excursionslist" />
+        tools:layout="@layout/fragment_excursions" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -51,7 +51,7 @@
         android:id="@+id/excursionsListDetailActivity"
         android:name="ru.hse.guidehelper.excursions.ExcursionsListDetailFragment"
         android:label="activity_excursionslist_detail"
-        tools:layout="@layout/activity_excursionslist_detail" />
+        tools:layout="@layout/fragment_excursions_detail" />
     <fragment
         android:id="@+id/addExcursionFragment"
         android:name="ru.hse.guidehelper.excursions.AddExcursionFragment"

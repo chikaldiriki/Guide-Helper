@@ -28,21 +28,15 @@ import lombok.SneakyThrows;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
-import ru.hse.guidehelper.auth.SignInFragment;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
+import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
 import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
 
 public class ExcursionsListDetailFragment extends Fragment {
-    public static final String ARG_ITEM_ID = "item_id";
-    private ExcursionFragment.SimpleItemRecyclerViewAdapter.DummyItem mItem;
-
-    private static int it_ = 1;
-
-    public ExcursionsListDetailFragment() {
-        System.out.println(it_++);
-    }
+    public static final String ARG_TOUR_ID = "tour_id";
+    private Tour tour;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,10 +46,8 @@ public class ExcursionsListDetailFragment extends Fragment {
         BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
         navView.setVisibility(BottomNavigationView.INVISIBLE);
 
-
-        View root = inflater.inflate(R.layout.activity_excursionslist_detail, container, false);
+        View root = inflater.inflate(R.layout.fragment_excursions_detail, container, false);
         Toolbar toolbar = (Toolbar) root.findViewById(R.id.detail_toolbar);
-        //setSupportActionBar(toolbar);
 
         AppCompatActivity activity = (AppCompatActivity) this.getActivity();
         assert activity != null;
@@ -67,22 +59,16 @@ public class ExcursionsListDetailFragment extends Fragment {
         }
 
         if (savedInstanceState == null) {
-
-            System.out.println("============== 1 ==============");
-
             Bundle arguments = new Bundle();
-            arguments.putString(ARG_ITEM_ID,
-                    MainActivity.currentTourId);
+            arguments.putLong(ARG_TOUR_ID, MainActivity.currentTourId);
 
-            ExcursionFragment.SimpleItemRecyclerViewAdapter.DummyItem curItem =
-                    ExcursionFragment.SimpleItemRecyclerViewAdapter.itemMap
-                            .get(MainActivity.currentTourId);
+            Tour curTour = ExcursionFragment.TourRecyclerViewAdapter.getTourById(MainActivity.currentTourId);
             FloatingActionButton fab = root.findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
                 @SneakyThrows
                 @Override
                 public void onClick(View view) {
-                    String guideMail = curItem.guideMail;
+                    String guideMail = curTour.getGuide();
                     String userMail = MainActivity.currentUser.getUserMail();
                     System.out.println(guideMail);
                     System.out.println(userMail);
@@ -97,11 +83,6 @@ public class ExcursionsListDetailFragment extends Fragment {
                             0);
 
                     MessagesFragment.setChat(chat);
-
-//                    activity.getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.excursionslist_detail_container, new MessagesFragment())
-//                            .commit();
-
                     MainActivity.navController.navigate(R.id.messagesFragment2);
                 }
             });
@@ -128,21 +109,19 @@ public class ExcursionsListDetailFragment extends Fragment {
                 }
             });
 
-            if (arguments.containsKey(ARG_ITEM_ID)) {
-
-                mItem = ExcursionFragment.SimpleItemRecyclerViewAdapter.itemMap.get(arguments.getString(ARG_ITEM_ID));
+            if (arguments.containsKey(ARG_TOUR_ID)) {
+                tour = ExcursionFragment.TourRecyclerViewAdapter.getTourById(arguments.getLong(ARG_TOUR_ID));
 
                 CollapsingToolbarLayout appBarLayout = root.findViewById(R.id.toolbar_layout);
                 if (appBarLayout != null) {
-                    appBarLayout.setTitle(mItem.content);
+                    appBarLayout.setTitle(tour.getTitle());
                 }
             }
 
-            if (mItem != null) {
-                ((TextView) root.findViewById(R.id.excursionslist_detail_container)).setText(mItem.details);
+            if (tour != null) {
+                ((TextView) root.findViewById(R.id.excursionslist_detail_container)).setText(tour.getDescription());
             }
         }
-
 
         return root;
     }
@@ -165,5 +144,4 @@ public class ExcursionsListDetailFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
