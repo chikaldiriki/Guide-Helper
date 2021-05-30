@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.hse.guidehelper.dto.ChatDTO;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
 
@@ -70,7 +71,20 @@ public class RequestHelper {
                     .getChatId(firstUserId, secondUserId).execute().body())
                     .get());
         } catch (ExecutionException | InterruptedException e) {
-            Log.e("error", "getAllTours");
+            Log.e("error", "getChatId");
+            throw new RuntimeException();
+        }
+    }
+
+    public static List<ChatDTO> getDialogs(String userId) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getChatService()
+                    .getDialogs(userId).execute().body())
+                    .get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getDialogs");
             throw new RuntimeException();
         }
     }
