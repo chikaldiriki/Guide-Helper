@@ -13,22 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import okhttp3.Request;
-import okhttp3.Response;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.utils.ClientUtils;
+import ru.hse.guidehelper.api.RequestHelper;
+import ru.hse.guidehelper.model.Tour;
 
 
 public class ExcursionFragment extends Fragment {
@@ -38,8 +32,7 @@ public class ExcursionFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
 
-        View root = inflater.inflate(R.layout.activity_excursionslist, container, false);
-
+        View root = inflater.inflate(R.layout.fragment_excursions, container, false);
 
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -54,126 +47,68 @@ public class ExcursionFragment extends Fragment {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this));
+        recyclerView.setAdapter(new TourRecyclerViewAdapter(this));
     }
 
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    public static class TourRecyclerViewAdapter
+            extends RecyclerView.Adapter<TourRecyclerViewAdapter.ViewHolder> {
 
         private final ExcursionFragment mParentActivity;
-        private final List<SimpleItemRecyclerViewAdapter.DummyItem> mValues;
-
-        private JSONArray arrOfTours = null;
-        public static Map<String, SimpleItemRecyclerViewAdapter.DummyItem> itemMap = new HashMap<>();
+        private List<Tour> tours = null;
+        private static Map<Long, Tour> mapIdTour;
 
         private final View.OnClickListener mOnClickListener = view -> {
-            SimpleItemRecyclerViewAdapter.DummyItem item = (SimpleItemRecyclerViewAdapter.DummyItem) view.getTag();
-
-            MainActivity.currentTourId = item.id;
+            Tour currTour = (Tour) view.getTag();
+            MainActivity.currentTourId = currTour.getId();
             MainActivity.navController.navigate(R.id.excursionsListDetailActivity);
         };
 
-        SimpleItemRecyclerViewAdapter(ExcursionFragment parent) {
-            mValues = new ArrayList<>();
+        TourRecyclerViewAdapter(ExcursionFragment parent) {
             mParentActivity = parent;
 
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.submit(() -> {
-                Request request = new Request.Builder()
-                        .url(ClientUtils.url + ClientUtils.suffTours)
-                        .build();
-
-                try (Response response = ClientUtils.httpClient.newCall(request).execute()) {
-                    String res = response.body().string();
-
-                    arrOfTours = new JSONArray(res);
-                    synchronized (JSONArray.class) {
-                        JSONArray.class.notifyAll();
-                    }
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            synchronized (JSONArray.class) {
-                while (arrOfTours == null) {
-                    try {
-                        JSONArray.class.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                for (int i = 1; i <= arrOfTours.length(); i++) {
-                    SimpleItemRecyclerViewAdapter.DummyItem item = new SimpleItemRecyclerViewAdapter.DummyItem(String.valueOf(i));
-                    mValues.add(item);
-                    itemMap.put(item.id, item);
-                }
+            tours = RequestHelper.getAllTours();
+            mapIdTour = new HashMap<>();
+            for(int i = 0; i < tours.size(); i++) {
+                Tour tour = tours.get(i);
+                mapIdTour.put(tour.getId(), tour);
             }
         }
 
+        public static Tour getTourById(Long id) {
+            return mapIdTour.get(id);
+        }
+
+        @NotNull
         @Override
-        public SimpleItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public TourRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.excursionslist_list_content, parent, false);
-            return new SimpleItemRecyclerViewAdapter.ViewHolder(view);
+                    .inflate(R.layout.excursions_list_content, parent, false);
+            return new TourRecyclerViewAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
-            try {
-                holder.mContentView.setText(arrOfTours.getJSONObject(position).getString("title"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            holder.mIdView.setText(String.valueOf(position + 1));
-
-            try {
-                mValues.get(position).details = arrOfTours.getJSONObject(position).getString("description");
-                mValues.get(position).content = arrOfTours.getJSONObject(position).getString("title") + " - " +
-                        arrOfTours.getJSONObject(position).getString("city");
-                mValues.get(position).guideMail = arrOfTours.getJSONObject(position).getString("guide");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            holder.itemView.setTag(mValues.get(position));
+        public void onBindViewHolder(final TourRecyclerViewAdapter.ViewHolder holder, int position) {
+            holder.title.setText(tours.get(position).getTitle());
+            holder.index.setText(String.valueOf(position + 1));
+            holder.itemView.setTag(tours.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @Override
         public int getItemCount() {
-            return arrOfTours.length();
+            return tours.size();
         }
-        
-
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
+            final TextView index;
+            final TextView title;
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = view.findViewById(R.id.id_text);
-                mContentView = view.findViewById(R.id.content);
+                index = view.findViewById(R.id.id_text);
+                title = view.findViewById(R.id.content);
             }
         }
-
-        public class DummyItem {
-            public String id;
-            public String content;
-            public String details;
-            public String guideMail;
-
-            public DummyItem(String id) {
-                this.id = id;
-            }
-
-            @Override
-            public String toString() {
-                return content;
-            }
-        }
-
     }
 
 }

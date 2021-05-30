@@ -24,7 +24,7 @@
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
     <include
-        layout="@layout/excursionslist_list"
+        layout="@layout/excursions_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_anchor="@+id/frameLayout"
