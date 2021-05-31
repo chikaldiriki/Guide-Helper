@@ -32,7 +32,7 @@ import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
-import ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment;
+import ru.hse.guidehelper.ui.bottomNavBar.excursion.AllTourRecyclerViewAdapter;
 
 public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_TOUR_ID = "tour_id";
@@ -62,7 +62,7 @@ public class ExcursionsListDetailFragment extends Fragment {
             Bundle arguments = new Bundle();
             arguments.putLong(ARG_TOUR_ID, MainActivity.currentTourId);
 
-            Tour curTour = ExcursionFragment.TourRecyclerViewAdapter.getTourById(MainActivity.currentTourId);
+            Tour curTour = AllTourRecyclerViewAdapter.getTourById(MainActivity.currentTourId);
             FloatingActionButton fab = root.findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
                 @SneakyThrows
@@ -87,10 +87,14 @@ public class ExcursionsListDetailFragment extends Fragment {
                 }
             });
 
+            // Map<Long, Tour> favorites = new HashMap<>();
+
             FloatingActionButton fabSub = root.findViewById(R.id.fab_subscriptions);
 
             fabSub.setOnClickListener(new View.OnClickListener() {
                 boolean isAddedToFavorite = true; // TODO get состояние
+                // boolean isAddedToFavorite = favorites.containsKey(tour.getId());
+
                 @Override
                 public void onClick(View v) {
                     if(MainActivity.currentUser == null) {
@@ -99,18 +103,22 @@ public class ExcursionsListDetailFragment extends Fragment {
                     }
                     if(isAddedToFavorite) {
                         // TODO change состояние
+                        // delete
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
+                        // favorites.remove(tour.getId(), tour);
                         isAddedToFavorite = false;
                     } else {
                         // TODO change состояние
+                        // add
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
+                        // favorites.put(tour.getId(), tour);
                         isAddedToFavorite = true;
                     }
                 }
             });
 
             if (arguments.containsKey(ARG_TOUR_ID)) {
-                tour = ExcursionFragment.TourRecyclerViewAdapter.getTourById(arguments.getLong(ARG_TOUR_ID));
+                tour = AllTourRecyclerViewAdapter.getTourById(arguments.getLong(ARG_TOUR_ID));
 
                 CollapsingToolbarLayout appBarLayout = root.findViewById(R.id.toolbar_layout);
                 if (appBarLayout != null) {

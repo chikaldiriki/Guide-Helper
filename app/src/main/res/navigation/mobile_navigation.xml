@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="ru.hse.guidehelper.ui.bottomNavBar.excursion.ExcursionFragment"
+        android:name="ru.hse.guidehelper.ui.bottomNavBar.excursion.AllExcursionFragment"
         android:label="@string/title_excursion"
         tools:layout="@layout/fragment_excursions" />
 
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="ru.hse.guidehelper.ui.bottomNavBar.subscriptions.SubscriptionsFragment"
+        android:name="ru.hse.guidehelper.ui.bottomNavBar.subscriptions.FavoritesExcursionFragment"
         android:label="@string/title_subscriptions"
         tools:layout="@layout/fragment_subscriptions" />
 

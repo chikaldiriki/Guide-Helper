@@ -111,6 +111,19 @@ public class RequestHelper {
                         Log.e("error", "updateUser");
                     }
                 });
-
     }
+
+    public static List<Tour> getFavoriteTours(String userMail) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getTourService()
+                    .getFavoriteTours(userMail).execute().body())
+                    .get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getFavoriteTours");
+            throw new RuntimeException(e);
+        }
+    }
+
 }
