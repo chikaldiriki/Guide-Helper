@@ -26,13 +26,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.util.Objects;
-
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.config.ApplicationConfig;
-import ru.hse.guidehelper.model.User;
 
 public class SignInFragment extends Fragment {
 
@@ -108,7 +105,7 @@ public class SignInFragment extends Fragment {
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
                         // делаем addUser в базу данных
-                        FirebaseUser currentUser = mAuth.getCurrentUser();
+//                        FirebaseUser currentUser = mAuth.getCurrentUser();
 //                        if (Objects.equals(MainActivity.currentUser, null)) {
 //                            MainActivity.currentUser = new User()
 //                                    .setUserMail(currentUser.getEmail())

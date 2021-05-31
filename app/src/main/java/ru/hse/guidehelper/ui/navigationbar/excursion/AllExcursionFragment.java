@@ -1,4 +1,4 @@
-package ru.hse.guidehelper.ui.bottomNavBar.excursion;
+package ru.hse.guidehelper.ui.navigationbar.excursion;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
