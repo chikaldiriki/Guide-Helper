@@ -1,4 +1,4 @@
-package ru.hse.guidehelper.ui.bottomNavBar.profile;
+package ru.hse.guidehelper.ui.navigationbar.profile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

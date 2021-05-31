@@ -9,13 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
-import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.model.Tour;
 
 public abstract class TourRecyclerViewAdapter
@@ -66,8 +64,8 @@ public abstract class TourRecyclerViewAdapter
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView index;
-        final TextView title;
+        public final TextView index;
+        public final TextView title;
 
         ViewHolder(View view) {
             super(view);

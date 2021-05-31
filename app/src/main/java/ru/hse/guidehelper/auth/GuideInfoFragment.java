@@ -24,7 +24,6 @@ import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.config.ApplicationConfig;
-import ru.hse.guidehelper.model.User;
 
 public class GuideInfoFragment extends Fragment {
     private EditText editLocation, editMobilePhone, editDescription;

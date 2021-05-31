@@ -32,7 +32,7 @@ import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
-import ru.hse.guidehelper.ui.bottomNavBar.excursion.AllTourRecyclerViewAdapter;
+import ru.hse.guidehelper.ui.navigationbar.excursion.AllTourRecyclerViewAdapter;
 
 public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_TOUR_ID = "tour_id";

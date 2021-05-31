@@ -1,4 +1,4 @@
-package ru.hse.guidehelper.ui.bottomNavBar.subscriptions;
+package ru.hse.guidehelper.ui.navigationbar.subscriptions;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

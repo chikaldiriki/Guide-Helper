@@ -1,4 +1,4 @@
-package ru.hse.guidehelper.ui.bottomNavBar.orders;
+package ru.hse.guidehelper.ui.navigationbar.orders;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
