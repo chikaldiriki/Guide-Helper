@@ -26,13 +26,11 @@ import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.config.ApplicationConfig;
 
 public class GuideInfoFragment extends Fragment {
-    private EditText editLocation, editMobilePhone, editDescription;
+    private EditText editLocation;
+    private EditText editMobilePhone;
+    private EditText editDescription;
     private AwesomeValidation awesomeValidation;
-
-    public GuideInfoFragment() {
-        // Required empty public constructor
-    }
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

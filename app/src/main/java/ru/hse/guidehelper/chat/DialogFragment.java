@@ -33,10 +33,6 @@ public class DialogFragment extends Fragment
 
     private DialogsListAdapter<Chat> adapter;
 
-    public DialogFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
