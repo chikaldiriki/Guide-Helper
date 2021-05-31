@@ -16,7 +16,7 @@ public class ChatDTO {
 
     private String secondUserName;
 
-    private String firstUserPhotoUrl;
+    private String firstUserPhoto;
 
-    private String secondUserPhotoUrl;
+    private String secondUserPhoto;
 }

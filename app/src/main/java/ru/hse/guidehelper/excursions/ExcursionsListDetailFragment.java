@@ -78,7 +78,7 @@ public class ExcursionsListDetailFragment extends Fragment {
                     User guide = RequestHelper.getUser(guideMail);
                     Chat chat = new Chat(chatId,
                             guideMail,
-                            guide.getPhotoUrl(),
+                            guide.getAvatarUrl(),
                             new ArrayList<>(Collections.singletonList(guide)),
                             null,
                             0);

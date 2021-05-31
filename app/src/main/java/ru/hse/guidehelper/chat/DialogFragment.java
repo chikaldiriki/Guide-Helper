@@ -59,11 +59,11 @@ public class DialogFragment extends Fragment
                 new ArrayList<>(Collections.singletonList(new User("1", "aziz", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
                 null, 0));*/
 
-        addAllChatsInAdapter();
-
         adapter.setOnDialogClickListener(this);
 
         chatList.setAdapter(adapter);
+
+        addAllChatsInAdapter();
         return root;
     }
 
@@ -79,18 +79,28 @@ public class DialogFragment extends Fragment
                 .collect(Collectors.toList());
 
         for (int i = 0; i < allChats.size(); i++) {
-            User anotherUser = RequestHelper.getUser(allChats.get(0).getFirstUserName().equals(MainActivity.currentUser.getUserMail())
-                    ? allChats.get(0).getSecondUserMail() :
-                    allChats.get(0).getFirstUserMail());
+            ChatDTO currentChatDTO = allChats.get(i);
+
+            String anotherUserMail = currentChatDTO.getFirstUserMail().equals(MainActivity.currentUser.getUserMail())
+                    ? currentChatDTO.getSecondUserMail()
+                    : currentChatDTO.getFirstUserMail();
+
+            String anotherUserName = currentChatDTO.getFirstUserMail().equals(MainActivity.currentUser.getUserMail())
+                    ? currentChatDTO.getSecondUserName()
+                    : currentChatDTO.getFirstUserName();
+
+            String anotherUserAvatarUrl = currentChatDTO.getFirstUserMail().equals(MainActivity.currentUser.getUserMail())
+                    ? currentChatDTO.getSecondUserPhoto()
+                    : currentChatDTO.getFirstUserPhoto();
 
             Chat chat = new Chat(listChatIds.get(i),
-                    anotherUser.getName(),
-                    anotherUser.getPhotoUrl(),
+                    anotherUserName,
+                    anotherUserAvatarUrl,
                     new ArrayList<>(
                             Collections.singletonList(new User()
-                                    .setUserMail(anotherUser.getUserMail())
-                                    .setName(anotherUser.getName())
-                                    .setPhotoUrl(anotherUser.getPhotoUrl()))),
+                                    .setUserMail(anotherUserMail)
+                                    .setName(anotherUserName)
+                                    .setAvatarUrl(anotherUserAvatarUrl))),
                     null, 0);
 
             adapter.addItem(chat);
