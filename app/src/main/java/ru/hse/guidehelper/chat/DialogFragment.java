@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
@@ -18,9 +19,11 @@ import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.dto.ChatDTO;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.model.User;
@@ -44,9 +47,12 @@ public class DialogFragment extends Fragment
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dialog, container, false);
 
+        BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
+        navView.setVisibility(View.VISIBLE);
+
         ImageLoader imageLoader = (imageView, url, payload) -> Glide
                 .with(DialogFragment.this.requireActivity())
-                .load("https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg")
+                .load(url)
                 .into(imageView);
 
         DialogsList chatList = root.findViewById(R.id.chatList);
@@ -55,48 +61,54 @@ public class DialogFragment extends Fragment
 
         /*adapter.addItem(new Chat("1", "FirstUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
                 new ArrayList<>(Collections.singletonList(new User("1", "aziz", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
-                null, 0));
-        adapter.addItem(new Chat("2", "SecondUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
-                new ArrayList<>(Collections.singletonList(new User("2", "aziz", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
-                null, 0));
-
-        adapter.addItem(new Chat("3", "Ilya1", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
-                new ArrayList<>(Collections.singletonList(new User("228", "Ilya2", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
-                null, 0));
-
-        adapter.addItem(new Chat("5", "TestUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
-                new ArrayList<>(Collections.singletonList(new User("322", "TestUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
                 null, 0));*/
-
-        addAllChatsInAdapter();
 
         adapter.setOnDialogClickListener(this);
 
         chatList.setAdapter(adapter);
+
+        addAllChatsInAdapter();
         return root;
     }
 
     private void addAllChatsInAdapter() {
-        List<ChatDTO> allChats = new ArrayList<>(); // getAllChats
+        List<ChatDTO> allChats = RequestHelper.getDialogs(MainActivity.currentUser.getUserMail());
+        if (allChats.isEmpty()) {
+            return;
+        }
 
-        allChats.stream()
-                .map(chatDTO -> new Chat(
-                        chatDTO.getFirstUserMail() + chatDTO.getSecondUserMail(),
-                        chatDTO.getFirstUserName().equals(MainActivity.currentUser.getUserMail()) ? chatDTO.getSecondUserName() : chatDTO.getFirstUserName(),
-                        "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
-                        new ArrayList<>(chatDTO.getFirstUserName().equals(MainActivity.currentUser.getUserMail()) ?
-                                Collections.singletonList(new User()
-                                        .setUserMail(chatDTO.getSecondUserMail())
-                                        .setName(chatDTO.getSecondUserName())
-                                        .setPhotoUrl(chatDTO.getSecondUserPhotoUrl())) :
-                                Collections.singletonList(new User()
-                                        .setUserMail(chatDTO.getFirstUserMail())
-                                        .setName(chatDTO.getFirstUserName())
-                                        .setPhotoUrl(chatDTO.getFirstUserPhotoUrl()))
-                        ),
-                        null, 0
-                ))
-                .forEach(chat -> adapter.addItem(chat));
+        List<String> listChatIds = allChats
+                .stream()
+                .map(chatDTO -> RequestHelper.getChatId(chatDTO.getFirstUserMail(), chatDTO.getSecondUserMail()))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < allChats.size(); i++) {
+            ChatDTO currentChatDTO = allChats.get(i);
+
+            String anotherUserMail = currentChatDTO.getFirstUserMail().equals(MainActivity.currentUser.getUserMail())
+                    ? currentChatDTO.getSecondUserMail()
+                    : currentChatDTO.getFirstUserMail();
+
+            String anotherUserName = currentChatDTO.getFirstUserMail().equals(MainActivity.currentUser.getUserMail())
+                    ? currentChatDTO.getSecondUserName()
+                    : currentChatDTO.getFirstUserName();
+
+            String anotherUserAvatarUrl = currentChatDTO.getFirstUserMail().equals(MainActivity.currentUser.getUserMail())
+                    ? currentChatDTO.getSecondUserPhoto()
+                    : currentChatDTO.getFirstUserPhoto();
+
+            Chat chat = new Chat(listChatIds.get(i),
+                    anotherUserName,
+                    anotherUserAvatarUrl,
+                    new ArrayList<>(
+                            Collections.singletonList(new User()
+                                    .setUserMail(anotherUserMail)
+                                    .setName(anotherUserName)
+                                    .setAvatarUrl(anotherUserAvatarUrl))),
+                    null, 0);
+
+            adapter.addItem(chat);
+        }
     }
 
     @Override

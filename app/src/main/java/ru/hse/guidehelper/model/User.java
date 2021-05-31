@@ -24,7 +24,7 @@ public class User implements IUser, Serializable {
 
     private String description; // для гидов
 
-    private String photoUrl;
+    private String avatarUrl;
 
     @Override
     public String getId() {
@@ -33,6 +33,6 @@ public class User implements IUser, Serializable {
 
     @Override
     public String getAvatar() {
-        return photoUrl;
+        return avatarUrl;
     }
 }

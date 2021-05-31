@@ -38,10 +38,10 @@ public class ProfileFragment extends Fragment {
                     .setUserMail(currentUser.getEmail())
                     .setGuide(false)
                     .setName(currentUser.getDisplayName())
-                    .setPhotoUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
+                    .setAvatarUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
         }
 
-        String personImage = MainActivity.currentUser.getPhotoUrl();
+        String personImage = MainActivity.currentUser.getAvatarUrl();
         CircleImageView profileImageView = root.findViewById(R.id.profile_image);
         Glide.with(root.getContext()).load(personImage).into(profileImageView);
 

@@ -73,7 +73,7 @@ public class MessagesFragment extends Fragment {
         view = mBinding.getRoot();
 
         BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
-        navView.setVisibility(BottomNavigationView.INVISIBLE);
+        navView.setVisibility(View.GONE);
 
         CircleImageView companionAvatar = view.findViewById(R.id.companionAvatar);
         TextView companionName = view.findViewById(R.id.companionName);
