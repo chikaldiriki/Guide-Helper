@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
@@ -45,6 +46,9 @@ public class DialogFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dialog, container, false);
+
+        BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
+        navView.setVisibility(View.VISIBLE);
 
         ImageLoader imageLoader = (imageView, url, payload) -> Glide
                 .with(DialogFragment.this.requireActivity())
