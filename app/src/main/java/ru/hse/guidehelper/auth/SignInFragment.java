@@ -109,17 +109,17 @@ public class SignInFragment extends Fragment {
                     if (task.isSuccessful()) {
                         // делаем addUser в базу данных
                         FirebaseUser currentUser = mAuth.getCurrentUser();
-                        if (Objects.equals(MainActivity.currentUser, null)) {
-                            MainActivity.currentUser = new User()
-                                    .setUserMail(currentUser.getEmail())
-                                    .setGuide(false)
-                                    .setName(currentUser.getDisplayName())
-                                    .setPhotoUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
-                            System.out.println("--------- Photo ---------");
-                            System.out.println(currentUser.getPhotoUrl().toString());
-                            System.out.println(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
-                        }
-                        System.out.println(MainActivity.currentUser.getAvatar());
+//                        if (Objects.equals(MainActivity.currentUser, null)) {
+//                            MainActivity.currentUser = new User()
+//                                    .setUserMail(currentUser.getEmail())
+//                                    .setGuide(false)
+//                                    .setName(currentUser.getDisplayName())
+//                                    .setAvatarUrl(Objects.requireNonNull(currentUser.getAvatarUrl()).toString());
+//                            System.out.println("--------- Photo ---------");
+//                            System.out.println(currentUser.getAvatarUrl().toString());
+//                            System.out.println(Objects.requireNonNull(currentUser.getAvatarUrl()).toString());
+//                        }
+//                        System.out.println(MainActivity.currentUser.getAvatar());
                         RequestHelper.addUser(MainActivity.currentUser);
                         MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
                         // Sign in success, update UI with the signed-in user's information
