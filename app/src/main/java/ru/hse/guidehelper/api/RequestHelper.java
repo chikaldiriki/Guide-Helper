@@ -3,6 +3,7 @@ package ru.hse.guidehelper.api;
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -12,6 +13,7 @@ import java.util.concurrent.Executors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import ru.hse.guidehelper.dto.ChatDTO;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
@@ -136,6 +138,19 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getFavoriteTours");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Boolean isFavorite(String userMail, Long tourId) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getFavoriteTourService()
+                    .isFavorite(userMail, tourId).execute().body())
+                    .get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "isFavorite");
             throw new RuntimeException(e);
         }
     }

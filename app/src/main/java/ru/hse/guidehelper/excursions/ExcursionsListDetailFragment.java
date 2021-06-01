@@ -97,22 +97,15 @@ public class ExcursionsListDetailFragment extends Fragment {
 
 
             fabSub.setOnClickListener(new View.OnClickListener() {
-                boolean isAddedToFavorite = true; // TODO get состояние
-                // boolean isAddedToFavorite = favorites.containsKey(tour.getId());
+                boolean isAddedToFavorite;
 
-                // FavoritesTourRecyclerViewAdapter.
-                // TourRecyclerViewAdapter
                 {
-                    isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId) != null;
+                    isAddedToFavorite = RequestHelper.isFavorite(MainActivity.currentUser.getUserMail(), MainActivity.currentTourId);
                     if (isAddedToFavorite) {
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                     } else {
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
                     }
-                    System.out.println("==== isAddedToFavorite ====");
-                    System.out.println(isAddedToFavorite);
-                    System.out.println(MainActivity.currentTourId);
-                    System.out.println(FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId));
                 }
 
                 @Override
@@ -123,13 +116,9 @@ public class ExcursionsListDetailFragment extends Fragment {
                         return;
                     }
 
-                    // isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId) != null;
-
                     if (isAddedToFavorite) {
                         // TODO change состояние
-
                         // delete
-
                         System.out.println("All black");
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                         // favorites.remove(tour.getId(), tour);
