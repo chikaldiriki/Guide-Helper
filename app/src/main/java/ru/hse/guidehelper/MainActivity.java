@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (Objects.equals(FirebaseAuth.getInstance().getCurrentUser(), null) && (destination.getId() == R.id.navigation_profile ||
                     destination.getId() == R.id.navigation_notifications ||
-                    destination.getId() == R.id.navigation_dashboard)) {
+                    destination.getId() == R.id.navigation_dashboard ||
+                    destination.getId() == R.id.excursionsListDetailActivity)) {
                 navController.navigate(R.id.signInFragment);
             }
         });

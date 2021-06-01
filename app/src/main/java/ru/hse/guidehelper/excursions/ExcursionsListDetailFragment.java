@@ -96,7 +96,6 @@ public class ExcursionsListDetailFragment extends Fragment {
             fabSub = root.findViewById(R.id.fab_subscriptions);
 
 
-
             fabSub.setOnClickListener(new View.OnClickListener() {
                 boolean isAddedToFavorite = true; // TODO get состояние
                 // boolean isAddedToFavorite = favorites.containsKey(tour.getId());
@@ -104,33 +103,29 @@ public class ExcursionsListDetailFragment extends Fragment {
                 // FavoritesTourRecyclerViewAdapter.
                 // TourRecyclerViewAdapter
                 {
-                    if(MainActivity.currentUser == null) {
-                        MainActivity.navController.navigate(R.id.signInFragment);
+                    isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId) != null;
+                    if (isAddedToFavorite) {
+                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                     } else {
-                        isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId) != null;
-                        if(isAddedToFavorite) {
-                            fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
-                        } else {
-                            fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
-                        }
-                        System.out.println("==== isAddedToFavorite ====");
-                        System.out.println(isAddedToFavorite);
-                        System.out.println(MainActivity.currentTourId);
-                        System.out.println(FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId));
+                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
                     }
+                    System.out.println("==== isAddedToFavorite ====");
+                    System.out.println(isAddedToFavorite);
+                    System.out.println(MainActivity.currentTourId);
+                    System.out.println(FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId));
                 }
 
                 @Override
                 public void onClick(View v) {
                     System.out.println("On click");
-                    if(MainActivity.currentUser == null) {
+                    if (MainActivity.currentUser == null) {
                         MainActivity.navController.navigate(R.id.signInFragment);
                         return;
                     }
 
                     // isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId) != null;
 
-                    if(isAddedToFavorite) {
+                    if (isAddedToFavorite) {
                         // TODO change состояние
 
                         // delete
