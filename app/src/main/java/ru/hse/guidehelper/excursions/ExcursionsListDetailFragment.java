@@ -104,21 +104,38 @@ public class ExcursionsListDetailFragment extends Fragment {
                 // FavoritesTourRecyclerViewAdapter.
                 // TourRecyclerViewAdapter
                 {
-                    isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourById(MainActivity.currentTourId) == null;
+                    if(MainActivity.currentUser == null) {
+                        MainActivity.navController.navigate(R.id.signInFragment);
+                    } else {
+                        isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId) != null;
+                        if(isAddedToFavorite) {
+                            fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
+                        } else {
+                            fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
+                        }
+                        System.out.println("==== isAddedToFavorite ====");
+                        System.out.println(isAddedToFavorite);
+                        System.out.println(MainActivity.currentTourId);
+                        System.out.println(FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId));
+                    }
                 }
 
                 @Override
                 public void onClick(View v) {
+                    System.out.println("On click");
                     if(MainActivity.currentUser == null) {
                         MainActivity.navController.navigate(R.id.signInFragment);
                         return;
                     }
 
-                    isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourById(MainActivity.currentTourId) != null;
+                    // isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourByIdFavorite(MainActivity.currentTourId) != null;
 
                     if(isAddedToFavorite) {
                         // TODO change состояние
+
                         // delete
+
+                        System.out.println("All black");
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                         // favorites.remove(tour.getId(), tour);
                         isAddedToFavorite = false;

@@ -39,6 +39,8 @@ public abstract class TourRecyclerViewAdapter
     protected abstract void initConstructor();
 
     public static Tour getTourById(Long id) {
+        System.out.println("==== getTourById ====");
+        System.out.println(mapIdTour.hashCode());
         return mapIdTour.get(id);
     }
 
