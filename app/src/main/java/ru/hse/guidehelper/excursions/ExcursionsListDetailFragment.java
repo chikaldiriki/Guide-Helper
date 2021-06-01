@@ -100,7 +100,8 @@ public class ExcursionsListDetailFragment extends Fragment {
                 boolean isAddedToFavorite;
 
                 {
-                    isAddedToFavorite = RequestHelper.isFavorite(MainActivity.currentUser.getUserMail(), MainActivity.currentTourId);
+                    isAddedToFavorite = MainActivity.currentUser != null &&
+                            RequestHelper.isFavorite(MainActivity.currentUser.getUserMail(), MainActivity.currentTourId);
                     if (isAddedToFavorite) {
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                     } else {
