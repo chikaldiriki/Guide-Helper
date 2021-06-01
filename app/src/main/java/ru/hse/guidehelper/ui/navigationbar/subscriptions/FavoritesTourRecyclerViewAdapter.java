@@ -7,7 +7,9 @@ import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.excursions.TourRecyclerViewAdapter;
 import ru.hse.guidehelper.model.Tour;
 
-public final class FavoritesTourRecyclerViewAdapter extends TourRecyclerViewAdapter {
+public class FavoritesTourRecyclerViewAdapter extends TourRecyclerViewAdapter {
+
+    static int id = 1;
 
     @Override
     protected void initConstructor() {

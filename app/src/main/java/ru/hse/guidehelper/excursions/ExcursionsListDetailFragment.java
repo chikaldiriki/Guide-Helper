@@ -23,6 +23,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import lombok.SneakyThrows;
 import ru.hse.guidehelper.MainActivity;
@@ -33,10 +35,12 @@ import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
 import ru.hse.guidehelper.ui.navigationbar.excursion.AllTourRecyclerViewAdapter;
+import ru.hse.guidehelper.ui.navigationbar.subscriptions.FavoritesTourRecyclerViewAdapter;
 
 public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_TOUR_ID = "tour_id";
     private Tour tour;
+    private FloatingActionButton fabSub;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -87,13 +91,21 @@ public class ExcursionsListDetailFragment extends Fragment {
                 }
             });
 
-            // Map<Long, Tour> favorites = new HashMap<>();
+            Map<Long, Tour> favorites = FavoritesTourRecyclerViewAdapter.mapIdTour;
 
-            FloatingActionButton fabSub = root.findViewById(R.id.fab_subscriptions);
+            fabSub = root.findViewById(R.id.fab_subscriptions);
+
+
 
             fabSub.setOnClickListener(new View.OnClickListener() {
                 boolean isAddedToFavorite = true; // TODO get состояние
                 // boolean isAddedToFavorite = favorites.containsKey(tour.getId());
+
+                // FavoritesTourRecyclerViewAdapter.
+                // TourRecyclerViewAdapter
+                {
+                    isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourById(MainActivity.currentTourId) == null;
+                }
 
                 @Override
                 public void onClick(View v) {
@@ -101,6 +113,9 @@ public class ExcursionsListDetailFragment extends Fragment {
                         MainActivity.navController.navigate(R.id.signInFragment);
                         return;
                     }
+
+                    isAddedToFavorite = FavoritesTourRecyclerViewAdapter.getTourById(MainActivity.currentTourId) != null;
+
                     if(isAddedToFavorite) {
                         // TODO change состояние
                         // delete

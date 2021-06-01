@@ -27,6 +27,7 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getAllTours");
+            throw new RuntimeException(e);
         }
     }
 
@@ -58,6 +59,7 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getAllTours");
+            throw new RuntimeException(e);
         }
     }
 
@@ -70,6 +72,7 @@ public class RequestHelper {
                     .get());
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getChatId");
+            throw new RuntimeException(e);
         }
     }
 
@@ -82,6 +85,7 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getDialogs");
+            throw new RuntimeException(e);
         }
     }
 
@@ -132,6 +136,7 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getFavoriteTours");
+            throw new RuntimeException(e);
         }
     }
 
