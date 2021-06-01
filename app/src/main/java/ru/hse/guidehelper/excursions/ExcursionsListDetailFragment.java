@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import lombok.SneakyThrows;
@@ -32,6 +31,7 @@ import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
+import ru.hse.guidehelper.model.FavoriteTour;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
 import ru.hse.guidehelper.ui.navigationbar.excursion.AllTourRecyclerViewAdapter;
@@ -120,6 +120,12 @@ public class ExcursionsListDetailFragment extends Fragment {
                     if (isAddedToFavorite) {
                         // TODO change состояние
                         // delete
+                        FavoriteTour tour = new FavoriteTour()
+                                .setUserMail(MainActivity.currentUser.getUserMail())
+                                .setTourId(MainActivity.currentTourId);
+                        System.out.println("getUserMail -- " + (MainActivity.currentUser.getUserMail()));
+                        System.out.println("currentTourId -- " + MainActivity.currentTourId);
+                        RequestHelper.deleteFavoriteTour(tour);
                         System.out.println("All black");
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                         // favorites.remove(tour.getId(), tour);
@@ -127,6 +133,12 @@ public class ExcursionsListDetailFragment extends Fragment {
                     } else {
                         // TODO change состояние
                         // add
+                        FavoriteTour tour = new FavoriteTour()
+                                .setUserMail(MainActivity.currentUser.getUserMail())
+                                .setTourId(MainActivity.currentTourId);
+                        System.out.println("getUserMail -- " + (MainActivity.currentUser.getUserMail()));
+                        System.out.println("currentTourId -- " + MainActivity.currentTourId);
+                        RequestHelper.addFavoriteTour(tour);
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
                         // favorites.put(tour.getId(), tour);
                         isAddedToFavorite = true;

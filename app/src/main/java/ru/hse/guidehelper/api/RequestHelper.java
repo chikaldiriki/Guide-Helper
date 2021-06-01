@@ -15,6 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import ru.hse.guidehelper.dto.ChatDTO;
+import ru.hse.guidehelper.model.FavoriteTour;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
 
@@ -142,6 +143,25 @@ public class RequestHelper {
         }
     }
 
+    public static void addFavoriteTour(FavoriteTour newFavorite) {
+        Api.getInstance()
+                .getFavoriteTourService()
+                .addFavoriteTour(newFavorite)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e(String.valueOf(response.code()), "addFavoriteTour");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                        Log.e("error", "addFavoriteTour");
+                    }
+                });
+    }
+
     public static Boolean isFavorite(String userMail, Long tourId) {
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
         try {
@@ -153,6 +173,25 @@ public class RequestHelper {
             Log.e("error", "isFavorite");
             throw new RuntimeException(e);
         }
+    }
+
+    public static void deleteFavoriteTour(FavoriteTour favoriteTour) {
+        Api.getInstance()
+                .getFavoriteTourService()
+                .deleteFavoriteTour(favoriteTour)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e(String.valueOf(response.code()), "deleteFavoriteTour");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                        Log.e("error", "deleteFavoriteTour");
+                    }
+                });
     }
 
 }
