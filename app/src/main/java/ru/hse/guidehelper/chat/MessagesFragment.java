@@ -2,6 +2,7 @@ package ru.hse.guidehelper.chat;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -127,7 +129,11 @@ public class MessagesFragment extends Fragment {
         });
 
         ImageButton mBackButton = view.findViewById(R.id.backButton);
-        mBackButton.setOnClickListener(view -> MessagesFragment.this.requireActivity().onBackPressed());
+        mBackButton.setOnClickListener(view -> {
+            final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(this.requireView().getWindowToken(), 0);
+            MessagesFragment.this.requireActivity().onBackPressed();
+        });
 
         return view;
     }
