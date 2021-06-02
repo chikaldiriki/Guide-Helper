@@ -36,10 +36,9 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindMessage(Message message) {
-        System.out.println(message.getDispatchTime());
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (message.getName().equals(user.getEmail())) {
-            messageRightTime.setText(message.getDispatchTimeString());
+            messageRightTime.setText(message.getCreatedAt().toString());
             leftBubble.setVisibility(FlexboxLayout.INVISIBLE);
             rightBubble.setVisibility(FlexboxLayout.VISIBLE);
             if (message.getText() != null) {
@@ -48,7 +47,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
                 Glide.with(messageRightImageView.getContext()).load(message.getImageUrl()).into(messageRightImageView);
             }
         } else {
-            messageLeftTime.setText(message.getDispatchTimeString());
+            messageLeftTime.setText(message.getCreatedAt().toString());
             leftBubble.setVisibility(FlexboxLayout.VISIBLE);
             rightBubble.setVisibility(FlexboxLayout.INVISIBLE);
             if (message.getText() != null) {

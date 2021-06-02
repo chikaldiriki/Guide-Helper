@@ -2,6 +2,7 @@ package ru.hse.guidehelper.chat;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -9,16 +10,27 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import ru.hse.guidehelper.MainActivity;
@@ -26,12 +38,14 @@ import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.dto.ChatDTO;
 import ru.hse.guidehelper.model.Chat;
+import ru.hse.guidehelper.model.Message;
 import ru.hse.guidehelper.model.User;
 
 public class DialogFragment extends Fragment
         implements DialogsListAdapter.OnDialogClickListener<Chat> {
 
     private DialogsListAdapter<Chat> adapter;
+    TextView emptyChatListTextView = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,31 +66,36 @@ public class DialogFragment extends Fragment
                 .into(imageView);
 
         DialogsList chatList = root.findViewById(R.id.chatList);
+        emptyChatListTextView = root.findViewById(R.id.emptyChatListTextView);
 
         adapter = new DialogsListAdapter<>(imageLoader);
 
-        /*adapter.addItem(new Chat("1", "FirstUser", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg",
-                new ArrayList<>(Collections.singletonList(new User("1", "aziz", "https://avatarko.ru/img/kartinka/1/avatarko_anonim.jpg"))),
-                null, 0));*/
-
         adapter.setOnDialogClickListener(this);
+        adapter.sortByLastMessageDate();
 
         chatList.setAdapter(adapter);
 
         addAllChatsInAdapter();
+
         return root;
     }
 
     private void addAllChatsInAdapter() {
         List<ChatDTO> allChats = RequestHelper.getDialogs(MainActivity.currentUser.getUserMail());
         if (allChats.isEmpty()) {
+            emptyChatListTextView.setVisibility(View.VISIBLE);
             return;
         }
+        emptyChatListTextView.setVisibility(View.INVISIBLE);
+
 
         List<String> listChatIds = allChats
                 .stream()
                 .map(chatDTO -> RequestHelper.getChatId(chatDTO.getFirstUserMail(), chatDTO.getSecondUserMail()))
                 .collect(Collectors.toList());
+
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+
 
         for (int i = 0; i < allChats.size(); i++) {
             ChatDTO currentChatDTO = allChats.get(i);
@@ -93,17 +112,31 @@ public class DialogFragment extends Fragment
                     ? currentChatDTO.getSecondUserPhoto()
                     : currentChatDTO.getFirstUserPhoto();
 
-            Chat chat = new Chat(listChatIds.get(i),
-                    anotherUserName,
-                    anotherUserAvatarUrl,
-                    new ArrayList<>(
-                            Collections.singletonList(new User()
-                                    .setUserMail(anotherUserMail)
-                                    .setName(anotherUserName)
-                                    .setAvatarUrl(anotherUserAvatarUrl))),
-                    null, 0);
+            AtomicReference<Message> lastMessage = new AtomicReference<>(null);
 
-            adapter.addItem(chat);
+            int finalI = i;
+            mDatabase.getReference()
+                    .child("messages")
+                    .child(listChatIds.get(i))
+                    .limitToLast(1)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        Iterator<DataSnapshot> childrenIterator = task.getResult().getChildren().iterator();
+                        if (childrenIterator.hasNext()) {
+                            lastMessage.set(childrenIterator.next().getValue(Message.class));
+                        }
+
+                        Chat chat = new Chat(listChatIds.get(finalI),
+                                anotherUserName,
+                                anotherUserAvatarUrl,
+                                new ArrayList<>(
+                                        Collections.singletonList(new User()
+                                                .setUserMail(anotherUserMail)
+                                                .setName(anotherUserName)
+                                                .setAvatarUrl(anotherUserAvatarUrl))), lastMessage.get().setUser(new User()), 0);
+
+                        adapter.addItem(chat);
+                    });
         }
     }
 
