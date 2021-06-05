@@ -91,8 +91,6 @@ public class ExcursionsListDetailFragment extends Fragment {
                 }
             });
 
-            Map<Long, Tour> favorites = FavoritesTourRecyclerViewAdapter.mapIdTour;
-
             fabSub = root.findViewById(R.id.fab_subscriptions);
 
 
@@ -117,29 +115,27 @@ public class ExcursionsListDetailFragment extends Fragment {
                         return;
                     }
 
+                    FavoriteTour tour = new FavoriteTour()
+                            .setUserMail(MainActivity.currentUser.getUserMail())
+                            .setTourId(MainActivity.currentTourId);
+
                     if (isAddedToFavorite) {
                         // TODO change состояние
                         // delete
-                        FavoriteTour tour = new FavoriteTour()
-                                .setUserMail(MainActivity.currentUser.getUserMail())
-                                .setTourId(MainActivity.currentTourId);
                         System.out.println("getUserMail -- " + (MainActivity.currentUser.getUserMail()));
                         System.out.println("currentTourId -- " + MainActivity.currentTourId);
                         RequestHelper.deleteFavoriteTour(tour);
                         System.out.println("All black");
-                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
+                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
                         // favorites.remove(tour.getId(), tour);
                         isAddedToFavorite = false;
                     } else {
                         // TODO change состояние
                         // add
-                        FavoriteTour tour = new FavoriteTour()
-                                .setUserMail(MainActivity.currentUser.getUserMail())
-                                .setTourId(MainActivity.currentTourId);
                         System.out.println("getUserMail -- " + (MainActivity.currentUser.getUserMail()));
                         System.out.println("currentTourId -- " + MainActivity.currentTourId);
                         RequestHelper.addFavoriteTour(tour);
-                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
+                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                         // favorites.put(tour.getId(), tour);
                         isAddedToFavorite = true;
                     }

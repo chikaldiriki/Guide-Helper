@@ -3,7 +3,6 @@ package ru.hse.guidehelper.api;
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -13,7 +12,6 @@ import java.util.concurrent.Executors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Body;
 import ru.hse.guidehelper.dto.ChatDTO;
 import ru.hse.guidehelper.model.FavoriteTour;
 import ru.hse.guidehelper.model.Tour;
