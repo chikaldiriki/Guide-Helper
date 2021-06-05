@@ -31,7 +31,6 @@ import java.util.Objects;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
-import ru.hse.guidehelper.config.ApplicationConfig;
 import ru.hse.guidehelper.model.User;
 
 public class SignInFragment extends Fragment {
@@ -118,7 +117,6 @@ public class SignInFragment extends Fragment {
 
                         //System.out.println(MainActivity.currentUser.getAvatar());
                         RequestHelper.addUser(MainActivity.currentUser);
-                        MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("LoginActivity", "signInWithCredential:success");
 

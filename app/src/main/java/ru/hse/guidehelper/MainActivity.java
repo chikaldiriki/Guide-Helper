@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Objects;
 
-import ru.hse.guidehelper.config.ApplicationConfig;
+import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.model.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,34 +45,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        File cacheFile = new File(getCacheDir(), "userCache.txt");
-        ApplicationConfig.setCachedUserDTOfile(cacheFile);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if (!ApplicationConfig.cachedUserDTOfile.exists()) {
-            try {
-                ApplicationConfig.cachedUserDTOfile.createNewFile();
-            } catch (IOException ignored) {
-            }
-        } else {
-            currentUser = readUserFromFile(ApplicationConfig.cachedUserDTOfile);
+        if (user != null) {
+            MainActivity.currentUser = RequestHelper.getUser(user.getEmail());
         }
-    }
 
-    public static void writeUserToFile(File file, User user) {
-        try (FileOutputStream outputStream = new FileOutputStream(file);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
-            objectOutputStream.writeObject(user);
-        } catch (IOException ignored) {
-        }
-    }
-
-    public static User readUserFromFile(File file) {
-        try (FileInputStream fileInputStream = new FileInputStream(file);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-            return (User) objectInputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            return null;
-        }
     }
 
     @Override
