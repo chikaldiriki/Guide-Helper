@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        BottomNavigationView navView = this.findViewById(R.id.nav_view);
+        navView.setVisibility(BottomNavigationView.VISIBLE);
         super.onBackPressed();
     }
 }

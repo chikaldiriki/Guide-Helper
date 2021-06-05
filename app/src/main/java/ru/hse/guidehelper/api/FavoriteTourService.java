@@ -16,7 +16,7 @@ public interface FavoriteTourService {
     @GET("favorites/{userMail}/{tourId}")
     Call<Boolean> isFavorite(@Path("userMail") String userMail, @Path("tourId") Long tourId);
 
-    @DELETE("favorites/delete")
-    Call<Void> deleteFavoriteTour(@Body FavoriteTour favoriteTour);
+    @DELETE("favorites/delete/{userMail}/{tourId}")
+    Call<Void> deleteFavoriteTour(@Path("userMail") String userMail, @Path("tourId") Long tourId);
 
 }

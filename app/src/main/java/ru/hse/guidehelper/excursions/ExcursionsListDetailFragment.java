@@ -124,7 +124,7 @@ public class ExcursionsListDetailFragment extends Fragment {
                         // delete
                         System.out.println("getUserMail -- " + (MainActivity.currentUser.getUserMail()));
                         System.out.println("currentTourId -- " + MainActivity.currentTourId);
-                        RequestHelper.deleteFavoriteTour(tour);
+                        RequestHelper.deleteFavoriteTour(tour.getUserMail(), tour.getTourId());
                         System.out.println("All black");
                         fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
                         // favorites.remove(tour.getId(), tour);

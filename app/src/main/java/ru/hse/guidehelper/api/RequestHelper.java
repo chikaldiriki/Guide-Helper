@@ -173,10 +173,10 @@ public class RequestHelper {
         }
     }
 
-    public static void deleteFavoriteTour(FavoriteTour favoriteTour) {
+    public static void deleteFavoriteTour(String userMail, Long tourId) {
         Api.getInstance()
                 .getFavoriteTourService()
-                .deleteFavoriteTour(favoriteTour)
+                .deleteFavoriteTour(userMail, tourId)
                 .enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
