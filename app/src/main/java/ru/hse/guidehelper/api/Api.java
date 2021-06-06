@@ -10,6 +10,7 @@ public class Api {
     private final UserService userService;
     private final ChatService chatService;
     private final FavoriteTourService favoriteTourService;
+    private final OrderService orderService;
 
     private static Api instance;
 
@@ -30,6 +31,7 @@ public class Api {
         userService = retrofit.create(UserService.class);
         chatService = retrofit.create(ChatService.class);
         favoriteTourService = retrofit.create(FavoriteTourService.class);
+        orderService = retrofit.create(OrderService.class);
     }
 
     public TourService getTourService() {
@@ -46,5 +48,9 @@ public class Api {
 
     public FavoriteTourService getFavoriteTourService() {
         return favoriteTourService;
+    }
+
+    public OrderService getOrderService() {
+        return orderService;
     }
 }

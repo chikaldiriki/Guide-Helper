@@ -15,4 +15,6 @@
     <string name="title_excursionslist_list">ExcursionsList</string>
     <string name="title_excursionslist_detail">ExcursionsList Detail</string>
     <string name="NonEmptyStringRegexp">((\\s*)[^\\s]+(\\s*))+</string>
+
+    <string name="fab_orders_label"> КУПИТЬ </string>
 </resources>
