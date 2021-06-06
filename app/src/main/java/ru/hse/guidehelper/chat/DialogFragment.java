@@ -1,5 +1,6 @@
 package ru.hse.guidehelper.chat;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,11 +22,14 @@ import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import lombok.SneakyThrows;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
@@ -45,6 +49,8 @@ public class DialogFragment extends Fragment
         super.onCreate(savedInstanceState);
     }
 
+    @SneakyThrows
+    @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,16 +70,25 @@ public class DialogFragment extends Fragment
         adapter = new DialogsListAdapter<>(imageLoader);
 
         adapter.setOnDialogClickListener(this);
-        adapter.sortByLastMessageDate();
 
         chatList.setAdapter(adapter);
 
         addAllChatsInAdapter();
 
+        adapter.sort(new Comparator<Chat>() {
+            @Override
+            public int compare(Chat o1, Chat o2) {
+                System.out.println(o1.getDialogName() + " vs " + o2.getDialogName());
+                return o1.getDialogName().compareTo(o2.getDialogName());
+            }
+        });
+        adapter.notifyDataSetChanged();
+
+
         return root;
     }
 
-    private void addAllChatsInAdapter() {
+    private void addAllChatsInAdapter() throws InterruptedException {
         List<ChatDTO> allChats = RequestHelper.getDialogs(MainActivity.currentUser.getUserMail());
         if (allChats.isEmpty()) {
             emptyChatListTextView.setVisibility(View.VISIBLE);
@@ -90,6 +105,7 @@ public class DialogFragment extends Fragment
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 
 
+        AtomicInteger countBindedDialogs = new AtomicInteger();
         for (int i = 0; i < allChats.size(); i++) {
             ChatDTO currentChatDTO = allChats.get(i);
 
@@ -117,7 +133,12 @@ public class DialogFragment extends Fragment
                         Iterator<DataSnapshot> childrenIterator = task.getResult().getChildren().iterator();
                         if (childrenIterator.hasNext()) {
                             lastMessage.set(childrenIterator.next().getValue(Message.class));
+                            System.out.println(lastMessage.get().getCreatedAt());
+                        } else {
+                            return;
                         }
+
+                        countBindedDialogs.getAndIncrement();
 
                         Chat chat = new Chat(listChatIds.get(finalI),
                                 anotherUserName,
@@ -129,6 +150,8 @@ public class DialogFragment extends Fragment
                                                 .setAvatarUrl(anotherUserAvatarUrl))), lastMessage.get().setUser(new User()), 0);
 
                         adapter.addItem(chat);
+                        adapter.notifyDataSetChanged();
+                        adapter.sortByLastMessageDate();
                     });
         }
     }
@@ -136,6 +159,7 @@ public class DialogFragment extends Fragment
     @Override
     public void onDialogClick(Chat chat) {
         MessagesFragment.setChat(chat);
+
 
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigate(R.id.messagesFragment2);

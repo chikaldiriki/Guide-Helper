@@ -1,5 +1,9 @@
 package ru.hse.guidehelper.excursions;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -7,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.LayoutInflater;
@@ -22,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 
 import ru.hse.guidehelper.MainActivity;
@@ -39,8 +45,9 @@ public class ExcursionsListDetailFragment extends Fragment {
     private Tour tour;
     private FloatingActionButton fabSub;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
@@ -96,6 +103,12 @@ public class ExcursionsListDetailFragment extends Fragment {
 
             if (tour != null) {
                 ((TextView) root.findViewById(R.id.excursionslist_detail_container)).setText(tour.getDescription());
+                if (tour.getImage() != null) {
+                    byte[] imageByteArray = Base64.getDecoder().decode(tour.getImage());
+                    Bitmap image = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+
+                    root.findViewById(R.id.app_bar).setBackground(new BitmapDrawable(getResources(), image));
+                }
             }
         }
 
