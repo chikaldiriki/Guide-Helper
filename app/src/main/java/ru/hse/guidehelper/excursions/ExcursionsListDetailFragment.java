@@ -24,7 +24,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import lombok.SneakyThrows;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
@@ -84,7 +83,7 @@ public class ExcursionsListDetailFragment extends Fragment {
             });
 
             fabSub = root.findViewById(R.id.fab_subscriptions);
-            fabSub.setOnClickListener(new fabSubViewOnClickListener(root));
+            fabSub.setOnClickListener(new FabSubOnClickListener(root));
 
             if (arguments.containsKey(ARG_TOUR_ID)) {
                 tour = AllTourRecyclerViewAdapter.getTourById(arguments.getLong(ARG_TOUR_ID));
@@ -103,11 +102,11 @@ public class ExcursionsListDetailFragment extends Fragment {
         return root;
     }
 
-    private class fabSubViewOnClickListener implements View.OnClickListener {
+    private class FabSubOnClickListener implements View.OnClickListener {
         private boolean isAddedToFavorite;
         private final View root;
 
-        public fabSubViewOnClickListener(View root) {
+        public FabSubOnClickListener(View root) {
             this.root = root;
             isAddedToFavorite = MainActivity.currentUser != null &&
                     RequestHelper.isFavorite(MainActivity.currentUser.getUserMail(), MainActivity.currentTourId);
