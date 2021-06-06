@@ -28,8 +28,9 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getAllTours");
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static void addTour(Tour tour) {
@@ -60,8 +61,9 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getAllTours");
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static String getChatId(String firstUserId, String secondUserId) {
@@ -73,8 +75,9 @@ public class RequestHelper {
                     .get());
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getChatId");
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static List<ChatDTO> getDialogs(String userId) {
@@ -86,8 +89,9 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getDialogs");
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static void addUser(User user) {
@@ -137,8 +141,9 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getFavoriteTours");
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static void addFavoriteTour(FavoriteTour newFavorite) {
@@ -169,8 +174,9 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "isFavorite");
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static void deleteFavoriteTour(String userMail, Long tourId) {
