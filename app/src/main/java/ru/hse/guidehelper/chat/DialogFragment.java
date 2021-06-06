@@ -38,7 +38,7 @@ public class DialogFragment extends Fragment
         implements DialogsListAdapter.OnDialogClickListener<Chat> {
 
     private DialogsListAdapter<Chat> adapter;
-    TextView emptyChatListTextView = null;
+    private TextView emptyChatListTextView = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
