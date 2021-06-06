@@ -110,7 +110,7 @@ public class SignInFragment extends Fragment {
                         if (Objects.equals(MainActivity.currentUser, null)) {
                             MainActivity.currentUser = new User()
                                     .setUserMail(currentUser.getEmail())
-                                    .setGuide(false)
+                                    .setIsGuide(false)
                                     .setName(currentUser.getDisplayName())
                                     .setAvatarUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
                         }

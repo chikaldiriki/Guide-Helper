@@ -36,10 +36,13 @@ public class ProfileFragment extends Fragment {
         if (Objects.equals(MainActivity.currentUser, null)) {
             MainActivity.currentUser = new User()
                     .setUserMail(currentUser.getEmail())
-                    .setGuide(false)
+                    .setIsGuide(false)
                     .setName(currentUser.getDisplayName())
                     .setAvatarUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
         }
+
+        System.out.println(MainActivity.currentUser.getName());
+        System.out.println(MainActivity.currentUser.getIsGuide());
 
         String personImage = MainActivity.currentUser.getAvatarUrl();
         CircleImageView profileImageView = root.findViewById(R.id.profile_image);
@@ -48,7 +51,7 @@ public class ProfileFragment extends Fragment {
         TextView nameTextView = root.findViewById(R.id.name);
         TextView roleTextView = root.findViewById(R.id.role);
         nameTextView.setText(currentUser.getDisplayName());
-        roleTextView.setText(MainActivity.currentUser.isGuide() ? "Guide" : "Tripper");
+        roleTextView.setText(MainActivity.currentUser.getIsGuide() ? "Guide" : "Tripper");
 
 
         Button buttonToChat = root.findViewById(R.id.buttonToChat);
@@ -73,7 +76,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        if (!MainActivity.currentUser.isGuide()) {
+        if (!MainActivity.currentUser.getIsGuide()) {
             ConstraintLayout layout = root.findViewById(R.id.profileGuideInfoLayout);
             layout.setVisibility(View.INVISIBLE);
             addExcursionButton.setVisibility(View.INVISIBLE);

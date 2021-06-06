@@ -65,7 +65,7 @@ public class GuideInfoFragment extends Fragment {
                         .setCity(editLocation.getText().toString())
                         .setPhoneNumber(editMobilePhone.getText().toString())
                         .setDescription(editDescription.getText().toString())
-                        .setGuide(true);
+                        .setIsGuide(true);
                 RequestHelper.updateUser(MainActivity.currentUser, MainActivity.currentUser.getId());
 
                 GuideInfoFragment.this.requireActivity().onBackPressed();
