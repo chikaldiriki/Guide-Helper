@@ -71,9 +71,20 @@ public class DialogFragment extends Fragment
 
         adapter.setOnDialogClickListener(this);
 
+        adapter.setOnDialogViewLongClickListener(new DialogsListAdapter.OnDialogViewLongClickListener<Chat>() {
+            @Override
+            public void onDialogViewLongClick(View view, Chat dialog) {
+                List<String> keywords = RequestHelper.getKeywords(MainActivity.currentUser.getUserMail(),
+                        dialog.getUsers().get(0).getUserMail());
+                System.out.println(keywords);
+            }
+        });
+
         chatList.setAdapter(adapter);
 
         addAllChatsInAdapter();
+
+
 
         adapter.sort(new Comparator<Chat>() {
             @Override
