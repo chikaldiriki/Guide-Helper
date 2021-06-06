@@ -51,7 +51,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_subscriptions"
-        android:layout_width="309dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_margin="@dimen/fab_margin"
@@ -68,6 +68,17 @@
         app:layout_anchor="@+id/excursionslist_detail_container"
         app:layout_anchorGravity="top|end"
         app:srcCompat="@android:drawable/stat_notify_chat" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@+id/excursionslist_detail_container"
+        app:layout_anchorGravity="bottom|left"
+        android:text="@string/fab_orders_label"
+        app:icon="@drawable/ic_baseline_attach_order_24" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
