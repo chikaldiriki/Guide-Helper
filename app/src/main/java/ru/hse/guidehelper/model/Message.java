@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -27,15 +26,13 @@ public class Message implements IMessage {
 
     private String text;
 
-    private Timestamp dispatchTime;
+    private Date createdAt;
 
     private IUser user;
 
     private String name;
 
     private String imageUrl;
-
-    private String dispatchTimeString;
 
     @Override
     public String getId() {
@@ -54,18 +51,18 @@ public class Message implements IMessage {
 
     @Override
     public Date getCreatedAt() {
-        return dispatchTime;
+        return createdAt;
     }
 
     public Message(String text, String name, String imageUrl) {
         this.text = text;
         this.name = name;
         this.imageUrl = imageUrl;
-        this.dispatchTimeString = new Timestamp(System.currentTimeMillis()).toString();
+        this.createdAt = new Date();
     }
 
     public Message() {
-        this.dispatchTimeString = new Timestamp(System.currentTimeMillis()).toString();
+        this.createdAt = new Date();
     }
 
     public void setText(String text) {
@@ -86,10 +83,6 @@ public class Message implements IMessage {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public String getDispatchTimeString() {
-        return this.dispatchTimeString;
     }
 }
 

@@ -24,7 +24,7 @@ public abstract class TourRecyclerViewAdapter
 //    }
 
     protected List<Tour> tours = null;
-    protected static Map<Long, Tour> mapIdTour;
+    public static Map<Long, Tour> mapIdTour;
 
     private final View.OnClickListener mOnClickListener = view -> {
         Tour currTour = (Tour) view.getTag();
@@ -39,6 +39,8 @@ public abstract class TourRecyclerViewAdapter
     protected abstract void initConstructor();
 
     public static Tour getTourById(Long id) {
+        System.out.println("==== getTourById ====");
+        System.out.println(mapIdTour.hashCode());
         return mapIdTour.get(id);
     }
 

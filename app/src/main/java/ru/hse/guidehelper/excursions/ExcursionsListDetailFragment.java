@@ -24,12 +24,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import lombok.SneakyThrows;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
+import ru.hse.guidehelper.model.FavoriteTour;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
 import ru.hse.guidehelper.ui.navigationbar.excursion.AllTourRecyclerViewAdapter;
@@ -37,9 +37,10 @@ import ru.hse.guidehelper.ui.navigationbar.excursion.AllTourRecyclerViewAdapter;
 public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_TOUR_ID = "tour_id";
     private Tour tour;
+    private FloatingActionButton fabSub;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+            ViewGroup container, Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
@@ -64,58 +65,25 @@ public class ExcursionsListDetailFragment extends Fragment {
 
             Tour curTour = AllTourRecyclerViewAdapter.getTourById(MainActivity.currentTourId);
             FloatingActionButton fab = root.findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @SneakyThrows
-                @Override
-                public void onClick(View view) {
-                    String guideMail = curTour.getGuide();
-                    String userMail = MainActivity.currentUser.getUserMail();
-                    System.out.println(guideMail);
-                    System.out.println(userMail);
+            fab.setOnClickListener(view -> {
+                String guideMail = curTour.getGuide();
+                String userMail = MainActivity.currentUser.getUserMail();
 
-                    String chatId = RequestHelper.getChatId(guideMail, userMail);
-                    User guide = RequestHelper.getUser(guideMail);
-                    Chat chat = new Chat(chatId,
-                            guideMail,
-                            guide.getAvatarUrl(),
-                            new ArrayList<>(Collections.singletonList(guide)),
-                            null,
-                            0);
+                String chatId = RequestHelper.getChatId(guideMail, userMail);
+                User guide = RequestHelper.getUser(guideMail);
+                Chat chat = new Chat(chatId,
+                        guideMail,
+                        guide.getAvatarUrl(),
+                        new ArrayList<>(Collections.singletonList(guide)),
+                        null,
+                        0);
 
-                    MessagesFragment.setChat(chat);
-                    MainActivity.navController.navigate(R.id.messagesFragment2);
-                }
+                MessagesFragment.setChat(chat);
+                MainActivity.navController.navigate(R.id.messagesFragment2);
             });
 
-            // Map<Long, Tour> favorites = new HashMap<>();
-
-            FloatingActionButton fabSub = root.findViewById(R.id.fab_subscriptions);
-
-            fabSub.setOnClickListener(new View.OnClickListener() {
-                boolean isAddedToFavorite = true; // TODO get состояние
-                // boolean isAddedToFavorite = favorites.containsKey(tour.getId());
-
-                @Override
-                public void onClick(View v) {
-                    if(MainActivity.currentUser == null) {
-                        MainActivity.navController.navigate(R.id.signInFragment);
-                        return;
-                    }
-                    if(isAddedToFavorite) {
-                        // TODO change состояние
-                        // delete
-                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
-                        // favorites.remove(tour.getId(), tour);
-                        isAddedToFavorite = false;
-                    } else {
-                        // TODO change состояние
-                        // add
-                        fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
-                        // favorites.put(tour.getId(), tour);
-                        isAddedToFavorite = true;
-                    }
-                }
-            });
+            fabSub = root.findViewById(R.id.fab_subscriptions);
+            fabSub.setOnClickListener(new FabSubOnClickListener(root));
 
             if (arguments.containsKey(ARG_TOUR_ID)) {
                 tour = AllTourRecyclerViewAdapter.getTourById(arguments.getLong(ARG_TOUR_ID));
@@ -132,6 +100,44 @@ public class ExcursionsListDetailFragment extends Fragment {
         }
 
         return root;
+    }
+
+    private class FabSubOnClickListener implements View.OnClickListener {
+        private boolean isAddedToFavorite;
+        private final View root;
+
+        public FabSubOnClickListener(View root) {
+            this.root = root;
+            isAddedToFavorite = MainActivity.currentUser != null &&
+                    RequestHelper.isFavorite(MainActivity.currentUser.getUserMail(), MainActivity.currentTourId);
+            if (isAddedToFavorite) {
+                fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
+            } else {
+                fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (MainActivity.currentUser == null) {
+                MainActivity.navController.navigate(R.id.signInFragment);
+                return;
+            }
+
+            FavoriteTour tour = new FavoriteTour()
+                    .setUserMail(MainActivity.currentUser.getUserMail())
+                    .setTourId(MainActivity.currentTourId);
+
+            if (isAddedToFavorite) {
+                RequestHelper.deleteFavoriteTour(tour.getUserMail(), tour.getTourId());
+                fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
+                isAddedToFavorite = false;
+            } else {
+                RequestHelper.addFavoriteTour(tour);
+                fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
+                isAddedToFavorite = true;
+            }
+        }
     }
 
     @Override

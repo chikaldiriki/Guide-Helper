@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 public class User implements IUser, Serializable {
     private String userMail;
 
-    private boolean isGuide;
+    private Boolean isGuide;
 
     private String name;
 

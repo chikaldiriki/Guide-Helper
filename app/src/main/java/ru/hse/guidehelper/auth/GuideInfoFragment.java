@@ -23,14 +23,13 @@ import java.util.regex.Pattern;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
-import ru.hse.guidehelper.config.ApplicationConfig;
 
 public class GuideInfoFragment extends Fragment {
     private EditText editLocation;
     private EditText editMobilePhone;
     private EditText editDescription;
     private AwesomeValidation awesomeValidation;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +65,8 @@ public class GuideInfoFragment extends Fragment {
                         .setCity(editLocation.getText().toString())
                         .setPhoneNumber(editMobilePhone.getText().toString())
                         .setDescription(editDescription.getText().toString())
-                        .setGuide(true);
+                        .setIsGuide(true);
                 RequestHelper.updateUser(MainActivity.currentUser, MainActivity.currentUser.getId());
-
-                MainActivity.writeUserToFile(ApplicationConfig.cachedUserDTOfile, MainActivity.currentUser);
 
                 GuideInfoFragment.this.requireActivity().onBackPressed();
                 GuideInfoFragment.this.requireActivity().onBackPressed();

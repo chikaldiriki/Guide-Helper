@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.hse.guidehelper.dto.ChatDTO;
+import ru.hse.guidehelper.model.FavoriteTour;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
 
@@ -27,7 +28,9 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getAllTours");
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static void addTour(Tour tour) {
@@ -58,7 +61,9 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getAllTours");
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static String getChatId(String firstUserId, String secondUserId) {
@@ -70,7 +75,9 @@ public class RequestHelper {
                     .get());
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getChatId");
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static List<ChatDTO> getDialogs(String userId) {
@@ -82,7 +89,9 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getDialogs");
+            // throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static void addUser(User user) {
@@ -132,7 +141,61 @@ public class RequestHelper {
                     .get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getFavoriteTours");
+            // throw new RuntimeException(e);
         }
+        return null;
+    }
+
+    public static void addFavoriteTour(FavoriteTour newFavorite) {
+        Api.getInstance()
+                .getFavoriteTourService()
+                .addFavoriteTour(newFavorite)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e(String.valueOf(response.code()), "addFavoriteTour");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                        Log.e("error", "addFavoriteTour");
+                    }
+                });
+    }
+
+    public static Boolean isFavorite(String userMail, Long tourId) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getFavoriteTourService()
+                    .isFavorite(userMail, tourId).execute().body())
+                    .get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "isFavorite");
+            // throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public static void deleteFavoriteTour(String userMail, Long tourId) {
+        Api.getInstance()
+                .getFavoriteTourService()
+                .deleteFavoriteTour(userMail, tourId)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e(String.valueOf(response.code()), "deleteFavoriteTour");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                        Log.e("error", "deleteFavoriteTour");
+                    }
+                });
     }
 
 }
