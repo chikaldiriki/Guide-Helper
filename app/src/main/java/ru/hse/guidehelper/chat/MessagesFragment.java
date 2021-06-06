@@ -85,7 +85,6 @@ public class MessagesFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push();
         DatabaseReference messagesRef = mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId());
-        System.out.println(mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).get());
 
         FirebaseRecyclerOptions<Message> options =
                 new FirebaseRecyclerOptions.Builder<Message>().setQuery(messagesRef, Message.class).build();
@@ -116,8 +115,6 @@ public class MessagesFragment extends Fragment {
         mBinding.sendButton.setOnClickListener(view -> {
             Message message = new Message(mBinding.messageEditText.getText().toString(), getUserMail(), getUserPhotoUrl());
             mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push().setValue(message);
-            chat.setLastMessage(message);
-            // отправить мессагу в БД
             mBinding.messageEditText.setText("");
         });
 
@@ -155,7 +152,7 @@ public class MessagesFragment extends Fragment {
         super.onDestroy();
     }
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
@@ -178,7 +175,7 @@ public class MessagesFragment extends Fragment {
                         }
                     });
         }
-    }
+    }*/
 
     private void putImageInStorage(StorageReference storageReference, Uri uri, final String key) {
         storageReference
