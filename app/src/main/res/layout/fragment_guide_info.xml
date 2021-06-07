@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Введите локацию ваших экскурсий"
-        android:inputType="textPersonName" />
+        android:inputType="textMultiLine" />
 
     <EditText
         android:id="@+id/editMobilePhone"
@@ -33,8 +33,8 @@
         android:id="@+id/editDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Введите описание о себе и экскурсиях"
-        android:inputType="text" />
+        android:hint="Введите описание о себе и ваших услугах"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/saveChangesButton"
