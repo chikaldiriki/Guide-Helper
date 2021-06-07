@@ -17,4 +17,5 @@
     <color name="colorBlue">#2962FF</color>
     <color name="colorSenderMessage">#D4EBCD</color>
     <color name="colorUserInDialogBackground">#E0CFB1</color>
+    <color name="colorYellow">#FFEA00</color>
 </resources>

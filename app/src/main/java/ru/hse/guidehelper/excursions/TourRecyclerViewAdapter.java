@@ -2,7 +2,6 @@ package ru.hse.guidehelper.excursions;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -57,7 +56,7 @@ public abstract class TourRecyclerViewAdapter
     public TourRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.excursions_list_content, parent, false);
-        return new TourRecyclerViewAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -84,7 +83,7 @@ public abstract class TourRecyclerViewAdapter
         return tours.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView excursionName;
         public final TextView costTextView;
         public final ImageView imageImageView;
