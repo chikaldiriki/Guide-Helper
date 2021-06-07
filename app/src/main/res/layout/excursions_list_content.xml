@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/overImageCardView"
                 android:layout_width="match_parent"
@@ -49,7 +48,6 @@
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
-
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -58,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/overImageCardView"
                 android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem" />
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="20sp" />
 
         </RelativeLayout>
 

@@ -79,7 +79,11 @@ public class MessagesFragment extends Fragment {
 
         CircleImageView companionAvatar = view.findViewById(R.id.companionAvatar);
         TextView companionName = view.findViewById(R.id.companionName);
-        Glide.with(MessagesFragment.this.requireContext()).load(chat.getDialogPhoto()).into(companionAvatar);
+        if (chat.getDialogPhoto() == null) {
+            Glide.with(MessagesFragment.this.requireContext()).load(R.drawable.ic_account_circle_black_36dp).into(companionAvatar);
+        } else {
+            Glide.with(MessagesFragment.this.requireContext()).load(chat.getDialogPhoto()).into(companionAvatar);
+        }
         companionName.setText(chat.getUsers().get(0).getName());
 
         mDatabase = FirebaseDatabase.getInstance();
