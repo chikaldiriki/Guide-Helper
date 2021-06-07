@@ -132,6 +132,14 @@ public class AddExcursionFragment extends Fragment {
         awesomeValidation.addValidation(editCity, Pattern.compile(getString(R.string.NonEmptyStringRegexp)), "Локация не должна быть пустой!");
         awesomeValidation.addValidation(editCity, s -> s.length() < 255, "Название локации слишком большое!");
         awesomeValidation.addValidation(editCost, Pattern.compile("[1-9][0-9]*"), "Введите стоимость в рублях, например : 1000");
+        awesomeValidation.addValidation(editCost, s -> {
+            try {
+                int cost = Integer.parseInt(s);
+                return cost <= 10000;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }, "Стоимость экскурсии не может превышать 10000 рублей!");
         awesomeValidation.addValidation(editDescription, Pattern.compile(getString(R.string.NonEmptyStringRegexp)), "Описание не должно быть пустым!");
 
         return root;
