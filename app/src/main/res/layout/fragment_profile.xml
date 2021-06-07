@@ -55,16 +55,17 @@
 
             <Button
                 android:id="@+id/becomeGuideButton"
-                android:layout_width="90dp"
-                android:layout_height="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="175dp"
                 android:text="Стать гидом" />
 
             <Button
                 android:id="@+id/buttonToChat"
-                android:layout_width="90dp"
-                android:layout_height="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="Чат"/>
+                android:text="Чат" />
 
         </RelativeLayout>
 
@@ -101,9 +102,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
-                app:layout_constraintWidth_max="200dp"
                 app:layout_constraintStart_toEndOf="@+id/textViewEmail"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_max="200dp" />
 
             <TextView
                 android:id="@+id/textViewLocation"
@@ -122,9 +123,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
-                app:layout_constraintWidth_max="200dp"
                 app:layout_constraintStart_toEndOf="@+id/textViewEmail"
-                app:layout_constraintTop_toBottomOf="@+id/email" />
+                app:layout_constraintTop_toBottomOf="@+id/email"
+                app:layout_constraintWidth_max="200dp" />
 
             <TextView
                 android:id="@+id/textViewMobile"
@@ -143,9 +144,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
-                app:layout_constraintWidth_max="200dp"
                 app:layout_constraintStart_toEndOf="@+id/textViewEmail"
-                app:layout_constraintTop_toBottomOf="@id/location" />
+                app:layout_constraintTop_toBottomOf="@id/location"
+                app:layout_constraintWidth_max="200dp" />
 
             <TextView
                 android:id="@+id/textViewDescription"
@@ -164,9 +165,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
-                app:layout_constraintWidth_max="200dp"
                 app:layout_constraintStart_toEndOf="@+id/textViewEmail"
-                app:layout_constraintTop_toBottomOf="@id/mobileNumber" />
+                app:layout_constraintTop_toBottomOf="@id/mobileNumber"
+                app:layout_constraintWidth_max="200dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -174,7 +175,7 @@
             android:id="@+id/addExcursionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Добавить экскурсию"
-            android:layout_below="@+id/profileGuideInfoLayout" />
+            android:layout_below="@+id/profileGuideInfoLayout"
+            android:text="Добавить экскурсию" />
     </RelativeLayout>
 </ScrollView>
