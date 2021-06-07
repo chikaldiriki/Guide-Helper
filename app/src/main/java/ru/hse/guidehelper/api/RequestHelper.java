@@ -218,4 +218,17 @@ public class RequestHelper {
                 });
     }
 
+    public static List<String> getKeywords(String firstUser, String secondUser) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getChatService()
+                    .getKeywords(firstUser, secondUser).execute().body()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getKeywords");
+            //throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }

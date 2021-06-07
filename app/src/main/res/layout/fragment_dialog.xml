@@ -19,6 +19,29 @@ tools:context=".chat.DialogFragment">
     android:gravity="center"
     android:textSize="20sp"
     android:textColor="@color/design_default_color_primary"
-    android:text="У вас нет чатов. Напишите гиду или опубликуйте экскурсию и ждите сообщений."/>
+    android:text="У вас нет чатов. Напишите гиду или опубликуйте экскурсию и ждите сообщений."
+    />
+
+    <include
+        layout="@layout/keywords_list"
+        android:layout_width="match_parent"
+        android:layout_height="109dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginRight="50dp"
+        android:visibility="invisible"
+        app:layout_anchor="@+id/frameLayout"
+        app:layout_anchorGravity="center" />
+
+    <ImageButton
+        android:id="@+id/buttonClose"
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="180dp"
+        android:background="@null"
+        android:src="@drawable/ic_baseline_cancel_24"
+        android:visibility="invisible"
+        />
 
 </FrameLayout>
