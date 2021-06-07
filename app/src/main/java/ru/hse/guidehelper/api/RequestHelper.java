@@ -218,6 +218,20 @@ public class RequestHelper {
                 });
     }
 
+    public static List<Tour> getToursWithCostLimit(Long costLimit) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getTourService()
+                    .getToursWithCostLimit(costLimit).execute().body())
+                    .get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getToursWithCostLimit");
+            // throw new RuntimeException(e);
+        }
+        return null;
+    }
+
     public static List<String> getKeywords(String firstUser, String secondUser) {
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
         try {

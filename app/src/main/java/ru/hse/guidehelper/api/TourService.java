@@ -7,6 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import ru.hse.guidehelper.model.Tour;
 
 public interface TourService {
@@ -19,4 +20,7 @@ public interface TourService {
 
     @GET("tours/favorites/{userMail}")
     Call<List<Tour>> getFavoriteTours(@Path("userMail") String userMail);
+
+    @GET("tours/cost")
+    Call<List<Tour>> getToursWithCostLimit(@Query("costLimit") Long costLimit);
 }

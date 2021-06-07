@@ -1,5 +1,6 @@
 package ru.hse.guidehelper.auth;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,9 @@ import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.custom.SimpleCustomValidation;
+import com.basgeekball.awesomevalidation.validators.Validator;
+import com.google.common.collect.Range;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -40,7 +44,8 @@ public class GuideInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_guide_info, container, false);
 
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        awesomeValidation = new AwesomeValidation(ValidationStyle.UNDERLABEL);
+        awesomeValidation.setContext(root.getContext());
 
         editLocation = root.findViewById(R.id.editLocation);
         if (!Objects.equals(MainActivity.currentUser.getCity(), null)) {
@@ -77,6 +82,7 @@ public class GuideInfoFragment extends Fragment {
         });
 
         awesomeValidation.addValidation(editLocation, Pattern.compile(getString(R.string.NonEmptyStringRegexp)), "Локация не должна быть пустой!");
+        awesomeValidation.addValidation(editLocation, s -> s.length() < 255, "Название локации слишком большое!");
         awesomeValidation.addValidation(editMobilePhone, Patterns.PHONE, "Введите корректный номер!");
         awesomeValidation.addValidation(editDescription, Pattern.compile(getString(R.string.NonEmptyStringRegexp)), "Описание не должно быть пустым!");
 

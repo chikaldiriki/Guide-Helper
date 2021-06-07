@@ -1,8 +1,10 @@
 package ru.hse.guidehelper.chat;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,10 +24,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.dialogs.DialogsList;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
+import com.stfalcon.chatkit.utils.DateFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,10 +51,25 @@ public class DialogFragment extends Fragment
 
     private DialogsListAdapter<Chat> adapter;
     private TextView emptyChatListTextView = null;
+    private final String defaultAvatarUrl = Uri.parse("R.drawable.ic_account_circle_black_36dp").toString();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    private static class CustomDateFormatter implements DateFormatter.Formatter {
+
+        @Override
+        public String format(Date date) {
+            if (DateFormatter.isToday(date)) {
+                return DateFormatter.format(date, DateFormatter.Template.TIME);
+            } else if (DateFormatter.isYesterday(date)) {
+                return "Yesterday";
+            } else {
+                return DateFormatter.format(date, DateFormatter.Template.STRING_DAY_MONTH_YEAR);
+            }
+        }
     }
 
     @SneakyThrows
@@ -62,10 +82,17 @@ public class DialogFragment extends Fragment
         BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
         navView.setVisibility(View.VISIBLE);
 
-        ImageLoader imageLoader = (imageView, url, payload) -> Glide
-                .with(DialogFragment.this.requireActivity())
-                .load(url)
-                .into(imageView);
+        ImageLoader imageLoader = (imageView, url, payload) -> {
+            if (url == null) {
+                Glide.with(DialogFragment.this.requireActivity())
+                        .load(R.drawable.ic_account_circle_black_36dp)
+                        .into(imageView);
+            } else {
+                Glide.with(DialogFragment.this.requireActivity())
+                        .load(url)
+                        .into(imageView);
+            }
+        };
 
         DialogsList chatList = root.findViewById(R.id.chatList);
         emptyChatListTextView = root.findViewById(R.id.emptyChatListTextView);
@@ -98,6 +125,7 @@ public class DialogFragment extends Fragment
 
         chatList.setAdapter(adapter);
 
+        adapter.setDatesFormatter(new CustomDateFormatter());
         addAllChatsInAdapter();
 
 

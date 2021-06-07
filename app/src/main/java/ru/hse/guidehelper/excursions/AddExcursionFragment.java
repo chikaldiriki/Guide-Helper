@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.custom.SimpleCustomValidation;
+import com.google.common.collect.Range;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -90,7 +92,8 @@ public class AddExcursionFragment extends Fragment {
 
         this.requireActivity().findViewById(R.id.buttonToChat).setVisibility(View.INVISIBLE);
 
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        awesomeValidation = new AwesomeValidation(ValidationStyle.UNDERLABEL);
+        awesomeValidation.setContext(root.getContext());
 
         Button saveChangesButton = root.findViewById(R.id.saveChangesButton);
         saveChangesButton.setOnClickListener(view -> {
@@ -125,8 +128,18 @@ public class AddExcursionFragment extends Fragment {
         });
 
         awesomeValidation.addValidation(editTitle, Pattern.compile(getString(R.string.NonEmptyStringRegexp)), "Название не должно быть пустым!");
+        awesomeValidation.addValidation(editTitle, s -> s.length() < 255, "Название экскурсии слишком большое!");
         awesomeValidation.addValidation(editCity, Pattern.compile(getString(R.string.NonEmptyStringRegexp)), "Локация не должна быть пустой!");
+        awesomeValidation.addValidation(editCity, s -> s.length() < 255, "Название локации слишком большое!");
         awesomeValidation.addValidation(editCost, Pattern.compile("[1-9][0-9]*"), "Введите стоимость в рублях, например : 1000");
+        awesomeValidation.addValidation(editCost, s -> {
+            try {
+                int cost = Integer.parseInt(s);
+                return cost <= 10000;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }, "Стоимость экскурсии не может превышать 10000 рублей!");
         awesomeValidation.addValidation(editDescription, Pattern.compile(getString(R.string.NonEmptyStringRegexp)), "Описание не должно быть пустым!");
 
         return root;
