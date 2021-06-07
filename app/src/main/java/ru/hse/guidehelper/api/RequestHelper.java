@@ -226,9 +226,9 @@ public class RequestHelper {
                     .getKeywords(firstUser, secondUser).execute().body()).get();
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getKeywords");
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
         }
-        //return null;
+        return null;
     }
 
 }
