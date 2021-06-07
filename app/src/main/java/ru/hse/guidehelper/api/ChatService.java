@@ -14,4 +14,7 @@ public interface ChatService {
 
     @GET("chat/dialogs/{userId}")
     Call<List<ChatDTO>> getDialogs(@Path("userId") String userId);
+
+    @GET("chat/keywords/{firstUserId}/{secondUserId}")
+    Call<List<String>> getKeywords(@Path("firstUserId") String firstUserId, @Path("secondUserId") String secondUserId);
 }

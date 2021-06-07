@@ -8,11 +8,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +40,7 @@ import lombok.SneakyThrows;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
+import ru.hse.guidehelper.chat.keywords.KeywordsRecyclerViewAdapter;
 import ru.hse.guidehelper.dto.ChatDTO;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.model.Message;
@@ -98,10 +101,34 @@ public class DialogFragment extends Fragment
 
         adapter.setOnDialogClickListener(this);
 
+        adapter.setOnDialogViewLongClickListener(new DialogsListAdapter.OnDialogViewLongClickListener<Chat>() {
+            @Override
+            public void onDialogViewLongClick(View view, Chat dialog) {
+                /*List<String> keywords = RequestHelper.getKeywords(MainActivity.currentUser.getUserMail(),
+                        dialog.getUsers().get(0).getUserMail());
+                System.out.println(keywords);*/
+
+                String firstUser = MainActivity.currentUser.getUserMail();
+                String secondUser = dialog.getUsers().get(0).getUserMail();
+
+                RecyclerView recyclerView = root.findViewById(R.id.keywordslist_list);
+                ImageButton buttonView = root.findViewById(R.id.buttonClose);
+                buttonView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView.setAdapter(new KeywordsRecyclerViewAdapter(firstUser, secondUser));
+                buttonView.setOnClickListener(v -> {
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    buttonView.setVisibility(View.INVISIBLE);
+                });
+            }
+        });
+
         chatList.setAdapter(adapter);
 
         adapter.setDatesFormatter(new CustomDateFormatter());
         addAllChatsInAdapter();
+
+
 
         adapter.sort(new Comparator<Chat>() {
             @Override
