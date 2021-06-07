@@ -57,4 +57,9 @@
         android:name="ru.hse.guidehelper.excursions.AddExcursionFragment"
         android:label="fragment_add_excursion"
         tools:layout="@layout/fragment_add_excursion" />
+    <fragment
+        android:id="@+id/addOrderFragment"
+        android:name="ru.hse.guidehelper.ui.navigationbar.orders.AddOrderFragment"
+        android:label="fragment_add_order"
+        tools:layout="@layout/fragment_add_order" />
 </navigation>
