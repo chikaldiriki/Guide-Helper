@@ -23,8 +23,18 @@ public final class AllTourRecyclerViewAdapter extends TourRecyclerViewAdapter {
     }
 
     public void getToursWithCostLimit(Long cost) {
-        System.out.println(cost);
         tours = RequestHelper.getToursWithCostLimit(cost);
+        mapIdTour = new HashMap<>();
+        for (int i = 0; i < tours.size(); i++) {
+            Tour tour = tours.get(i);
+            mapIdTour.put(tour.getId(), tour);
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void getToursByCitySortedByOptionalParameter(String city) {
+        tours = RequestHelper.getToursByCitySortedByOptionalParameter(city);
         mapIdTour = new HashMap<>();
         for (int i = 0; i < tours.size(); i++) {
             Tour tour = tours.get(i);

@@ -6,6 +6,8 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -15,11 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.excursions.ExcursionsFragment;
+import ru.hse.guidehelper.utils.cityautocomplete.PlaceAutoCompleteAdapter;
 
 public final class AllExcursionFragment extends ExcursionsFragment {
 
     private TextView excursionsCountTextView;
     private TextView excursionCostLimitTextView;
+    private AutoCompleteTextView excursionCityFilterTextView;
+    private Button excursionFilterAcceptButton;
     private AllTourRecyclerViewAdapter adapter;
 
     @Override
@@ -70,6 +75,24 @@ public final class AllExcursionFragment extends ExcursionsFragment {
                     excursionsCountTextView.setText("Все " + adapter.getToursCount());
                     excursionCostLimitTextView.setText("Цена: " + seekBar.getProgress() + " " + Html.fromHtml(" &#x20bd"));
                 }
+            }
+        });
+
+        CardView filterCardView = view.findViewById(R.id.overСityFilter);
+        filterCardView.setVisibility(View.VISIBLE);
+
+        excursionCityFilterTextView = view.findViewById(R.id.excursionCityFilterTextView);
+        excursionCityFilterTextView.setAdapter(new PlaceAutoCompleteAdapter(view.getContext(), android.R.layout.simple_list_item_1));
+        excursionFilterAcceptButton = view.findViewById(R.id.excursionFilterAcceptButton);
+
+        excursionFilterAcceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cityName = excursionCityFilterTextView.getText().toString();
+                adapter.getToursByCitySortedByOptionalParameter(cityName);
+                excursionsCountTextView.setText("Город \"" + cityName + "\" : " + adapter.getToursCount());
+
+                excursionCityFilterTextView.setText("");
             }
         });
 

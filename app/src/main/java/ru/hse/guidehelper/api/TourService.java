@@ -23,4 +23,7 @@ public interface TourService {
 
     @GET("tours/cost")
     Call<List<Tour>> getToursWithCostLimit(@Query("costLimit") Long costLimit);
+
+    @GET("tours/city={city}")
+    Call<List<Tour>> getToursByCitySortedByOptionalParameter(@Path("city") String city);
 }

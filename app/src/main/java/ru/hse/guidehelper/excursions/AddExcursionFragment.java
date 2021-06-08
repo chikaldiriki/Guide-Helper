@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,10 +36,11 @@ import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.model.Tour;
+import ru.hse.guidehelper.utils.cityautocomplete.PlaceAutoCompleteAdapter;
 
 public class AddExcursionFragment extends Fragment {
     private EditText editTitle;
-    private EditText editCity;
+    private AutoCompleteTextView editCity;
     private EditText editDescription;
     private EditText editCost;
     private Button buttonAddImage;
@@ -63,6 +65,9 @@ public class AddExcursionFragment extends Fragment {
         editCity = root.findViewById(R.id.editCity);
         editDescription = root.findViewById(R.id.editDescription);
         editCost = root.findViewById(R.id.editСost);
+
+        editCity.setAdapter(new PlaceAutoCompleteAdapter(root.getContext(), android.R.layout.simple_list_item_1));
+
         buttonAddImage = root.findViewById(R.id.buttonAddImage);
         buttonDeleteImage = root.findViewById(R.id.buttonDeleteImage);
         buttonAddImage.setOnClickListener(new View.OnClickListener() {
