@@ -23,8 +23,6 @@ import ru.hse.guidehelper.model.Order;
 
 public class AddOrderFragment extends Fragment {
 
-    private EditText editDate;
-    private Button buttonBook;
     private AwesomeValidation awesomeValidation;
     //private final String pattern = "yyyy-MM-dd HH:mm:ss";
 
@@ -38,8 +36,8 @@ public class AddOrderFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_add_order, container, false);
 
-        editDate = root.findViewById(R.id.editDate);
-        buttonBook = root.findViewById(R.id.saveChangesButtonBook);
+        EditText editDate = root.findViewById(R.id.editDate);
+        Button buttonBook = root.findViewById(R.id.saveChangesButtonBook);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.UNDERLABEL);
         awesomeValidation.setContext(root.getContext());
