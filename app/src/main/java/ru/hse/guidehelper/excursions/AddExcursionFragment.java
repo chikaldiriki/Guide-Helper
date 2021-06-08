@@ -24,8 +24,6 @@ import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.basgeekball.awesomevalidation.utility.custom.SimpleCustomValidation;
-import com.google.common.collect.Range;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;

@@ -1,6 +1,5 @@
 package ru.hse.guidehelper.auth;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,9 +16,6 @@ import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.basgeekball.awesomevalidation.utility.custom.SimpleCustomValidation;
-import com.basgeekball.awesomevalidation.validators.Validator;
-import com.google.common.collect.Range;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

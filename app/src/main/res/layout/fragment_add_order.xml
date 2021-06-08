@@ -32,15 +32,16 @@
             android:layout_marginTop="10dp"/>
 
         <EditText
-            android:id="@+id/editData"
+            android:id="@+id/editDate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/order_format"
-            android:inputType="date"
+            android:hint="@string/order_format_date_text"
+            android:inputType="datetime"
             android:layout_marginTop="50dp" />
 
+
         <Button
-            android:id="@+id/saveChangesButton"
+            android:id="@+id/saveChangesButtonBook"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
