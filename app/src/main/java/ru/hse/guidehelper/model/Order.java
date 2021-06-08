@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -15,5 +13,5 @@ public class Order {
 
     private Long tourId;
 
-    private LocalDateTime tourTime;
+    private String tourTime;
 }

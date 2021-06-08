@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -43,7 +46,8 @@ import ru.hse.guidehelper.ui.navigationbar.excursion.AllTourRecyclerViewAdapter;
 public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_TOUR_ID = "tour_id";
     private Tour tour;
-    private FloatingActionButton fabSub;
+    private FloatingActionButton fabFavorite;
+    private ExtendedFloatingActionButton fabOrder;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -89,8 +93,14 @@ public class ExcursionsListDetailFragment extends Fragment {
                 MainActivity.navController.navigate(R.id.messagesFragment2);
             });
 
-            fabSub = root.findViewById(R.id.fab_subscriptions);
-            fabSub.setOnClickListener(new FabSubOnClickListener(root));
+            fabFavorite = root.findViewById(R.id.fab_subscriptions);
+            fabFavorite.setOnClickListener(new FabSubOnClickListener(root));
+
+            fabOrder = root.findViewById(R.id.fab_order);
+            fabOrder.setOnClickListener(view -> {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.addOrderFragment);
+            });
 
             if (arguments.containsKey(ARG_TOUR_ID)) {
                 tour = AllTourRecyclerViewAdapter.getTourById(arguments.getLong(ARG_TOUR_ID));
@@ -124,9 +134,9 @@ public class ExcursionsListDetailFragment extends Fragment {
             isAddedToFavorite = MainActivity.currentUser != null &&
                     RequestHelper.isFavorite(MainActivity.currentUser.getUserMail(), MainActivity.currentTourId);
             if (isAddedToFavorite) {
-                fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
+                fabFavorite.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
             } else {
-                fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
+                fabFavorite.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
             }
         }
 
@@ -143,11 +153,11 @@ public class ExcursionsListDetailFragment extends Fragment {
 
             if (isAddedToFavorite) {
                 RequestHelper.deleteFavoriteTour(tour.getUserMail(), tour.getTourId());
-                fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
+                fabFavorite.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
                 isAddedToFavorite = false;
             } else {
                 RequestHelper.addFavoriteTour(tour);
-                fabSub.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
+                fabFavorite.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                 isAddedToFavorite = true;
             }
         }
