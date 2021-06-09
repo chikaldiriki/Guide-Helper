@@ -29,7 +29,7 @@
             android:hint="Введите название экскурсии"
             android:inputType="textMultiLine" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/editCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

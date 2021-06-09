@@ -245,4 +245,17 @@ public class RequestHelper {
         return null;
     }
 
+    public static List<Tour> getToursByCitySortedByOptionalParameter(String city) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getTourService()
+                    .getToursByCitySortedByOptionalParameter(city).execute().body())
+                    .get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getToursByCitySortedByOptionalParameter");
+            // throw new RuntimeException(e);
+        }
+        return null;
+    }
 }

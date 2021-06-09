@@ -16,14 +16,15 @@
             android:layout_margin="10dp"
             android:background="@drawable/yellow_without_corners"
             android:padding="5dp"
+            android:textSize="16sp"
             android:visibility="gone" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/overCostSeekBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/excursionsCountTextView"
             android:layout_margin="5dp"
-            android:layout_toEndOf="@+id/excursionsCountTextView"
             android:elevation="10dp"
             android:visibility="gone"
             app:cardCornerRadius="8dp">
@@ -36,7 +37,8 @@
                     android:id="@+id/excursionCostLimitTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp" />
+                    android:layout_margin="10dp"
+                    android:textSize="16sp" />
 
                 <SeekBar
                     android:id="@+id/excursionCostSeekBar"
@@ -50,6 +52,56 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/overСityFilter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/overCostSeekBar"
+            android:layout_margin="5dp"
+            android:elevation="10dp"
+            android:visibility="gone"
+            app:cardCornerRadius="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/enterCityNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Введите город для экскурсии"
+                    android:textSize="16sp" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/excursionCityFilterTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/enterCityNameTextView"
+                    android:layout_margin="10dp"
+                    android:gravity="start" />
+
+                <Button
+                    android:id="@+id/excursionFilterAcceptButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/excursionCityFilterTextView"
+                    android:gravity="center"
+                    android:text="Применить" />
+
+                <Button
+                    android:id="@+id/excursionDiscardAllButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/excursionCityFilterTextView"
+                    android:layout_toEndOf="@id/excursionFilterAcceptButton"
+                    android:layout_marginStart="10dp"
+                    android:text="Сбросить всё" />
+
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -57,7 +109,7 @@
             android:name="ru.hse.guidehelper.excursions.ExcursionsListListFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/overCostSeekBar"
+            android:layout_below="@id/overСityFilter"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             app:layoutManager="LinearLayoutManager"

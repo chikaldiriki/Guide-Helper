@@ -1,6 +1,7 @@
 package ru.hse.guidehelper.ui.navigationbar.subscriptions;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ru.hse.guidehelper.MainActivity;
@@ -12,8 +13,12 @@ public class FavoritesTourRecyclerViewAdapter extends TourRecyclerViewAdapter {
 
     public static Map<Long, Tour> mapIdTour;
 
+    public FavoritesTourRecyclerViewAdapter(List<Tour> tours) {
+        super(tours);
+    }
+
     @Override
-    protected void initConstructor() {
+    protected void initConstructor(List<Tour> allTours) {
         System.out.println("------- FAVOR initConstructor ------- ");
 
         tours = RequestHelper.getFavoriteTours(MainActivity.currentUser.getId());

@@ -39,11 +39,27 @@ public abstract class TourRecyclerViewAdapter
         MainActivity.navController.navigate(R.id.excursionsListDetailActivity);
     };
 
-    public TourRecyclerViewAdapter() {
-        initConstructor();
+    public void setTours(List<Tour> tours) {
+        this.tours = tours;
     }
 
-    protected abstract void initConstructor();
+    public static void setMapIdTour(Map<Long, Tour> mapIdTour) {
+        TourRecyclerViewAdapter.mapIdTour = mapIdTour;
+    }
+
+    public List<Tour> getTours() {
+        return tours;
+    }
+
+    public static Map<Long, Tour> getMapIdTour() {
+        return mapIdTour;
+    }
+
+    public TourRecyclerViewAdapter(List<Tour> tours) {
+        initConstructor(tours);
+    }
+
+    protected abstract void initConstructor(List<Tour> tours);
 
     public static Tour getTourById(Long id) {
         System.out.println("==== getTourById ====");
