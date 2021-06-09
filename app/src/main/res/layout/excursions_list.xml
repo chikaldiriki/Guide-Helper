@@ -89,6 +89,16 @@
                     android:gravity="center"
                     android:text="Применить" />
 
+                <Button
+                    android:id="@+id/excursionDiscardAllButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/excursionCityFilterTextView"
+                    android:layout_toEndOf="@id/excursionFilterAcceptButton"
+                    android:layout_marginStart="10dp"
+                    android:text="Сбросить всё" />
+
+
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>

@@ -30,6 +30,22 @@ public abstract class TourRecyclerViewAdapter
 //        // Required empty public constructor
 //    }
 
+    public void setTours(List<Tour> tours) {
+        this.tours = tours;
+    }
+
+    public static void setMapIdTour(Map<Long, Tour> mapIdTour) {
+        TourRecyclerViewAdapter.mapIdTour = mapIdTour;
+    }
+
+    public List<Tour> getTours() {
+        return tours;
+    }
+
+    public static Map<Long, Tour> getMapIdTour() {
+        return mapIdTour;
+    }
+
     protected List<Tour> tours = null;
     public static Map<Long, Tour> mapIdTour;
 
@@ -39,11 +55,11 @@ public abstract class TourRecyclerViewAdapter
         MainActivity.navController.navigate(R.id.excursionsListDetailActivity);
     };
 
-    public TourRecyclerViewAdapter() {
-        initConstructor();
+    public TourRecyclerViewAdapter(List<Tour> tours) {
+        initConstructor(tours);
     }
 
-    protected abstract void initConstructor();
+    protected abstract void initConstructor(List<Tour> tours);
 
     public static Tour getTourById(Long id) {
         System.out.println("==== getTourById ====");

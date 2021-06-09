@@ -12,15 +12,21 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import ru.hse.guidehelper.api.RequestHelper;
+import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
 
 public class MainActivity extends AppCompatActivity {
     public static NavController navController;
     public static User currentUser = null;
     public static Long currentTourId = null;
+    private List<Tour> tours = null;
+    private Map<Long, Tour> mapIdTour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         if (user != null) {
             MainActivity.currentUser = RequestHelper.getUser(user.getEmail());
         }
-
     }
 
     @Override
@@ -53,5 +58,29 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = this.findViewById(R.id.nav_view);
         navView.setVisibility(BottomNavigationView.VISIBLE);
         super.onBackPressed();
+    }
+
+    public List<Tour> getTours() {
+        if (tours == null) {
+            initTours();
+        }
+
+        return tours;
+    }
+
+    public Map<Long, Tour> getMapIdTour() {
+        return mapIdTour;
+    }
+
+    private void initTours() {
+        if (tours == null) {
+            tours = RequestHelper.getAllTours();
+
+            mapIdTour = new HashMap<>();
+            for (int i = 0; i < tours.size(); i++) {
+                Tour tour = tours.get(i);
+                mapIdTour.put(tour.getId(), tour);
+            }
+        }
     }
 }
