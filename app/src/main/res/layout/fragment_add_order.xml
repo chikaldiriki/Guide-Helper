@@ -31,11 +31,20 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/order_format_date_text"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"/>
+
         <EditText
             android:id="@+id/editDate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/order_format_date_text"
+            android:hint="@string/order_format_date_text_in"
             android:inputType="datetime"
             android:layout_marginTop="50dp" />
 
