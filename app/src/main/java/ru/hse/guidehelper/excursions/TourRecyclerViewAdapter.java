@@ -30,6 +30,15 @@ public abstract class TourRecyclerViewAdapter
 //        // Required empty public constructor
 //    }
 
+    protected List<Tour> tours = null;
+    public static Map<Long, Tour> mapIdTour;
+
+    private final View.OnClickListener mOnClickListener = view -> {
+        Tour currTour = (Tour) view.getTag();
+        MainActivity.currentTourId = currTour.getId();
+        MainActivity.navController.navigate(R.id.excursionsListDetailActivity);
+    };
+
     public void setTours(List<Tour> tours) {
         this.tours = tours;
     }
@@ -45,15 +54,6 @@ public abstract class TourRecyclerViewAdapter
     public static Map<Long, Tour> getMapIdTour() {
         return mapIdTour;
     }
-
-    protected List<Tour> tours = null;
-    public static Map<Long, Tour> mapIdTour;
-
-    private final View.OnClickListener mOnClickListener = view -> {
-        Tour currTour = (Tour) view.getTag();
-        MainActivity.currentTourId = currTour.getId();
-        MainActivity.navController.navigate(R.id.excursionsListDetailActivity);
-    };
 
     public TourRecyclerViewAdapter(List<Tour> tours) {
         initConstructor(tours);

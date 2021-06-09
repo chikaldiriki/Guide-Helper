@@ -29,8 +29,6 @@ public final class AllExcursionFragment extends ExcursionsFragment {
     private TextView excursionsCountTextView;
     private TextView excursionCostLimitTextView;
     private AutoCompleteTextView excursionCityFilterTextView;
-    private Button excursionFilterAcceptButton;
-    private Button excursionDiscardAllButton;
     private AllTourRecyclerViewAdapter adapter;
 
     @Override
@@ -89,7 +87,7 @@ public final class AllExcursionFragment extends ExcursionsFragment {
 
         excursionCityFilterTextView = view.findViewById(R.id.excursionCityFilterTextView);
         excursionCityFilterTextView.setAdapter(new PlaceAutoCompleteAdapter(view.getContext(), android.R.layout.simple_list_item_1));
-        excursionFilterAcceptButton = view.findViewById(R.id.excursionFilterAcceptButton);
+        Button excursionFilterAcceptButton = view.findViewById(R.id.excursionFilterAcceptButton);
 
         excursionFilterAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +100,7 @@ public final class AllExcursionFragment extends ExcursionsFragment {
             }
         });
 
-        excursionDiscardAllButton = view.findViewById(R.id.excursionDiscardAllButton);
+        Button excursionDiscardAllButton = view.findViewById(R.id.excursionDiscardAllButton);
         excursionDiscardAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

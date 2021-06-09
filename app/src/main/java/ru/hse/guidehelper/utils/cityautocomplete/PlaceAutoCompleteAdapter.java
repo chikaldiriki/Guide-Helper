@@ -9,17 +9,12 @@ import java.util.ArrayList;
 
 public class PlaceAutoCompleteAdapter extends ArrayAdapter implements Filterable {
 
-    ArrayList<String> results;
+    private ArrayList<String> results;
 
-    Context context;
-    int layoutResourceId;
-
-    PlacesAPI placesAPI = new PlacesAPI();
+    private final PlacesAPI placesAPI = new PlacesAPI();
 
     public PlaceAutoCompleteAdapter(Context context, int layoutResourceId) {
         super(context, layoutResourceId);
-        this.context = context;
-        this.layoutResourceId = layoutResourceId;
     }
 
     @Override
