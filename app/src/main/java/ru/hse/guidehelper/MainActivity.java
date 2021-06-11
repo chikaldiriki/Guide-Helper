@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public static Long currentTourId = null;
     private List<Tour> tours = null;
     private List<Tour> orders = null;
-    private Map<Long, Tour> mapIdTour; // Соглашение - это единсвенная map из id в Tour
+    private Map<Long, Tour> mapIdTour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

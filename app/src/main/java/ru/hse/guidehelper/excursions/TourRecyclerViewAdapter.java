@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
@@ -26,12 +25,7 @@ import ru.hse.guidehelper.model.Tour;
 public abstract class TourRecyclerViewAdapter
         extends RecyclerView.Adapter<TourRecyclerViewAdapter.ViewHolder> {
 
-//    public TourRecyclerViewAdapter() {
-//        // Required empty public constructor
-//    }
-
     protected List<Tour> tours = null;
-    public static Map<Long, Tour> mapIdTour;
 
     private final View.OnClickListener mOnClickListener = view -> {
         Tour currTour = (Tour) view.getTag();
@@ -43,16 +37,8 @@ public abstract class TourRecyclerViewAdapter
         this.tours = tours;
     }
 
-    public static void setMapIdTour(Map<Long, Tour> mapIdTour) {
-        TourRecyclerViewAdapter.mapIdTour = mapIdTour;
-    }
-
     public List<Tour> getTours() {
         return tours;
-    }
-
-    public static Map<Long, Tour> getMapIdTour() {
-        return mapIdTour;
     }
 
     public TourRecyclerViewAdapter(List<Tour> tours) {
@@ -60,12 +46,6 @@ public abstract class TourRecyclerViewAdapter
     }
 
     protected abstract void initConstructor(List<Tour> tours);
-
-    public static Tour getTourById(Long id) {
-        System.out.println("==== getTourById ====");
-        System.out.println(mapIdTour.hashCode());
-        return mapIdTour.get(id);
-    }
 
     @NotNull
     @Override
