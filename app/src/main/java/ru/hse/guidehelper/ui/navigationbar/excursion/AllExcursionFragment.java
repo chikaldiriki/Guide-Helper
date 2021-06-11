@@ -115,8 +115,6 @@ public final class AllExcursionFragment extends ExcursionsFragment {
                     mapIdTour.put(tour.getId(), tour);
                 }
 
-                AllTourRecyclerViewAdapter.setMapIdTour(mapIdTour);
-
                 excursionsCountTextView.setText("Все " + getToursCount());
                 excursionCostLimitTextView.setText("Цена: 10000 " + Html.fromHtml(" &#x20bd"));
 
@@ -144,8 +142,6 @@ public final class AllExcursionFragment extends ExcursionsFragment {
             mapIdTour.put(tour.getId(), tour);
         }
 
-        AllTourRecyclerViewAdapter.setMapIdTour(mapIdTour);
-
         adapter.notifyDataSetChanged();
     }
 
@@ -162,8 +158,6 @@ public final class AllExcursionFragment extends ExcursionsFragment {
             Tour tour = adapter.getTours().get(i);
             mapIdTour.put(tour.getId(), tour);
         }
-
-        AllTourRecyclerViewAdapter.setMapIdTour(mapIdTour);
 
         adapter.notifyDataSetChanged();
     }

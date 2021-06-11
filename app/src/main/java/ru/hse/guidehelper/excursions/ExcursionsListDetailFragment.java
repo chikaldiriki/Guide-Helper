@@ -41,7 +41,6 @@ import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.model.FavoriteTour;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
-import ru.hse.guidehelper.ui.navigationbar.excursion.AllTourRecyclerViewAdapter;
 
 public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_TOUR_ID = "tour_id";
@@ -74,7 +73,7 @@ public class ExcursionsListDetailFragment extends Fragment {
             Bundle arguments = new Bundle();
             arguments.putLong(ARG_TOUR_ID, MainActivity.currentTourId);
 
-            Tour curTour = AllTourRecyclerViewAdapter.getTourById(MainActivity.currentTourId);
+            Tour curTour = ((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId);
             FloatingActionButton fab = root.findViewById(R.id.fab);
             fab.setOnClickListener(view -> {
                 String guideMail = curTour.getGuide();
@@ -103,7 +102,7 @@ public class ExcursionsListDetailFragment extends Fragment {
             });
 
             if (arguments.containsKey(ARG_TOUR_ID)) {
-                tour = AllTourRecyclerViewAdapter.getTourById(arguments.getLong(ARG_TOUR_ID));
+                tour = ((MainActivity)requireActivity()).getTourById(arguments.getLong(ARG_TOUR_ID));
 
                 CollapsingToolbarLayout appBarLayout = root.findViewById(R.id.toolbar_layout);
                 if (appBarLayout != null) {

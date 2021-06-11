@@ -12,13 +12,16 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import ru.hse.guidehelper.api.RequestHelper;
+import ru.hse.guidehelper.model.Order;
 import ru.hse.guidehelper.model.Tour;
+import ru.hse.guidehelper.model.TourOrder;
 import ru.hse.guidehelper.model.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public static User currentUser = null;
     public static Long currentTourId = null;
     private List<Tour> tours = null;
+    private List<TourOrder> orders = null;
     private Map<Long, Tour> mapIdTour;
 
     @Override
@@ -68,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         return tours;
     }
 
-    public Map<Long, Tour> getMapIdTour() {
-        return mapIdTour;
+    public Tour getTourById(Long id) {
+        return mapIdTour.get(id);
     }
 
     private void initTours() {
@@ -83,4 +87,32 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    public List<TourOrder> getOrders() {
+        if (orders == null) {
+            initOrders();
+        }
+        return orders;
+    }
+
+    private void initOrders() {
+        if (orders == null) {
+            orders = new ArrayList<>();
+            List<Order> requestOrders = RequestHelper.getOrdersByUser(MainActivity.currentUser.getUserMail());
+            if(requestOrders != null) {
+                for(Order order : requestOrders) {
+                    String date = order.getTourTime().replaceFirst("T", " ");
+                    orders.add(new TourOrder(getTourById(order.getTourId()), date));
+                }
+            }
+        }
+    }
+
+    public void setOrder(TourOrder tour) {
+        if (orders == null) {
+            initOrders();
+        }
+        orders.add(tour);
+    }
+
 }

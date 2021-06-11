@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
@@ -20,11 +21,11 @@ import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.model.Order;
+import ru.hse.guidehelper.model.TourOrder;
 
 public class AddOrderFragment extends Fragment {
 
     private AwesomeValidation awesomeValidation;
-    //private final String pattern = "yyyy-MM-dd HH:mm:ss";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,11 @@ public class AddOrderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if(MainActivity.currentUser == null) {
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.signInFragment);
+        }
+
         View root = inflater.inflate(R.layout.fragment_add_order, container, false);
 
         EditText editDate = root.findViewById(R.id.editDate);
@@ -52,6 +58,9 @@ public class AddOrderFragment extends Fragment {
                         .setTourTime(date[0].toString());
 
                 RequestHelper.addOrder(order);
+                ((MainActivity)requireActivity()).setOrder(new TourOrder(
+                        ((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId),
+                        order.getTourTime()));
             }
         });
 

@@ -17,55 +17,36 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.model.Tour;
+import ru.hse.guidehelper.model.TourOrder;
 
-public abstract class TourRecyclerViewAdapter
+public abstract class TourRecyclerViewAdapter<T extends Tour>
         extends RecyclerView.Adapter<TourRecyclerViewAdapter.ViewHolder> {
 
-//    public TourRecyclerViewAdapter() {
-//        // Required empty public constructor
-//    }
-
-    protected List<Tour> tours = null;
-    public static Map<Long, Tour> mapIdTour;
+    protected List<T> tours = null;
 
     private final View.OnClickListener mOnClickListener = view -> {
-        Tour currTour = (Tour) view.getTag();
+        T currTour = (T) view.getTag();
         MainActivity.currentTourId = currTour.getId();
         MainActivity.navController.navigate(R.id.excursionsListDetailActivity);
     };
 
-    public void setTours(List<Tour> tours) {
+    public void setTours(List<T> tours) {
         this.tours = tours;
     }
 
-    public static void setMapIdTour(Map<Long, Tour> mapIdTour) {
-        TourRecyclerViewAdapter.mapIdTour = mapIdTour;
-    }
-
-    public List<Tour> getTours() {
+    public List<T> getTours() {
         return tours;
     }
 
-    public static Map<Long, Tour> getMapIdTour() {
-        return mapIdTour;
-    }
-
-    public TourRecyclerViewAdapter(List<Tour> tours) {
+    public TourRecyclerViewAdapter(List<T> tours) {
         initConstructor(tours);
     }
 
-    protected abstract void initConstructor(List<Tour> tours);
-
-    public static Tour getTourById(Long id) {
-        System.out.println("==== getTourById ====");
-        System.out.println(mapIdTour.hashCode());
-        return mapIdTour.get(id);
-    }
+    protected abstract void initConstructor(List<T> tours);
 
     @NotNull
     @Override
@@ -88,10 +69,18 @@ public abstract class TourRecyclerViewAdapter
             holder.imageImageView.setImageResource(R.drawable.ic_launcher_background);
         }
         String cost = tours.get(position).getCost().toString() + ' ' + Html.fromHtml(" &#x20bd");
+        String city = tours.get(position).getCity().replaceFirst(",[a-zA-Zа-яА-Я -,]*", "");
 
         holder.costTextView.setText(cost);
+        holder.cityTextView.setText(city);
         holder.itemView.setTag(tours.get(position));
         holder.itemView.setOnClickListener(mOnClickListener);
+
+        if(tours.get(position).getClass() == TourOrder.class) {
+            holder.dateOfTourTextView.setText(((TourOrder)tours.get(position)).getDate());
+        } else if(tours.get(position).getClass() == Tour.class) {
+            holder.dateOfTourTextView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -102,12 +91,16 @@ public abstract class TourRecyclerViewAdapter
     static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView excursionName;
         public final TextView costTextView;
+        public final TextView cityTextView;
+        public final TextView dateOfTourTextView;
         public final ImageView imageImageView;
 
         ViewHolder(View view) {
             super(view);
             excursionName = view.findViewById(R.id.id_excursionNameTextView);
             costTextView = view.findViewById(R.id.excursionsCostTextView);
+            cityTextView = view.findViewById(R.id.excursionsCityTextView);
+            dateOfTourTextView = view.findViewById(R.id.excursionsDateOfOrderTextView);
             imageImageView = view.findViewById(R.id.excursionsImageImageView);
         }
     }
