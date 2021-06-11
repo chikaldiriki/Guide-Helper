@@ -1,21 +1,18 @@
 package ru.hse.guidehelper.ui.navigationbar.orders;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
-import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.MainActivity;
+import ru.hse.guidehelper.excursions.ExcursionsFragment;
 
-public class MyOrdersFragment extends Fragment {
+public class MyOrdersFragment extends ExcursionsFragment {
 
+    private OrdersTourRecyclerViewAdapter adapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_orders, container, false);
+    @Override
+    protected void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+        adapter = new OrdersTourRecyclerViewAdapter(((MainActivity) requireActivity()).getOrders());
+        recyclerView.setAdapter(adapter);
     }
 }

@@ -12,12 +12,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import ru.hse.guidehelper.api.RequestHelper;
+import ru.hse.guidehelper.model.Order;
 import ru.hse.guidehelper.model.Tour;
 import ru.hse.guidehelper.model.User;
 
@@ -26,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     public static User currentUser = null;
     public static Long currentTourId = null;
     private List<Tour> tours = null;
-    private Map<Long, Tour> mapIdTour;
+    private List<Tour> orders = null;
+    private Map<Long, Tour> mapIdTour; // Соглашение - это единсвенная map из id в Tour
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
         return tours;
     }
 
-    public Map<Long, Tour> getMapIdTour() {
-        return mapIdTour;
+    public Tour getTourById(Long id) {
+        return mapIdTour.get(id);
     }
 
     private void initTours() {
@@ -83,4 +86,31 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    public List<Tour> getOrders() {
+        if (orders == null) {
+            initOrders();
+        }
+        return orders;
+    }
+
+    private void initOrders() {
+        if (orders == null) {
+            orders = new ArrayList<>();
+            List<Order> requestOrders = RequestHelper.getOrdersByUser(MainActivity.currentUser.getUserMail());
+            if(requestOrders != null) {
+                for(Order order : requestOrders) {
+                    orders.add(getTourById(order.getTourId()));
+                }
+            }
+        }
+    }
+
+    public void setOrder(Tour tour) {
+        if (orders == null) {
+            initOrders();
+        }
+        orders.add(tour);
+    }
+
 }

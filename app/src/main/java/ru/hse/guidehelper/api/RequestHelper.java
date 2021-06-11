@@ -216,6 +216,7 @@ public class RequestHelper {
                         Log.e("error", "addOrder");
                     }
                 });
+
     }
 
     public static List<Tour> getToursWithCostLimit(Long costLimit) {
@@ -258,4 +259,19 @@ public class RequestHelper {
         }
         return null;
     }
+
+    public static List<Order> getOrdersByUser(String userId) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getOrderService()
+                    .getOrdersByUser(userId).execute().body())
+                    .get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getOrdersByUser");
+            // throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }
