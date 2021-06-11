@@ -48,6 +48,18 @@
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/excursionsCityTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|bottom"
+                    android:layout_alignEnd="@id/excursionsImageImageView"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/excursion_cost"
+                    android:padding="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
             </androidx.cardview.widget.CardView>
 
             <TextView

@@ -88,8 +88,10 @@ public abstract class TourRecyclerViewAdapter
             holder.imageImageView.setImageResource(R.drawable.ic_launcher_background);
         }
         String cost = tours.get(position).getCost().toString() + ' ' + Html.fromHtml(" &#x20bd");
+        String city = tours.get(position).getCity().replaceFirst(",[a-zA-Zа-яА-Я -,]*", "");
 
         holder.costTextView.setText(cost);
+        holder.cityTextView.setText(city);
         holder.itemView.setTag(tours.get(position));
         holder.itemView.setOnClickListener(mOnClickListener);
     }
@@ -102,12 +104,14 @@ public abstract class TourRecyclerViewAdapter
     static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView excursionName;
         public final TextView costTextView;
+        public final TextView cityTextView;
         public final ImageView imageImageView;
 
         ViewHolder(View view) {
             super(view);
             excursionName = view.findViewById(R.id.id_excursionNameTextView);
             costTextView = view.findViewById(R.id.excursionsCostTextView);
+            cityTextView = view.findViewById(R.id.excursionsCityTextView);
             imageImageView = view.findViewById(R.id.excursionsImageImageView);
         }
     }
