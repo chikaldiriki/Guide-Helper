@@ -12,6 +12,7 @@ public class MyOrdersFragment extends ExcursionsFragment {
 
     @Override
     protected void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+
         adapter = new OrdersTourRecyclerViewAdapter(((MainActivity) requireActivity()).getOrders());
         recyclerView.setAdapter(adapter);
     }

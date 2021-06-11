@@ -52,13 +52,26 @@
                     android:id="@+id/excursionsCityTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left|bottom"
+                    android:layout_gravity="start|bottom"
                     android:layout_alignEnd="@id/excursionsImageImageView"
                     android:layout_margin="10dp"
                     android:background="@drawable/excursion_cost"
                     android:padding="5dp"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/excursionsDateOfOrderTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_alignEnd="@id/excursionsImageImageView"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/excursion_cost"
+                    android:padding="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    tools:ignore="RtlHardcoded" />
 
             </androidx.cardview.widget.CardView>
 

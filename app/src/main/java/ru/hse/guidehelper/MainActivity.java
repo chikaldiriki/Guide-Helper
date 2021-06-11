@@ -21,6 +21,7 @@ import java.util.Objects;
 import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.model.Order;
 import ru.hse.guidehelper.model.Tour;
+import ru.hse.guidehelper.model.TourOrder;
 import ru.hse.guidehelper.model.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public static User currentUser = null;
     public static Long currentTourId = null;
     private List<Tour> tours = null;
-    private List<Tour> orders = null;
+    private List<TourOrder> orders = null;
     private Map<Long, Tour> mapIdTour;
 
     @Override
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public List<Tour> getOrders() {
+    public List<TourOrder> getOrders() {
         if (orders == null) {
             initOrders();
         }
@@ -100,13 +101,14 @@ public class MainActivity extends AppCompatActivity {
             List<Order> requestOrders = RequestHelper.getOrdersByUser(MainActivity.currentUser.getUserMail());
             if(requestOrders != null) {
                 for(Order order : requestOrders) {
-                    orders.add(getTourById(order.getTourId()));
+                    String date = order.getTourTime().replaceFirst("T", " ");
+                    orders.add(new TourOrder(getTourById(order.getTourId()), date));
                 }
             }
         }
     }
 
-    public void setOrder(Tour tour) {
+    public void setOrder(TourOrder tour) {
         if (orders == null) {
             initOrders();
         }

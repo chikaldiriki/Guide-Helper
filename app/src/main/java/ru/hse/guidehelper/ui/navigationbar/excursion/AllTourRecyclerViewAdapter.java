@@ -5,7 +5,7 @@ import java.util.List;
 import ru.hse.guidehelper.excursions.TourRecyclerViewAdapter;
 import ru.hse.guidehelper.model.Tour;
 
-public final class AllTourRecyclerViewAdapter extends TourRecyclerViewAdapter {
+public final class AllTourRecyclerViewAdapter extends TourRecyclerViewAdapter<Tour> {
 
     public AllTourRecyclerViewAdapter(List<Tour> tours) {
         super(tours);

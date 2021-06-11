@@ -21,6 +21,7 @@ import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.model.Order;
+import ru.hse.guidehelper.model.TourOrder;
 
 public class AddOrderFragment extends Fragment {
 
@@ -57,7 +58,9 @@ public class AddOrderFragment extends Fragment {
                         .setTourTime(date[0].toString());
 
                 RequestHelper.addOrder(order);
-                ((MainActivity)requireActivity()).setOrder(((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId));
+                ((MainActivity)requireActivity()).setOrder(new TourOrder(
+                        ((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId),
+                        order.getTourTime()));
             }
         });
 

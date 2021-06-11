@@ -7,7 +7,7 @@ import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.excursions.TourRecyclerViewAdapter;
 import ru.hse.guidehelper.model.Tour;
 
-public class FavoritesTourRecyclerViewAdapter extends TourRecyclerViewAdapter {
+public class FavoritesTourRecyclerViewAdapter extends TourRecyclerViewAdapter<Tour> {
 
     public FavoritesTourRecyclerViewAdapter(List<Tour> tours) {
         super(tours);

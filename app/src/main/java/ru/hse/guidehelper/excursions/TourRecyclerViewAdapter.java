@@ -18,34 +18,37 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Base64;
 import java.util.List;
 
+import javax.xml.transform.Source;
+
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.model.Tour;
+import ru.hse.guidehelper.model.TourOrder;
 
-public abstract class TourRecyclerViewAdapter
+public abstract class TourRecyclerViewAdapter<T extends Tour>
         extends RecyclerView.Adapter<TourRecyclerViewAdapter.ViewHolder> {
 
-    protected List<Tour> tours = null;
+    protected List<T> tours = null;
 
     private final View.OnClickListener mOnClickListener = view -> {
-        Tour currTour = (Tour) view.getTag();
+        T currTour = (T) view.getTag();
         MainActivity.currentTourId = currTour.getId();
         MainActivity.navController.navigate(R.id.excursionsListDetailActivity);
     };
 
-    public void setTours(List<Tour> tours) {
+    public void setTours(List<T> tours) {
         this.tours = tours;
     }
 
-    public List<Tour> getTours() {
+    public List<T> getTours() {
         return tours;
     }
 
-    public TourRecyclerViewAdapter(List<Tour> tours) {
+    public TourRecyclerViewAdapter(List<T> tours) {
         initConstructor(tours);
     }
 
-    protected abstract void initConstructor(List<Tour> tours);
+    protected abstract void initConstructor(List<T> tours);
 
     @NotNull
     @Override
@@ -74,6 +77,12 @@ public abstract class TourRecyclerViewAdapter
         holder.cityTextView.setText(city);
         holder.itemView.setTag(tours.get(position));
         holder.itemView.setOnClickListener(mOnClickListener);
+
+        if(tours.get(position).getClass() == TourOrder.class) {
+            holder.dateOfTourTextView.setText(((TourOrder)tours.get(position)).getDate());
+        } else if(tours.get(position).getClass() == Tour.class) {
+            holder.dateOfTourTextView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -85,6 +94,7 @@ public abstract class TourRecyclerViewAdapter
         public final TextView excursionName;
         public final TextView costTextView;
         public final TextView cityTextView;
+        public final TextView dateOfTourTextView;
         public final ImageView imageImageView;
 
         ViewHolder(View view) {
@@ -92,6 +102,7 @@ public abstract class TourRecyclerViewAdapter
             excursionName = view.findViewById(R.id.id_excursionNameTextView);
             costTextView = view.findViewById(R.id.excursionsCostTextView);
             cityTextView = view.findViewById(R.id.excursionsCityTextView);
+            dateOfTourTextView = view.findViewById(R.id.excursionsDateOfOrderTextView);
             imageImageView = view.findViewById(R.id.excursionsImageImageView);
         }
     }
