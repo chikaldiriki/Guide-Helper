@@ -8,12 +8,10 @@ import ru.hse.guidehelper.excursions.ExcursionsFragment;
 
 public class MyOrdersFragment extends ExcursionsFragment {
 
-    private OrdersTourRecyclerViewAdapter adapter;
-
     @Override
     protected void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
-        adapter = new OrdersTourRecyclerViewAdapter(((MainActivity) requireActivity()).getOrders());
+        OrdersTourRecyclerViewAdapter adapter = new OrdersTourRecyclerViewAdapter(((MainActivity) requireActivity()).getOrders());
         recyclerView.setAdapter(adapter);
     }
 }

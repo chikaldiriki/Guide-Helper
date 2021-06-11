@@ -9,6 +9,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class TourOrder extends Tour {
 
+    private String date;
+
     public TourOrder(Tour tour, String date) {
         this.setCity(tour.getCity());
         this.setCost(tour.getCost());
@@ -19,6 +21,4 @@ public class TourOrder extends Tour {
         this.setImage(tour.getImage());
         this.setDate(date);
     }
-
-    private String date;
 }

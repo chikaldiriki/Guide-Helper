@@ -18,8 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Base64;
 import java.util.List;
 
-import javax.xml.transform.Source;
-
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.model.Tour;
