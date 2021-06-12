@@ -30,6 +30,7 @@ public final class AllExcursionFragment extends ExcursionsFragment {
     private TextView excursionCostLimitTextView;
     private AutoCompleteTextView excursionCityFilterTextView;
     private AllTourRecyclerViewAdapter adapter;
+    private String cityName = null;
 
     @Override
     protected void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -42,7 +43,7 @@ public final class AllExcursionFragment extends ExcursionsFragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = getViewIfListIsEmpty(inflater, container);
-        if(view != null) {
+        if (view != null) {
             return view;
         }
 
@@ -81,7 +82,13 @@ public final class AllExcursionFragment extends ExcursionsFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (seekBar.getProgress() != startProgress) {
                     getToursWithCostLimit((long) seekBar.getProgress());
-                    excursionsCountTextView.setText("Все " + getToursCount());
+                    if (cityName == null) {
+                        getToursWithCostLimit((long) seekBar.getProgress());
+                        excursionsCountTextView.setText("Все " + getToursCount());
+                    } else {
+                        getToursByCityWithCostLimit(cityName, (long) seekBar.getProgress());
+                        excursionsCountTextView.setText("Город \"" + cityName + "\" : " + getToursCount());
+                    }
                     excursionCostLimitTextView.setText("Цена: " + seekBar.getProgress() + " " + Html.fromHtml(" &#x20bd"));
                 }
             }
@@ -97,8 +104,8 @@ public final class AllExcursionFragment extends ExcursionsFragment {
         excursionFilterAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cityName = excursionCityFilterTextView.getText().toString();
-                getToursByCity(cityName);
+                cityName = excursionCityFilterTextView.getText().toString();
+                getToursByCityWithCostLimit(cityName, (long) excursionCostSeekBar.getProgress());
                 excursionsCountTextView.setText("Город \"" + cityName + "\" : " + getToursCount());
 
                 excursionCityFilterTextView.setText("");
@@ -110,6 +117,8 @@ public final class AllExcursionFragment extends ExcursionsFragment {
             @Override
             public void onClick(View v) {
                 excursionCostSeekBar.setProgress(10000);
+                cityName = null;
+
                 MainActivity activity = (MainActivity) requireActivity();
 
                 adapter.setTours(activity.getTours());
@@ -132,7 +141,7 @@ public final class AllExcursionFragment extends ExcursionsFragment {
 
     @Override
     protected View getViewIfListIsEmpty(@NonNull LayoutInflater inflater, ViewGroup container) {
-        if (((MainActivity)requireActivity()).isAnyTours()) {
+        if (((MainActivity) requireActivity()).isAnyTours()) {
             return null;
         }
         View view = inflater.inflate(R.layout.fragment_excursions_empty, container, false);
@@ -165,6 +174,23 @@ public final class AllExcursionFragment extends ExcursionsFragment {
         adapter.setTours(activity.getTours()
                 .stream()
                 .filter(tour -> tour.getCity().equals(city))
+                .collect(Collectors.toList()));
+
+        HashMap<Long, Tour> mapIdTour = new HashMap<>();
+        for (int i = 0; i < adapter.getTours().size(); i++) {
+            Tour tour = adapter.getTours().get(i);
+            mapIdTour.put(tour.getId(), tour);
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
+    public void getToursByCityWithCostLimit(String city, Long costLimit) {
+        MainActivity activity = (MainActivity) requireActivity();
+
+        adapter.setTours(activity.getTours()
+                .stream()
+                .filter(tour -> tour.getCity().equals(city) && tour.getCost() <= costLimit)
                 .collect(Collectors.toList()));
 
         HashMap<Long, Tour> mapIdTour = new HashMap<>();
