@@ -3,7 +3,6 @@ package ru.hse.guidehelper.chat.keywords;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,12 +16,15 @@ import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
 
 public class KeywordsRecyclerViewAdapter extends
-        RecyclerView.Adapter<KeywordsRecyclerViewAdapter.ViewHolder> {
+        RecyclerView.Adapter<KeywordsViewHolder> {
 
     private List<String> keywords;
 
     public KeywordsRecyclerViewAdapter(String firstUser, String secondUser) {
         keywords = RequestHelper.getKeywords(firstUser, secondUser);
+        if (keywords == null) {
+            keywords = Collections.singletonList("Something went wrong..");
+        }
         if (keywords.isEmpty()) {
             keywords = Collections.singletonList("No keywords ((");
         }
@@ -31,20 +33,19 @@ public class KeywordsRecyclerViewAdapter extends
     @NonNull
     @NotNull
     @Override
-    public KeywordsRecyclerViewAdapter.ViewHolder onCreateViewHolder(
+    public KeywordsViewHolder onCreateViewHolder(
             @NonNull @NotNull ViewGroup parent, int viewType
     ) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.keyword_item, parent, false);
-        return new KeywordsRecyclerViewAdapter.ViewHolder(view);
+        return new KeywordsViewHolder(view, R.id.id_keyword);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull KeywordsRecyclerViewAdapter.ViewHolder holder,
+    public void onBindViewHolder(@NonNull @NotNull KeywordsViewHolder holder,
                                  int position) {
         holder.keyword.setText(keywords.get(position));
         holder.itemView.setTag(keywords.get(position));
-
     }
 
     @Override
@@ -52,12 +53,4 @@ public class KeywordsRecyclerViewAdapter extends
         return keywords.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView keyword;
-
-        ViewHolder(View view) {
-            super(view);
-            keyword = view.findViewById(R.id.id_keyword);
-        }
-    }
 }

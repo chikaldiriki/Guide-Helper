@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -13,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.stfalcon.chatkit.commons.ImageLoader;
@@ -40,6 +39,7 @@ import lombok.SneakyThrows;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
+import ru.hse.guidehelper.chat.keywords.KeywordsFilterRecyclerViewAdapter;
 import ru.hse.guidehelper.chat.keywords.KeywordsRecyclerViewAdapter;
 import ru.hse.guidehelper.dto.ChatDTO;
 import ru.hse.guidehelper.model.Chat;
@@ -98,24 +98,41 @@ public class DialogFragment extends Fragment
         emptyChatListTextView = root.findViewById(R.id.emptyChatListTextView);
 
         adapter = new DialogsListAdapter<>(imageLoader);
+        String currentUserMail = MainActivity.currentUser.getUserMail();
+
+        RecyclerView keywordsFilter = root.findViewById(R.id.keywords_filter_list);
+        KeywordsFilterRecyclerViewAdapter keywordsAdapter =
+                new KeywordsFilterRecyclerViewAdapter(currentUserMail, word -> v -> {
+                    this.addChatsInAdapter(RequestHelper.getChatsByKeyword(word));
+                    adapter.notifyDataSetChanged();
+                    FloatingActionButton backButton = root.findViewById(R.id.buttonBack);
+                    backButton.setVisibility(View.VISIBLE);
+                    backButton.setOnClickListener(v2 -> {
+                        this.addChatsInAdapter(RequestHelper.getDialogs(currentUserMail));
+                        adapter.notifyDataSetChanged();
+                        backButton.setVisibility(View.INVISIBLE);
+                    });
+                });
+        keywordsFilter.setAdapter(keywordsAdapter);
+        ImageButton updateKeywordsButton = root.findViewById(R.id.buttonUpdateKeywords);
+        updateKeywordsButton.setOnClickListener(v -> {
+            keywordsAdapter.updatePopularKeywords(currentUserMail);
+            keywordsAdapter.notifyDataSetChanged();
+        });
 
         adapter.setOnDialogClickListener(this);
 
         adapter.setOnDialogViewLongClickListener(new DialogsListAdapter.OnDialogViewLongClickListener<Chat>() {
             @Override
             public void onDialogViewLongClick(View view, Chat dialog) {
-                /*List<String> keywords = RequestHelper.getKeywords(MainActivity.currentUser.getUserMail(),
-                        dialog.getUsers().get(0).getUserMail());
-                System.out.println(keywords);*/
 
-                String firstUser = MainActivity.currentUser.getUserMail();
                 String secondUser = dialog.getUsers().get(0).getUserMail();
 
                 RecyclerView recyclerView = root.findViewById(R.id.keywordslist_list);
                 ImageButton buttonView = root.findViewById(R.id.buttonClose);
                 buttonView.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
-                recyclerView.setAdapter(new KeywordsRecyclerViewAdapter(firstUser, secondUser));
+                recyclerView.setAdapter(new KeywordsRecyclerViewAdapter(currentUserMail, secondUser));
                 buttonView.setOnClickListener(v -> {
                     recyclerView.setVisibility(View.INVISIBLE);
                     buttonView.setVisibility(View.INVISIBLE);
@@ -126,7 +143,7 @@ public class DialogFragment extends Fragment
         chatList.setAdapter(adapter);
 
         adapter.setDatesFormatter(new CustomDateFormatter());
-        addAllChatsInAdapter();
+        addChatsInAdapter(RequestHelper.getDialogs(currentUserMail));
 
 
 
@@ -143,13 +160,14 @@ public class DialogFragment extends Fragment
         return root;
     }
 
-    private void addAllChatsInAdapter() throws InterruptedException {
-        List<ChatDTO> allChats = RequestHelper.getDialogs(MainActivity.currentUser.getUserMail());
-        if (allChats.isEmpty()) {
+    public void addChatsInAdapter(List<ChatDTO> allChats) {
+        if (allChats == null || allChats.isEmpty()) {
             emptyChatListTextView.setVisibility(View.VISIBLE);
             return;
         }
         emptyChatListTextView.setVisibility(View.INVISIBLE);
+
+        adapter.clear();
 
 
         List<String> listChatIds = allChats
