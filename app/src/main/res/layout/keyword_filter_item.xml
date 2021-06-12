@@ -3,15 +3,19 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:background="@drawable/keyword_border"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="8dp"
     >
 
     <TextView
         android:id="@+id/id_keyword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:text="hello"
-        android:layout_marginStart="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:layout_gravity="center"
         android:layout_marginVertical="3dp"
+        android:layout_marginHorizontal="15dp"
+        android:text="hello"
         android:textAppearance="?attr/textAppearanceListItem" />
 </LinearLayout>
