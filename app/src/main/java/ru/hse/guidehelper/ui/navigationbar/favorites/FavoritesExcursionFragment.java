@@ -1,4 +1,4 @@
-package ru.hse.guidehelper.ui.navigationbar.orders;
+package ru.hse.guidehelper.ui.navigationbar.favorites;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,21 +11,18 @@ import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.excursions.ExcursionsFragment;
 
-public class MyOrdersFragment extends ExcursionsFragment {
-
+public final class FavoritesExcursionFragment extends ExcursionsFragment {
     @Override
     protected View getViewIfListIsEmpty(@NonNull LayoutInflater inflater, ViewGroup container) {
-        if (((MainActivity)requireActivity()).isAnyOrders()) {
+        if (((MainActivity)requireActivity()).isAnyFavoritesTours()) {
             return null;
         }
-        View view = inflater.inflate(R.layout.fragment_orders_empty, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorites_empty, container, false);
         return view;
     }
 
     @Override
     protected void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-
-        OrdersTourRecyclerViewAdapter adapter = new OrdersTourRecyclerViewAdapter(((MainActivity) requireActivity()).getOrders());
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(new FavoritesTourRecyclerViewAdapter(((MainActivity) requireActivity()).getFavoritesTours()));
     }
 }

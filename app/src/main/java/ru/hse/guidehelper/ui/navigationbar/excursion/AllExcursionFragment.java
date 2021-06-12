@@ -41,7 +41,12 @@ public final class AllExcursionFragment extends ExcursionsFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+        View view = getViewIfListIsEmpty(inflater, container);
+        if(view != null) {
+            return view;
+        }
+
+        view = super.onCreateView(inflater, container, savedInstanceState);
 
         if (view == null) {
             return null;
@@ -122,6 +127,15 @@ public final class AllExcursionFragment extends ExcursionsFragment {
             }
         });
 
+        return view;
+    }
+
+    @Override
+    protected View getViewIfListIsEmpty(@NonNull LayoutInflater inflater, ViewGroup container) {
+        if (((MainActivity)requireActivity()).isAnyTours()) {
+            return null;
+        }
+        View view = inflater.inflate(R.layout.fragment_excursions_empty, container, false);
         return view;
     }
 
