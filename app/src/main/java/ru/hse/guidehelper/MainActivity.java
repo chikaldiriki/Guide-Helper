@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static NavController navController;
     public static User currentUser = null;
     public static Long currentTourId = null;
+    public static Tour currentTour = null;
     private List<Tour> tours = null;
     private List<Tour> favoritesTours = null;
     private List<TourOrder> orders = null;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             List<Order> requestOrders = RequestHelper.getOrdersByUser(MainActivity.currentUser.getUserMail());
             if(requestOrders != null) {
                 for(Order order : requestOrders) {
-                    String date = order.getTourTime().replaceFirst("T", " ");
+                    String date = order.getTourTime();
                     orders.add(new TourOrder(getTourById(order.getTourId()), date));
                 }
             }
@@ -146,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteFavorite(Tour tour) {
         favoritesTours.remove(tour);
+    }
+
+    public void deleteOrder(TourOrder tour) {
+        orders.remove(tour);
     }
 
     public boolean isAnyOrders() {

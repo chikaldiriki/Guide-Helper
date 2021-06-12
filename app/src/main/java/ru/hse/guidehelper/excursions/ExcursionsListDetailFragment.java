@@ -40,13 +40,15 @@ import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.chat.MessagesFragment;
 import ru.hse.guidehelper.model.FavoriteTour;
 import ru.hse.guidehelper.model.Tour;
+import ru.hse.guidehelper.model.TourOrder;
 import ru.hse.guidehelper.model.User;
 
 public class ExcursionsListDetailFragment extends Fragment {
     public static final String ARG_TOUR_ID = "tour_id";
     private Tour tour;
     private FloatingActionButton fabFavorite;
-    private ExtendedFloatingActionButton fabOrder;
+    private ExtendedFloatingActionButton fabOrderBook;
+    private ExtendedFloatingActionButton fabOrderUnBook;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -95,11 +97,28 @@ public class ExcursionsListDetailFragment extends Fragment {
             fabFavorite = root.findViewById(R.id.fab_subscriptions);
             fabFavorite.setOnClickListener(new FabSubOnClickListener(root));
 
-            fabOrder = root.findViewById(R.id.fab_order);
-            fabOrder.setOnClickListener(view -> {
+            fabOrderBook = root.findViewById(R.id.fab_order_book);
+            fabOrderBook.setOnClickListener(view -> {
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.addOrderFragment);
             });
+
+            fabOrderUnBook = root.findViewById(R.id.fab_order_unbook);
+            fabOrderUnBook.setOnClickListener(view -> {
+                TourOrder tourOrder = ((TourOrder)MainActivity.currentTour);
+                RequestHelper.deleteOrder(MainActivity.currentUser.getId(),
+                        MainActivity.currentTour.getId(), tourOrder.getDate());
+                ((MainActivity)requireActivity()).deleteOrder(tourOrder);
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+
+            });
+
+            if(MainActivity.currentTour.getClass() == TourOrder.class) {
+                fabOrderBook.setVisibility(View.INVISIBLE);
+            } else if (MainActivity.currentTour.getClass() == Tour.class) {
+                fabOrderUnBook.setVisibility(View.INVISIBLE);
+
+            }
 
             if (arguments.containsKey(ARG_TOUR_ID)) {
                 tour = ((MainActivity)requireActivity()).getTourById(arguments.getLong(ARG_TOUR_ID));
