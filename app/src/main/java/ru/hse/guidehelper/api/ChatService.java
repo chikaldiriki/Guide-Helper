@@ -17,4 +17,13 @@ public interface ChatService {
 
     @GET("chat/keywords/{firstUserId}/{secondUserId}")
     Call<List<String>> getKeywords(@Path("firstUserId") String firstUserId, @Path("secondUserId") String secondUserId);
+
+    @GET("chat/keywords/DB/user_mail={userMail}")
+    Call<List<String>> getPopularKeywordsFromDB(@Path("userMail") String userMail);
+
+    @GET("chat/keywords/new/user_mail={userMail}")
+    Call<List<String>> getNewPopularKeywords(@Path("userMail") String userMail);
+
+    @GET("chat/keywords/word={word}")
+    Call<List<ChatDTO>> getChatsByKeyword(@Path("word") String word);
 }

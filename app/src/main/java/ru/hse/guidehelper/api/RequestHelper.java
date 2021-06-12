@@ -274,4 +274,43 @@ public class RequestHelper {
         return null;
     }
 
+    public static List<String> getPopularKeywordsFromDB(String userMail) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getChatService()
+                    .getPopularKeywordsFromDB(userMail).execute().body()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getPopularKeywordsFromDB");
+            //throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public static List<String> getNewPopularKeywords(String userMail) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getChatService()
+                    .getNewPopularKeywords(userMail).execute().body()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getNewPopularKeywords");
+            //throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public static List<ChatDTO> getChatsByKeyword(String word) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getChatService()
+                    .getChatsByKeyword(word).execute().body()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getChatsByKeyword");
+            //throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }
