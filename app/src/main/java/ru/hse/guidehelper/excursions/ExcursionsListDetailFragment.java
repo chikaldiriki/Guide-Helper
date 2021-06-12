@@ -146,16 +146,20 @@ public class ExcursionsListDetailFragment extends Fragment {
                 return;
             }
 
-            FavoriteTour tour = new FavoriteTour()
+            FavoriteTour favoriteTour = new FavoriteTour()
                     .setUserMail(MainActivity.currentUser.getUserMail())
                     .setTourId(MainActivity.currentTourId);
 
+            Tour tour = ((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId);
+
             if (isAddedToFavorite) {
-                RequestHelper.deleteFavoriteTour(tour.getUserMail(), tour.getTourId());
+                RequestHelper.deleteFavoriteTour(favoriteTour.getUserMail(), favoriteTour.getTourId());
+                ((MainActivity)requireActivity()).deleteFavorite(tour);
                 fabFavorite.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
                 isAddedToFavorite = false;
             } else {
-                RequestHelper.addFavoriteTour(tour);
+                RequestHelper.addFavoriteTour(favoriteTour);
+                ((MainActivity)requireActivity()).addFavorite(tour);
                 fabFavorite.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                 isAddedToFavorite = true;
             }

@@ -121,6 +121,7 @@ public class AddExcursionFragment extends Fragment {
                         .setImage(encodedImage);
 
                 RequestHelper.addTour(addedTour);
+                ((MainActivity)requireActivity()).addTour(addedTour);
 
                 AddExcursionFragment.this.requireActivity().onBackPressed();
                 AddExcursionFragment.this.requireActivity().onBackPressed();

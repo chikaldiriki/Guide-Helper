@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="ru.hse.guidehelper.ui.navigationbar.subscriptions.FavoritesExcursionFragment"
+        android:name="ru.hse.guidehelper.ui.navigationbar.favorites.FavoritesExcursionFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_subscriptions" />
 

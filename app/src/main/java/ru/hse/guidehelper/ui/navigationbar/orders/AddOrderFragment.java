@@ -58,7 +58,7 @@ public class AddOrderFragment extends Fragment {
                         .setTourTime(date[0].toString());
 
                 RequestHelper.addOrder(order);
-                ((MainActivity)requireActivity()).setOrder(new TourOrder(
+                ((MainActivity)requireActivity()).addOrder(new TourOrder(
                         ((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId),
                         order.getTourTime()));
             }

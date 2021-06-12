@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public static User currentUser = null;
     public static Long currentTourId = null;
     private List<Tour> tours = null;
+    private List<Tour> favoritesTours = null;
     private List<TourOrder> orders = null;
     private Map<Long, Tour> mapIdTour;
 
@@ -108,11 +109,63 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setOrder(TourOrder tour) {
+    public List<Tour> getFavoritesTours() {
+        if (favoritesTours == null) {
+            initFavoritesTours();
+        }
+        return favoritesTours;
+    }
+
+    private void initFavoritesTours() {
+        if (favoritesTours == null) {
+            favoritesTours = RequestHelper.getFavoriteTours(MainActivity.currentUser.getUserMail());
+        }
+    }
+
+    public void addTour(Tour tour) {
+        if (tours == null) {
+            initTours();
+        }
+        tours.add(tour);
+        //mapIdTour.put(tour.getId(), tour);
+    }
+
+    public void addOrder(TourOrder tour) {
         if (orders == null) {
             initOrders();
         }
         orders.add(tour);
     }
 
+    public void addFavorite(Tour tour) {
+        if (favoritesTours == null) {
+            initFavoritesTours();
+        }
+        favoritesTours.add(tour);
+    }
+
+    public void deleteFavorite(Tour tour) {
+        favoritesTours.remove(tour);
+    }
+
+    public boolean isAnyOrders() {
+        if(orders == null) {
+            getOrders();
+        }
+        return !orders.isEmpty();
+    }
+
+    public boolean isAnyTours() {
+        if(tours == null) {
+            getTours();
+        }
+        return !tours.isEmpty();
+    }
+
+    public boolean isAnyFavoritesTours() {
+        if(favoritesTours == null) {
+            getFavoritesTours();
+        }
+        return !favoritesTours.isEmpty();
+    }
 }

@@ -1,4 +1,4 @@
-package ru.hse.guidehelper.ui.navigationbar.subscriptions;
+package ru.hse.guidehelper.ui.navigationbar.favorites;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class FavoritesTourRecyclerViewAdapter extends TourRecyclerViewAdapter<To
     }
 
     @Override
-    protected void initConstructor(List<Tour> allTours) {
-        tours = RequestHelper.getFavoriteTours(MainActivity.currentUser.getId());
+    protected void initConstructor(List<Tour> favoriteTours) {
+        tours = favoriteTours;
     }
 }
