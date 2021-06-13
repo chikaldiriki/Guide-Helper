@@ -219,6 +219,26 @@ public class RequestHelper {
 
     }
 
+    public static void deleteOrder(String customerMail, Long tourId, String time) {
+        Api.getInstance()
+                .getOrderService()
+                .deleteOrder(customerMail, tourId, time)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e(String.valueOf(response.code()), "deleteOrder");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                        Log.e("error", "deleteOrder");
+                    }
+                });
+
+    }
+
     public static List<Tour> getToursWithCostLimit(Long costLimit) {
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
         try {

@@ -16,7 +16,8 @@
     <string name="title_excursionslist_detail">ExcursionsList Detail</string>
     <string name="NonEmptyStringRegexp">((\\s*)[^\\s]+(\\s*))+</string>
 
-    <string name="fab_orders_label"> БРОНЬ </string>
+    <string name="fab_orders_book_label"> БРОНЬ </string>
+    <string name="fab_orders_unbook_label"> ОТМЕНИТЬ БРОНЬ</string>
     <string name="order_title_book">Забронировать экскурсию</string>
     <string name="order_preview_text">Договоритесь с экскурсоводом об удобной дате экскурсии и введите эту дату здесь для брони</string>
     <string name="order_format_date_text">Формат YYYY-MM-DD HH:MM:SS</string>

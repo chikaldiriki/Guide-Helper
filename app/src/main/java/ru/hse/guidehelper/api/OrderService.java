@@ -15,8 +15,9 @@ public interface OrderService {
     @POST("orders")
     Call<Void> addOrder(@Body Order order);
 
-    @DELETE("orders/delete") // TODO before usage - fixed on server
-    Call<Void> deleteOrder(Order order);
+    @DELETE("orders/delete/{customerMail}/{tourId}/{time}")
+    Call<Void> deleteOrder(@Path("customerMail") String customerMail,
+                           @Path("tourId") Long tourId, @Path("time") String time);
 
     @GET("orders/user_mail={userId}")
     Call<List<Order>> getOrdersByUser(@Path("userId") String userId);
