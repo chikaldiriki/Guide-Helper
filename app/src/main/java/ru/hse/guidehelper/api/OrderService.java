@@ -1,7 +1,5 @@
 package ru.hse.guidehelper.api;
 
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.util.List;
 
 import retrofit2.Call;

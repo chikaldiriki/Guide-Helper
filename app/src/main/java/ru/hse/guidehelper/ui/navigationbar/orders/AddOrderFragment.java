@@ -8,10 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -61,6 +63,11 @@ public class AddOrderFragment extends Fragment {
                 ((MainActivity)requireActivity()).addOrder(new TourOrder(
                         ((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId),
                         order.getTourTime()));
+
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.navigation_dashboard);
+
+                requireActivity().findViewById(R.id.nav_view).setVisibility(BottomNavigationView.VISIBLE);
             }
         });
 

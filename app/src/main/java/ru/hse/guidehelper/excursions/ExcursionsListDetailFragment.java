@@ -1,5 +1,6 @@
 package ru.hse.guidehelper.excursions;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.LayoutInflater;
@@ -103,21 +105,15 @@ public class ExcursionsListDetailFragment extends Fragment {
                 navController.navigate(R.id.addOrderFragment);
             });
 
-            fabOrderUnBook = root.findViewById(R.id.fab_order_unbook);
-            fabOrderUnBook.setOnClickListener(view -> {
-                TourOrder tourOrder = ((TourOrder)MainActivity.currentTour);
-                RequestHelper.deleteOrder(MainActivity.currentUser.getId(),
-                        MainActivity.currentTour.getId(), tourOrder.getDate());
-                ((MainActivity)requireActivity()).deleteOrder(tourOrder);
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            View alertDialogView = inflater.inflate(R.layout.linear_layout_order_unbook_warning, null);
 
-            });
+            fabOrderUnBook = root.findViewById(R.id.fab_order_unbook);
+            fabOrderUnBook.setOnClickListener(new FabUnbookOnClickListener(alertDialogView));
 
             if(MainActivity.currentTour.getClass() == TourOrder.class) {
                 fabOrderBook.setVisibility(View.INVISIBLE);
             } else if (MainActivity.currentTour.getClass() == Tour.class) {
                 fabOrderUnBook.setVisibility(View.INVISIBLE);
-
             }
 
             if (arguments.containsKey(ARG_TOUR_ID)) {
@@ -182,6 +178,52 @@ public class ExcursionsListDetailFragment extends Fragment {
                 fabFavorite.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                 isAddedToFavorite = true;
             }
+        }
+    }
+
+    private class FabUnbookOnClickListener implements View.OnClickListener {
+
+        View alertDialogView;
+
+        public FabUnbookOnClickListener(View alertDialogView) {
+            this.alertDialogView = alertDialogView;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(alertDialogView.getParent() != null) {
+                ((ViewGroup)alertDialogView.getParent()).removeView(alertDialogView);
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
+                    .setTitle("Вы точно уверенны, что хотите отменить бронирование?")
+                    .setView(alertDialogView)
+                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            TourOrder tourOrder = ((TourOrder)MainActivity.currentTour);
+
+                            RequestHelper.deleteOrder(MainActivity.currentUser.getId(),
+                                    MainActivity.currentTour.getId(), tourOrder.getDate());
+                            ((MainActivity)requireActivity()).deleteOrder(tourOrder);
+
+                            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                            navController.navigate(R.id.navigation_dashboard);
+
+                            requireActivity().findViewById(R.id.nav_view).setVisibility(BottomNavigationView.VISIBLE);
+
+                        }
+
+                    }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}
+                    });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
     }
 
