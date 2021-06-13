@@ -183,7 +183,7 @@ public class ExcursionsListDetailFragment extends Fragment {
 
     private class FabUnbookOnClickListener implements View.OnClickListener {
 
-        View alertDialogView;
+        private final View alertDialogView;
 
         public FabUnbookOnClickListener(View alertDialogView) {
             this.alertDialogView = alertDialogView;
@@ -216,11 +216,7 @@ public class ExcursionsListDetailFragment extends Fragment {
 
                         }
 
-                    }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}
-                    });
+                    }).setNegativeButton("Нет", null);
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
