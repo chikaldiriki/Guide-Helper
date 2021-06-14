@@ -1,5 +1,6 @@
 package ru.hse.guidehelper.excursions;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -17,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -35,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
@@ -52,6 +56,8 @@ public class ExcursionsListDetailFragment extends Fragment {
     private ExtendedFloatingActionButton fabOrderBook;
     private ExtendedFloatingActionButton fabOrderUnBook;
 
+
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -134,6 +140,38 @@ public class ExcursionsListDetailFragment extends Fragment {
                     root.findViewById(R.id.app_bar).setBackground(new BitmapDrawable(getResources(), image));
                 }
             }
+
+            TextView tvDuration = root.findViewById(R.id.duration);
+            tvDuration.setText("4 часа"); // TODO добавить продолжительность
+
+            TextView tvSizeOfGroup = root.findViewById(R.id.sizeOfGroup);
+            tvSizeOfGroup.setText("20 человек"); // TODO добавить количество экскурсий
+
+            TextView tvCity = root.findViewById(R.id.locationOfTour);
+            tvCity.setText(MainActivity.currentTour.getCity());
+
+            TextView tvPrice = root.findViewById(R.id.price);
+            tvPrice.setText(MainActivity.currentTour.getCost().toString() + Html.fromHtml(" &#x20bd"));
+
+            User user = RequestHelper.getUser(MainActivity.currentTour.getGuide());
+            assert user.getIsGuide();
+
+            String personImage = MainActivity.currentUser.getAvatarUrl();
+            CircleImageView profileImageView = root.findViewById(R.id.profileImage);
+            Glide.with(root.getContext()).load(personImage).into(profileImageView);
+
+            TextView tvGuideName = root.findViewById(R.id.excursionGuideName);
+            tvGuideName.setText("Гид " + user.getName());
+
+            TextView tvGuideEmail = root.findViewById(R.id.emailGuideDetail);
+            tvGuideEmail.setText(user.getId());
+
+            TextView tvGuideNumber = root.findViewById(R.id.mobileNumberGuideDetail);
+            tvGuideNumber.setText(user.getPhoneNumber());
+
+            TextView tvDescription = root.findViewById(R.id.descriptionGuideDetail);
+            tvDescription.setText(user.getDescription());
+
         }
 
         return root;

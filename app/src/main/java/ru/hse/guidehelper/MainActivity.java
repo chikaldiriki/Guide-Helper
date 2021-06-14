@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             initTours();
         }
         tours.add(tour);
-        //mapIdTour.put(tour.getId(), tour);
+        mapIdTour.put(tour.getId(), tour);
     }
 
     public void addOrder(TourOrder tour) {

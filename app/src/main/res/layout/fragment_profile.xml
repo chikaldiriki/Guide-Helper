@@ -89,85 +89,101 @@
                 android:id="@+id/textViewEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:text="Электронная почта: "
+                android:layout_marginStart="@dimen/info_margin_start_size"
+                android:layout_marginTop="@dimen/info_margin_top_size"
+                android:text="Email: "
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                style="?android:attr/textAppearanceMedium"
+                android:textIsSelectable="true" />
 
             <TextView
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/info_margin_start_size"
+                android:layout_marginTop="@dimen/info_margin_top_size"
                 app:layout_constraintStart_toEndOf="@+id/textViewEmail"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_max="200dp" />
+                app:layout_constraintWidth_max="200dp"
+                style="?android:attr/textAppearanceMedium"
+                android:textIsSelectable="true" />
 
             <TextView
                 android:id="@+id/textViewLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/info_margin_start_size"
+                android:layout_marginTop="@dimen/info_margin_top_size"
                 android:text="Локация: "
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/email" />
+                app:layout_constraintTop_toBottomOf="@+id/email"
+                style="?android:attr/textAppearanceMedium"
+                android:textIsSelectable="true" />
 
             <TextView
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/info_margin_start_size"
+                android:layout_marginTop="@dimen/info_margin_top_size"
                 app:layout_constraintStart_toEndOf="@+id/textViewEmail"
                 app:layout_constraintTop_toBottomOf="@+id/email"
-                app:layout_constraintWidth_max="200dp" />
+                app:layout_constraintWidth_max="200dp"
+                style="?android:attr/textAppearanceMedium"
+                android:textIsSelectable="true" />
 
             <TextView
                 android:id="@+id/textViewMobile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/info_margin_start_size"
+                android:layout_marginTop="@dimen/info_margin_top_size"
                 android:text="Мобильный номер: "
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/location" />
+                app:layout_constraintTop_toBottomOf="@id/location"
+                style="?android:attr/textAppearanceMedium"
+                android:textIsSelectable="true"  />
 
             <TextView
                 android:id="@+id/mobileNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/info_margin_start_size"
+                android:layout_marginTop="@dimen/info_margin_top_size"
                 app:layout_constraintStart_toEndOf="@+id/textViewEmail"
                 app:layout_constraintTop_toBottomOf="@id/location"
-                app:layout_constraintWidth_max="200dp" />
+                app:layout_constraintWidth_max="200dp"
+                style="?android:attr/textAppearanceMedium"
+                android:textIsSelectable="true" />
 
             <TextView
                 android:id="@+id/textViewDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/info_margin_start_size"
+                android:layout_marginTop="@dimen/info_margin_top_size"
                 android:text="Описание: "
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mobileNumber" />
+                app:layout_constraintTop_toBottomOf="@id/mobileNumber"
+                style="?android:attr/textAppearanceMedium"
+                android:textIsSelectable="true" />
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="@dimen/info_margin_start_size"
+                android:layout_marginTop="@dimen/info_margin_top_size"
                 app:layout_constraintStart_toEndOf="@+id/textViewEmail"
                 app:layout_constraintTop_toBottomOf="@id/mobileNumber"
-                app:layout_constraintWidth_max="200dp" />
+                app:layout_constraintWidth_max="200dp"
+                style="?android:attr/textAppearanceMedium"
+                android:textIsSelectable="true" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
