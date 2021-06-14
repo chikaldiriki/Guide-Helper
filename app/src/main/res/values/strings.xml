@@ -24,4 +24,14 @@
     <string name="order_format_date_text_in">Дата</string>
     <string name="order_format_date">yyyy-MM-dd HH:mm:ss</string>
     <string name="order_buttom_book">Бронировать</string>
+    <string name="excursion_detail_description">Описание</string>
+    <string name="excursion_detail_commoninfo">Общая информация</string>
+    <string name="excursion_detail_duration">Длительность:</string>
+    <string name="excursion_detail_sizegroup">Размер группы:</string>
+    <string name="excursion_detail_city">Город:</string>
+    <string name="excursion_detail_price">Цена:</string>
+    <string name="excursion_detail_email">Email:</string>
+    <string name="excursion_detail_number">Номер:</string>
+    <string name="excursion_detail_description_guide">Описание:</string>
+
 </resources>

@@ -6,14 +6,16 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".excursions.ExcursionsListDetailFragment"
-    tools:ignore="MergeRootFrame">
+    tools:ignore="MergeRootFrame"
+    android:maxLines="2">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:maxLines="2" >
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
@@ -22,14 +24,16 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+            app:toolbarId="@+id/toolbar"
+            android:maxLines="2" >
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:maxLines="2" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -40,14 +44,320 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <TextView
-            android:id="@+id/excursionslist_detail_container"
-            style="?android:attr/textAppearanceLarge"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp"
-            android:textIsSelectable="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/excursionslist_detail_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorTitle"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="20dp"
+                android:textIsSelectable="true">
+
+                <TextView
+                    android:id="@+id/excursionCommonInfoDescription"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:text="@string/excursion_detail_description"
+                    android:textStyle="bold"
+                    android:textIsSelectable="true"
+                    />
+
+                <TextView
+                    android:id="@+id/excursionslist_detail_container"
+                    android:textColor="@color/black"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toBottomOf="@+id/excursionCommonInfoDescription"
+                    android:padding="16dp"
+                    android:textIsSelectable="true"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/excursionCommonInfoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorTitle"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="20dp"
+                android:textIsSelectable="true">
+
+                <TextView
+                    android:id="@+id/excursionCommonInfo"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:text="@string/excursion_detail_commoninfo"
+                    android:textStyle="bold"
+                    android:textIsSelectable="true"
+                    />
+
+                <TextView
+                    android:id="@+id/excursionDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    android:text="@string/excursion_detail_duration"
+                    android:textStyle="bold"
+                    style="?android:attr/textAppearanceMedium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/excursionCommonInfo"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    style="?android:attr/textAppearanceMedium"
+                    app:layout_constraintStart_toEndOf="@+id/excursionSizeOfGroup"
+                    app:layout_constraintTop_toBottomOf="@+id/excursionCommonInfo"
+                    app:layout_constraintWidth_max="200dp"
+                    android:textIsSelectable="true" />
+
+
+
+                <TextView
+                    android:id="@+id/excursionSizeOfGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    android:text="@string/excursion_detail_sizegroup"
+                    android:textStyle="bold"
+                    style="?android:attr/textAppearanceMedium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/duration"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/sizeOfGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    style="?android:attr/textAppearanceMedium"
+                    app:layout_constraintStart_toEndOf="@+id/excursionSizeOfGroup"
+                    app:layout_constraintTop_toBottomOf="@+id/duration"
+                    app:layout_constraintWidth_max="200dp"
+                    android:textIsSelectable="true" />
+
+
+
+                <TextView
+                    android:id="@+id/excursionLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    android:text="@string/excursion_detail_city"
+                    android:textStyle="bold"
+                    style="?android:attr/textAppearanceMedium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/sizeOfGroup"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/locationOfTour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    style="?android:attr/textAppearanceMedium"
+                    app:layout_constraintStart_toEndOf="@+id/excursionSizeOfGroup"
+                    app:layout_constraintTop_toBottomOf="@id/sizeOfGroup"
+                    app:layout_constraintWidth_max="200dp"
+                    android:textIsSelectable="true" />
+
+
+
+                <TextView
+                    android:id="@+id/excursionPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    android:text="@string/excursion_detail_price"
+                    android:textStyle="bold"
+                    style="?android:attr/textAppearanceMedium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/locationOfTour"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    style="?android:attr/textAppearanceMedium"
+                    app:layout_constraintStart_toEndOf="@+id/excursionSizeOfGroup"
+                    app:layout_constraintTop_toBottomOf="@id/locationOfTour"
+                    app:layout_constraintWidth_max="200dp"
+                    android:textIsSelectable="true" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/profileGuideInfoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/profile_layout"
+                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#fff"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="20dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+
+                    android:layout_centerHorizontal="true"
+                    android:clickable="true"
+                    android:elevation="5dp"
+                    android:focusable="true"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/excursionGuideName"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/profileImage"
+                    android:textStyle="bold"
+                    android:textIsSelectable="true"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    android:text="@string/excursion_detail_email"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/excursionGuideName"
+                    style="?android:attr/textAppearanceMedium"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/emailGuideDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    app:layout_constraintStart_toEndOf="@+id/textViewDescription"
+                    app:layout_constraintTop_toBottomOf="@+id/excursionGuideName"
+                    app:layout_constraintWidth_max="200dp"
+                    style="?android:attr/textAppearanceMedium"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/textViewMobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    android:text="@string/excursion_detail_number"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/emailGuideDetail"
+                    style="?android:attr/textAppearanceMedium"
+                    android:textIsSelectable="true"  />
+
+                <TextView
+                    android:id="@+id/mobileNumberGuideDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    app:layout_constraintStart_toEndOf="@+id/textViewDescription"
+                    app:layout_constraintTop_toBottomOf="@id/emailGuideDetail"
+                    app:layout_constraintWidth_max="200dp"
+                    style="?android:attr/textAppearanceMedium"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/textViewDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    android:text="@string/excursion_detail_description_guide"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/mobileNumberGuideDetail"
+                    style="?android:attr/textAppearanceMedium"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/descriptionGuideDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/info_margin_start_size"
+                    android:layout_marginTop="@dimen/info_margin_top_size"
+                    app:layout_constraintStart_toEndOf="@+id/textViewDescription"
+                    app:layout_constraintTop_toBottomOf="@id/mobileNumberGuideDetail"
+                    app:layout_constraintWidth_max="200dp"
+                    style="?android:attr/textAppearanceMedium"
+                    android:textIsSelectable="true" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/empty_for_fab"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:textIsSelectable="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:text=""/>
+
+        </LinearLayout>
+
+
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
