@@ -86,6 +86,11 @@ public class ExcursionsListDetailFragment extends Fragment {
             Tour curTour = ((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId);
             FloatingActionButton fab = root.findViewById(R.id.fab);
             fab.setOnClickListener(view -> {
+                if (MainActivity.currentUser == null) {
+                    MainActivity.navController.navigate(R.id.signInFragment);
+                    return;
+                }
+
                 String guideMail = curTour.getGuide();
                 String userMail = MainActivity.currentUser.getUserMail();
 
@@ -156,7 +161,7 @@ public class ExcursionsListDetailFragment extends Fragment {
             User user = RequestHelper.getUser(MainActivity.currentTour.getGuide());
             assert user.getIsGuide();
 
-            String personImage = MainActivity.currentUser.getAvatarUrl();
+            String personImage = user.getAvatarUrl();
             CircleImageView profileImageView = root.findViewById(R.id.profileImage);
             Glide.with(root.getContext()).load(personImage).into(profileImageView);
 
