@@ -17,7 +17,7 @@ public class PlacesAPI {
         HttpURLConnection connection = null;
         StringBuilder jsonResult = new StringBuilder();
         try {
-            String API_KEY = "INSERT_YOUR_GOOGLE_CLOUD_KEY";
+            String API_KEY = "AIzaSyC7wj2Oixo1QRbJ0vMXiJjIBY6DRdPJ-n0";
 
             String stringBuilder = "https://maps.googleapis.com/maps/api/place/autocomplete/json?" + "input=" + input +
                     "&types=(cities)" +

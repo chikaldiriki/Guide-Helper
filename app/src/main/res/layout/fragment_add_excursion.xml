@@ -54,7 +54,7 @@
             android:id="@+id/editTourDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Введите продолжительность экскурсии в часах"
+            android:hint="Введите длительность экскурсии в часах"
             android:inputType="phone" />
 
         <EditText

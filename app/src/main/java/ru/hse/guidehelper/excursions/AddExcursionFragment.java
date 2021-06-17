@@ -116,7 +116,7 @@ public class AddExcursionFragment extends Fragment {
                     encodedImage = Base64.getEncoder().encodeToString(outputStream.toByteArray());
                 }
 
-                // Integer.parseInt(editCntPeople.getText().toString())
+
                 Tour addedTour = new Tour()
                         .setId(0L)
                         .setTitle(editTitle.getText().toString())

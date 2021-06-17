@@ -148,11 +148,11 @@ public class ExcursionsListDetailFragment extends Fragment {
             }
 
             TextView tvDuration = root.findViewById(R.id.duration);
-            tvDuration.setText(Time.valueOf(MainActivity.currentTour.getDuration()).getHours() + " ч"); // TODO добавить продолжительность
+            tvDuration.setText(MainActivity.currentTour.getDuration() + " ч");
 
 
             TextView tvSizeOfGroup = root.findViewById(R.id.sizeOfGroup);
-            tvSizeOfGroup.setText(MainActivity.currentTour.getCapacity() + " человек"); // TODO добавить количество экскурсий
+            tvSizeOfGroup.setText(MainActivity.currentTour.getCapacity() + " человек");
 
             TextView tvCity = root.findViewById(R.id.locationOfTour);
             tvCity.setText(MainActivity.currentTour.getCity());
@@ -161,7 +161,7 @@ public class ExcursionsListDetailFragment extends Fragment {
             tvPrice.setText(MainActivity.currentTour.getCost().toString() + " " + Html.fromHtml(" &#x20bd"));
 
             User user = RequestHelper.getUser(MainActivity.currentTour.getGuide());
-            assert user.getIsGuide(); // ???
+            assert user.getIsGuide();
 
             String personImage = user.getAvatarUrl();
             CircleImageView profileImageView = root.findViewById(R.id.profileImage);
