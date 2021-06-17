@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -147,16 +148,18 @@ public class ExcursionsListDetailFragment extends Fragment {
             }
 
             TextView tvDuration = root.findViewById(R.id.duration);
-            tvDuration.setText("4 часа"); // TODO добавить продолжительность
+            tvDuration.setText(Time.valueOf(MainActivity.currentTour.getDuration()).getHours() + " ч"); // TODO добавить продолжительность
+
+
 
             TextView tvSizeOfGroup = root.findViewById(R.id.sizeOfGroup);
-            tvSizeOfGroup.setText("20 человек"); // TODO добавить количество экскурсий
+            tvSizeOfGroup.setText(MainActivity.currentTour.getCapacity() + " человек"); // TODO добавить количество экскурсий
 
             TextView tvCity = root.findViewById(R.id.locationOfTour);
             tvCity.setText(MainActivity.currentTour.getCity());
 
             TextView tvPrice = root.findViewById(R.id.price);
-            tvPrice.setText(MainActivity.currentTour.getCost().toString() + Html.fromHtml(" &#x20bd"));
+            tvPrice.setText(MainActivity.currentTour.getCost().toString() + " " + Html.fromHtml(" &#x20bd"));
 
             User user = RequestHelper.getUser(MainActivity.currentTour.getGuide());
             assert user.getIsGuide(); // ???

@@ -29,6 +29,7 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.sql.Time;
 import java.util.Base64;
 import java.util.regex.Pattern;
 
@@ -42,6 +43,8 @@ public class AddExcursionFragment extends Fragment {
     private EditText editTitle;
     private AutoCompleteTextView editCity;
     private EditText editDescription;
+    private EditText editCntPeople;
+    private EditText editTourDuration;
     private EditText editCost;
     private Button buttonAddImage;
     public static final int ADD_TOUR_IMAGE_REQUEST_CODE = 1;
@@ -63,6 +66,8 @@ public class AddExcursionFragment extends Fragment {
 
         editTitle = root.findViewById(R.id.editTitle);
         editCity = root.findViewById(R.id.editCity);
+        editCntPeople = root.findViewById(R.id.editCntPeople);
+        editTourDuration = root.findViewById(R.id.editTourDuration);
         editDescription = root.findViewById(R.id.editDescription);
         editCost = root.findViewById(R.id.editСost);
 
@@ -111,11 +116,14 @@ public class AddExcursionFragment extends Fragment {
                     encodedImage = Base64.getEncoder().encodeToString(outputStream.toByteArray());
                 }
 
+                // Integer.parseInt(editCntPeople.getText().toString())
                 Tour addedTour = new Tour()
                         .setId(0L)
                         .setTitle(editTitle.getText().toString())
                         .setCity(editCity.getText().toString())
                         .setGuide(MainActivity.currentUser.getUserMail())
+                        .setCapacity(Integer.parseInt(editCntPeople.getText().toString()))
+                        .setDuration(editTourDuration.getText().toString())
                         .setDescription(editDescription.getText().toString())
                         .setCost(Long.parseLong(editCost.getText().toString()))
                         .setImage(encodedImage);

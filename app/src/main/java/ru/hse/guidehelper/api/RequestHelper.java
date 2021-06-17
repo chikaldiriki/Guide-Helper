@@ -42,7 +42,7 @@ public class RequestHelper {
                     @Override
                     public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
                         if (!response.isSuccessful()) {
-                            Log.e(String.valueOf(response.code()), "getAllTours");
+                            Log.e(String.valueOf(response.code()), "addTour");
                         }
                     }
 

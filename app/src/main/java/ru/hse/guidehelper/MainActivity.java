@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
             tours = RequestHelper.getAllTours();
 
             mapIdTour = new HashMap<>();
+            System.out.println("tours == null");
+            System.out.println(tours == null);
             for (int i = 0; i < tours.size(); i++) {
                 Tour tour = tours.get(i);
                 mapIdTour.put(tour.getId(), tour);
