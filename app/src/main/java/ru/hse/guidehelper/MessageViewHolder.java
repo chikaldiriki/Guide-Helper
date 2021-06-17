@@ -1,5 +1,6 @@
 package ru.hse.guidehelper;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +11,10 @@ import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import ru.hse.guidehelper.model.Message;
 
@@ -36,9 +41,12 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindMessage(Message message) {
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM HH:mm");
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (message.getName().equals(user.getEmail())) {
-            messageRightTime.setText(message.getCreatedAt().toString());
+            messageRightTime.setText(simpleDateFormat.format(message.getCreatedAt()));
             leftBubble.setVisibility(FlexboxLayout.INVISIBLE);
             rightBubble.setVisibility(FlexboxLayout.VISIBLE);
             if (message.getText() != null) {
@@ -47,7 +55,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
                 Glide.with(messageRightImageView.getContext()).load(message.getImageUrl()).into(messageRightImageView);
             }
         } else {
-            messageLeftTime.setText(message.getCreatedAt().toString());
+            messageLeftTime.setText(simpleDateFormat.format(message.getCreatedAt()));
             leftBubble.setVisibility(FlexboxLayout.VISIBLE);
             rightBubble.setVisibility(FlexboxLayout.INVISIBLE);
             if (message.getText() != null) {

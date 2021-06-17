@@ -120,6 +120,7 @@ public class MessagesFragment extends Fragment {
             Message message = new Message(mBinding.messageEditText.getText().toString(), getUserMail(), getUserPhotoUrl());
             mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push().setValue(message);
             mBinding.messageEditText.setText("");
+            mBinding.messageRecyclerView.smoothScrollToPosition(mBinding.messageRecyclerView.getAdapter().getItemCount() + 2);
         });
 
         mBinding.addMessageImageView.setOnClickListener(view -> {
