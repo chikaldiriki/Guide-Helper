@@ -333,4 +333,36 @@ public class RequestHelper {
         return null;
     }
 
+    public static String getToken(String userMail) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getUserService()
+                    .getToken(userMail).execute().body()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getToken");
+            //throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public static void updateToken(String userMail, String token) {
+        Api.getInstance()
+                .getUserService()
+                .updateToken(userMail, token)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e(String.valueOf(response.code()), "updateToken");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                        Log.e("error", "updateToken");
+                    }
+                });
+    }
+
 }

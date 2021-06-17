@@ -27,6 +27,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +36,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import ru.hse.guidehelper.MainActivity;
+import ru.hse.guidehelper.chat.MessageViewHolder;
+
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.api.RequestHelper;
+import ru.hse.guidehelper.chat.notifications.Sender;
+import ru.hse.guidehelper.chat.notifications.Subscriber;
 import ru.hse.guidehelper.databinding.FragmentMessagesBinding;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.model.Message;
@@ -52,6 +61,9 @@ public class MessagesFragment extends Fragment {
     public static final String MESSAGES_CHILD = "messages";
     public static final String ANONYMOUS = "anonymous";
     private static final int REQUEST_IMAGE = 2;
+
+    @NotNull
+    public static final String TOPIC = "/topics/myTopic";
 
     public static void setChat(Chat chat) {
         MessagesFragment.chat = chat;
@@ -111,11 +123,27 @@ public class MessagesFragment extends Fragment {
         mFirebaseAdapter.registerAdapterDataObserver(new MyScrollToBottomObserver(mBinding.messageRecyclerView, mFirebaseAdapter, mLinearLayoutManager));
         mBinding.messageEditText.addTextChangedListener(new MyButtonObserver(mBinding.sendButton));
 
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC);
+
+        Subscriber subscriber = new Subscriber();
+        subscriber.subcribe();
+
         mBinding.sendButton.setOnClickListener(view -> {
             Message message = new Message(mBinding.messageEditText.getText().toString(), getUserMail(), getUserPhotoUrl());
             mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push().setValue(message);
             mBinding.messageEditText.setText("");
+
+            String title = MainActivity.currentUser.getName() + " пишет:";
+            System.out.println(chat.getUsers().get(0).getUserMail());
+            String currToren = RequestHelper.getToken(chat.getUsers().get(0).getUserMail()); // Вот нужен запрос
+            if (currToren != null) {
+                Sender.createAndSendNotification(title, message.getText(), currToren);
+            } else {
+                System.out.println("currToren == null");
+            }
+
             mBinding.messageRecyclerView.smoothScrollToPosition(mBinding.messageRecyclerView.getAdapter().getItemCount() + 2);
+
         });
 
         mBinding.addMessageImageView.setOnClickListener(view -> {
