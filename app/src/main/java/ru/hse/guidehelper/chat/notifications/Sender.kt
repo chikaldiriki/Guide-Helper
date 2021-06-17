@@ -5,16 +5,15 @@ import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.hse.guidehelper.chat.MessagesFragment
 
 class Sender {
 
     companion object {
         @JvmStatic
-        fun createAndSendNotification(title: String, message: String) {
+        fun createAndSendNotification(title: String, message: String, currToren: String) {
             PushNotification(
                     NotificationData(title, message),
-                    MessagesFragment.TOPIC
+                    currToren
             ).also {
                 sendNotification(it)
             }
@@ -22,7 +21,7 @@ class Sender {
 
 
         @JvmStatic
-        fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitInstance.api.postNotification(notification)
                 if (response.isSuccessful) {

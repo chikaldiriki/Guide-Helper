@@ -38,7 +38,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import ru.hse.guidehelper.MainActivity;
 import ru.hse.guidehelper.MessageViewHolder;
 import ru.hse.guidehelper.R;
+import ru.hse.guidehelper.api.RequestHelper;
 import ru.hse.guidehelper.chat.notifications.Sender;
+import ru.hse.guidehelper.chat.notifications.Subscriber;
 import ru.hse.guidehelper.databinding.FragmentMessagesBinding;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.model.Message;
@@ -120,17 +122,24 @@ public class MessagesFragment extends Fragment {
         mFirebaseAdapter.registerAdapterDataObserver(new MyScrollToBottomObserver(mBinding.messageRecyclerView, mFirebaseAdapter, mLinearLayoutManager));
         mBinding.messageEditText.addTextChangedListener(new MyButtonObserver(mBinding.sendButton));
 
-
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC);
+
+        Subscriber subscriber = new Subscriber();
+        subscriber.subcribe();
 
         mBinding.sendButton.setOnClickListener(view -> {
             Message message = new Message(mBinding.messageEditText.getText().toString(), getUserMail(), getUserPhotoUrl());
             mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push().setValue(message);
             mBinding.messageEditText.setText("");
 
-            String title = MainActivity.currentUser.getName() + " пишет";
-
-            Sender.createAndSendNotification(title, message.getText());
+            String title = MainActivity.currentUser.getName() + " пишет:";
+            System.out.println(chat.getUsers().get(0).getUserMail());
+            String currToren = RequestHelper.getToken(chat.getUsers().get(0).getUserMail()); // Вот нужен запрос
+            if (currToren != null) {
+                Sender.createAndSendNotification(title, message.getText(), currToren);
+            } else {
+                System.out.println("currToren == null");
+            }
 
         });
 
