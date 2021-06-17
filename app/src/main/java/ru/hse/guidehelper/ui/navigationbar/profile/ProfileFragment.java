@@ -1,8 +1,5 @@
 package ru.hse.guidehelper.ui.navigationbar.profile;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +16,6 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.jetbrains.annotations.NotNull;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ru.hse.guidehelper.MainActivity;
@@ -45,7 +40,7 @@ public class ProfileFragment extends Fragment {
                     .setName(currentUser.getDisplayName())
                     .setAvatarUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
         }
-        
+
         String personImage = MainActivity.currentUser.getAvatarUrl();
         CircleImageView profileImageView = root.findViewById(R.id.profile_image);
         Glide.with(root.getContext()).load(personImage).into(profileImageView);

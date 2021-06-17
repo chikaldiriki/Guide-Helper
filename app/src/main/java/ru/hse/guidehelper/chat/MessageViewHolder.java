@@ -1,4 +1,4 @@
-package ru.hse.guidehelper;
+package ru.hse.guidehelper.chat;
 
 import android.annotation.SuppressLint;
 import android.view.View;
@@ -13,9 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
+import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.model.Message;
 
 public class MessageViewHolder extends RecyclerView.ViewHolder {
@@ -45,6 +44,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM HH:mm");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
         if (message.getName().equals(user.getEmail())) {
             messageRightTime.setText(simpleDateFormat.format(message.getCreatedAt()));
             leftBubble.setVisibility(FlexboxLayout.INVISIBLE);
