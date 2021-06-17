@@ -31,6 +31,7 @@ public abstract class TourRecyclerViewAdapter<T extends Tour>
     private final View.OnClickListener mOnClickListener = view -> {
         T currTour = (T) view.getTag();
         MainActivity.currentTourId = currTour.getId();
+        MainActivity.currentTour = currTour;
         MainActivity.navController.navigate(R.id.excursionsListDetailActivity);
     };
 
@@ -76,9 +77,9 @@ public abstract class TourRecyclerViewAdapter<T extends Tour>
         holder.itemView.setTag(tours.get(position));
         holder.itemView.setOnClickListener(mOnClickListener);
 
-        if (tours.get(position).getClass() == TourOrder.class) {
-            holder.dateOfTourTextView.setText(((TourOrder) tours.get(position)).getDate());
-        } else if (tours.get(position).getClass() == Tour.class) {
+        if(tours.get(position).getClass() == TourOrder.class) {
+            holder.dateOfTourTextView.setText(((TourOrder)tours.get(position)).getDate().replaceFirst("T", " "));
+        } else if(tours.get(position).getClass() == Tour.class) {
             holder.dateOfTourTextView.setVisibility(View.INVISIBLE);
         }
     }

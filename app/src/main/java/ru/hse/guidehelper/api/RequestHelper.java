@@ -219,6 +219,26 @@ public class RequestHelper {
 
     }
 
+    public static void deleteOrder(String customerMail, Long tourId, String time) {
+        Api.getInstance()
+                .getOrderService()
+                .deleteOrder(customerMail, tourId, time)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Log.e(String.valueOf(response.code()), "deleteOrder");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                        Log.e("error", "deleteOrder");
+                    }
+                });
+
+    }
+
     public static List<Tour> getToursWithCostLimit(Long costLimit) {
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
         try {
@@ -270,6 +290,45 @@ public class RequestHelper {
         } catch (ExecutionException | InterruptedException e) {
             Log.e("error", "getOrdersByUser");
             // throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public static List<String> getPopularKeywordsFromDB(String userMail) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getChatService()
+                    .getPopularKeywordsFromDB(userMail).execute().body()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getPopularKeywordsFromDB");
+            //throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public static List<String> getNewPopularKeywords(String userMail) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getChatService()
+                    .getNewPopularKeywords(userMail).execute().body()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getNewPopularKeywords");
+            //throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public static List<ChatDTO> getChatsByKeyword(String word) {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        try {
+            return singleThreadExecutor.submit(() -> Api.getInstance()
+                    .getChatService()
+                    .getChatsByKeyword(word).execute().body()).get();
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("error", "getChatsByKeyword");
+            //throw new RuntimeException(e);
         }
         return null;
     }

@@ -6,10 +6,26 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".chat.DialogFragment">
 
-<com.stfalcon.chatkit.dialogs.DialogsList
-    android:id="@+id/chatList"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    <include
+        layout="@layout/keywords_filter_list"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        app:layout_anchor="@+id/frameLayout" />
+
+    <ImageButton
+        android:id="@+id/buttonUpdateKeywords"
+        android:paddingHorizontal="10dp"
+        android:background="@drawable/bottom_border"
+        android:src="@drawable/ic_baseline_update_24"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="right"/>
+
+    <com.stfalcon.chatkit.dialogs.DialogsList
+        android:id="@+id/chatList"
+        android:layout_width="match_parent"
+        android:layout_height="625dp"
+        android:layout_marginTop="50dp" />
 
 <TextView
     android:id="@+id/emptyChatListTextView"
@@ -43,5 +59,16 @@ tools:context=".chat.DialogFragment">
         android:src="@drawable/ic_baseline_cancel_24"
         android:visibility="invisible"
         />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="70dp"
+        android:visibility="invisible"
+        app:layout_anchor="@+id/chatList"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
 
 </FrameLayout>

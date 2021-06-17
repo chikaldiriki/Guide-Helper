@@ -16,11 +16,22 @@
     <string name="title_excursionslist_detail">ExcursionsList Detail</string>
     <string name="NonEmptyStringRegexp">((\\s*)[^\\s]+(\\s*))+</string>
 
-    <string name="fab_orders_label"> БРОНЬ </string>
+    <string name="fab_orders_book_label"> БРОНЬ </string>
+    <string name="fab_orders_unbook_label"> ОТМЕНИТЬ БРОНЬ</string>
     <string name="order_title_book">Забронировать экскурсию</string>
     <string name="order_preview_text">Договоритесь с экскурсоводом об удобной дате экскурсии и введите эту дату здесь для брони</string>
     <string name="order_format_date_text">Формат YYYY-MM-DD HH:MM:SS</string>
     <string name="order_format_date_text_in">Дата</string>
     <string name="order_format_date">yyyy-MM-dd HH:mm:ss</string>
     <string name="order_buttom_book">Бронировать</string>
+    <string name="excursion_detail_description">Описание</string>
+    <string name="excursion_detail_commoninfo">Общая информация</string>
+    <string name="excursion_detail_duration">Длительность:</string>
+    <string name="excursion_detail_sizegroup">Размер группы:</string>
+    <string name="excursion_detail_city">Город:</string>
+    <string name="excursion_detail_price">Цена:</string>
+    <string name="excursion_detail_email">Email:</string>
+    <string name="excursion_detail_number">Номер:</string>
+    <string name="excursion_detail_description_guide">Описание:</string>
+
 </resources>
