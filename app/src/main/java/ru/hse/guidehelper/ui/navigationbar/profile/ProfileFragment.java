@@ -48,7 +48,7 @@ public class ProfileFragment extends Fragment {
         TextView nameTextView = root.findViewById(R.id.name);
         TextView roleTextView = root.findViewById(R.id.role);
         nameTextView.setText(currentUser.getDisplayName());
-        roleTextView.setText(MainActivity.currentUser.getIsGuide() ? "Guide" : "Tripper");
+        roleTextView.setText(MainActivity.currentUser.getIsGuide() ? "Гид" : "");
 
         Button buttonToChat = root.findViewById(R.id.buttonToChat);
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
