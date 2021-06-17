@@ -7,7 +7,7 @@ import android.widget.Filterable;
 
 import java.util.ArrayList;
 
-public class PlaceAutoCompleteAdapter extends ArrayAdapter implements Filterable {
+public class PlaceAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
     private ArrayList<String> results;
 

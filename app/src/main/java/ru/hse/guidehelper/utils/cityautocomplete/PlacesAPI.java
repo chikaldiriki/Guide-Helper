@@ -12,20 +12,19 @@ import java.util.ArrayList;
 
 public class PlacesAPI {
 
-    private final String API_KEY = "INSERT_YOUR_GOOGLE_CLOUD_KEY";
-
     public ArrayList<String> autoComplete(String input) {
         ArrayList<String> arrayList = new ArrayList<>();
         HttpURLConnection connection = null;
         StringBuilder jsonResult = new StringBuilder();
         try {
-            StringBuilder stringBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/autocomplete/json?");
-            stringBuilder.append("input=").append(input);
-            stringBuilder.append("&types=(cities)");
-            stringBuilder.append("&language=ru-RU");
-            stringBuilder.append("&key=").append(API_KEY);
+            String API_KEY = "INSERT_YOUR_GOOGLE_CLOUD_KEY";
 
-            URL url = new URL(stringBuilder.toString());
+            String stringBuilder = "https://maps.googleapis.com/maps/api/place/autocomplete/json?" + "input=" + input +
+                    "&types=(cities)" +
+                    "&language=ru-RU" +
+                    "&key=" + API_KEY;
+
+            URL url = new URL(stringBuilder);
             connection = (HttpURLConnection) url.openConnection();
             InputStreamReader inputStreamReader = new InputStreamReader(connection.getInputStream());
 

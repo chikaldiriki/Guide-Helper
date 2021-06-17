@@ -25,10 +25,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,13 +34,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import ru.hse.guidehelper.MessageViewHolder;
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.databinding.FragmentMessagesBinding;
 import ru.hse.guidehelper.model.Chat;
 import ru.hse.guidehelper.model.Message;
-
-import static android.app.Activity.RESULT_OK;
 
 public class MessagesFragment extends Fragment {
 
@@ -120,6 +115,7 @@ public class MessagesFragment extends Fragment {
             Message message = new Message(mBinding.messageEditText.getText().toString(), getUserMail(), getUserPhotoUrl());
             mDatabase.getReference().child(MESSAGES_CHILD).child(chat.getId()).push().setValue(message);
             mBinding.messageEditText.setText("");
+            mBinding.messageRecyclerView.smoothScrollToPosition(mBinding.messageRecyclerView.getAdapter().getItemCount() + 2);
         });
 
         mBinding.addMessageImageView.setOnClickListener(view -> {

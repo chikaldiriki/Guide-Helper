@@ -41,9 +41,6 @@ public class ProfileFragment extends Fragment {
                     .setAvatarUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
         }
 
-        System.out.println(MainActivity.currentUser.getName());
-        System.out.println(MainActivity.currentUser.getIsGuide());
-
         String personImage = MainActivity.currentUser.getAvatarUrl();
         CircleImageView profileImageView = root.findViewById(R.id.profile_image);
         Glide.with(root.getContext()).load(personImage).into(profileImageView);
