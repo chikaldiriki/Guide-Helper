@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
             tours = RequestHelper.getAllTours();
 
             mapIdTour = new HashMap<>();
-            System.out.println("tours == null");
-            System.out.println(tours == null);
             for (int i = 0; i < tours.size(); i++) {
                 Tour tour = tours.get(i);
                 mapIdTour.put(tour.getId(), tour);
@@ -104,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
         if (orders == null) {
             orders = new ArrayList<>();
             List<Order> requestOrders = RequestHelper.getOrdersByUser(MainActivity.currentUser.getUserMail());
-            if(requestOrders != null) {
-                for(Order order : requestOrders) {
+            if (requestOrders != null) {
+                for (Order order : requestOrders) {
                     String date = order.getTourTime();
                     orders.add(new TourOrder(getTourById(order.getTourId()), date));
                 }
@@ -157,21 +155,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean isAnyOrders() {
-        if(orders == null) {
+        if (orders == null) {
             getOrders();
         }
         return !orders.isEmpty();
     }
 
     public boolean isAnyTours() {
-        if(tours == null) {
+        if (tours == null) {
             getTours();
         }
         return !tours.isEmpty();
     }
 
     public boolean isAnyFavoritesTours() {
-        if(favoritesTours == null) {
+        if (favoritesTours == null) {
             getFavoritesTours();
         }
         return !favoritesTours.isEmpty();

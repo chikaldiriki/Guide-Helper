@@ -202,7 +202,6 @@ public class DialogFragment extends Fragment
                         Iterator<DataSnapshot> childrenIterator = task.getResult().getChildren().iterator();
                         if (childrenIterator.hasNext()) {
                             lastMessage.set(childrenIterator.next().getValue(Message.class));
-                            System.out.println(lastMessage.get().getCreatedAt());
                         } else {
                             return;
                         }

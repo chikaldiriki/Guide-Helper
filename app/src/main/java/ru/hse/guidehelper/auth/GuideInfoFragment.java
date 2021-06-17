@@ -63,7 +63,7 @@ public class GuideInfoFragment extends Fragment {
                 Toast.makeText(GuideInfoFragment.this.getActivity(), "Сохранено", Toast.LENGTH_LONG).show();
                 // обновить пользователя в БД
                 String token = RequestHelper.getToken(MainActivity.currentUser.getId());
-                if(token == null && MainActivity.getToken() != null) {
+                if (token == null && MainActivity.getToken() != null) {
                     token = MainActivity.getToken();
                 }
                 MainActivity.currentUser

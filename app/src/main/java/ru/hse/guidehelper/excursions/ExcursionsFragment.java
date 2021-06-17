@@ -22,7 +22,7 @@ public abstract class ExcursionsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         View root = getViewIfListIsEmpty(inflater, container);
-        if(root != null) {
+        if (root != null) {
             return root;
         }
 

@@ -84,7 +84,7 @@ public class ExcursionsListDetailFragment extends Fragment {
             Bundle arguments = new Bundle();
             arguments.putLong(ARG_TOUR_ID, MainActivity.currentTourId);
 
-            Tour curTour = ((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId);
+            Tour curTour = ((MainActivity) requireActivity()).getTourById(MainActivity.currentTourId);
             FloatingActionButton fab = root.findViewById(R.id.fab);
             fab.setOnClickListener(view -> {
                 if (MainActivity.currentUser == null) {
@@ -122,14 +122,14 @@ public class ExcursionsListDetailFragment extends Fragment {
             fabOrderUnBook = root.findViewById(R.id.fab_order_unbook);
             fabOrderUnBook.setOnClickListener(new FabUnbookOnClickListener(alertDialogView));
 
-            if(MainActivity.currentTour.getClass() == TourOrder.class) {
+            if (MainActivity.currentTour.getClass() == TourOrder.class) {
                 fabOrderBook.setVisibility(View.INVISIBLE);
             } else if (MainActivity.currentTour.getClass() == Tour.class) {
                 fabOrderUnBook.setVisibility(View.INVISIBLE);
             }
 
             if (arguments.containsKey(ARG_TOUR_ID)) {
-                tour = ((MainActivity)requireActivity()).getTourById(arguments.getLong(ARG_TOUR_ID));
+                tour = ((MainActivity) requireActivity()).getTourById(arguments.getLong(ARG_TOUR_ID));
 
                 CollapsingToolbarLayout appBarLayout = root.findViewById(R.id.toolbar_layout);
                 if (appBarLayout != null) {
@@ -149,7 +149,6 @@ public class ExcursionsListDetailFragment extends Fragment {
 
             TextView tvDuration = root.findViewById(R.id.duration);
             tvDuration.setText(Time.valueOf(MainActivity.currentTour.getDuration()).getHours() + " ч"); // TODO добавить продолжительность
-
 
 
             TextView tvSizeOfGroup = root.findViewById(R.id.sizeOfGroup);
@@ -211,16 +210,16 @@ public class ExcursionsListDetailFragment extends Fragment {
                     .setUserMail(MainActivity.currentUser.getUserMail())
                     .setTourId(MainActivity.currentTourId);
 
-            Tour tour = ((MainActivity)requireActivity()).getTourById(MainActivity.currentTourId);
+            Tour tour = ((MainActivity) requireActivity()).getTourById(MainActivity.currentTourId);
 
             if (isAddedToFavorite) {
                 RequestHelper.deleteFavoriteTour(favoriteTour.getUserMail(), favoriteTour.getTourId());
-                ((MainActivity)requireActivity()).deleteFavorite(tour);
+                ((MainActivity) requireActivity()).deleteFavorite(tour);
                 fabFavorite.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_black_24dp));
                 isAddedToFavorite = false;
             } else {
                 RequestHelper.addFavoriteTour(favoriteTour);
-                ((MainActivity)requireActivity()).addFavorite(tour);
+                ((MainActivity) requireActivity()).addFavorite(tour);
                 fabFavorite.setImageDrawable(ContextCompat.getDrawable(root.getContext(), R.drawable.ic_subscriptions_fullblack_24));
                 isAddedToFavorite = true;
             }
@@ -237,8 +236,8 @@ public class ExcursionsListDetailFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            if(alertDialogView.getParent() != null) {
-                ((ViewGroup)alertDialogView.getParent()).removeView(alertDialogView);
+            if (alertDialogView.getParent() != null) {
+                ((ViewGroup) alertDialogView.getParent()).removeView(alertDialogView);
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
@@ -249,11 +248,11 @@ public class ExcursionsListDetailFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            TourOrder tourOrder = ((TourOrder)MainActivity.currentTour);
+                            TourOrder tourOrder = ((TourOrder) MainActivity.currentTour);
 
                             RequestHelper.deleteOrder(MainActivity.currentUser.getId(),
                                     MainActivity.currentTour.getId(), tourOrder.getDate());
-                            ((MainActivity)requireActivity()).deleteOrder(tourOrder);
+                            ((MainActivity) requireActivity()).deleteOrder(tourOrder);
 
                             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                             navController.navigate(R.id.navigation_dashboard);

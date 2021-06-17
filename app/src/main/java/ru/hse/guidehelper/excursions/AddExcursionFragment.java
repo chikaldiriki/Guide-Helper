@@ -129,7 +129,7 @@ public class AddExcursionFragment extends Fragment {
                         .setImage(encodedImage);
 
                 RequestHelper.addTour(addedTour);
-                ((MainActivity)requireActivity()).addTour(addedTour);
+                ((MainActivity) requireActivity()).addTour(addedTour);
 
                 AddExcursionFragment.this.requireActivity().onBackPressed();
                 AddExcursionFragment.this.requireActivity().onBackPressed();
@@ -161,7 +161,6 @@ public class AddExcursionFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         if (resultCode == -1 && requestCode == ADD_TOUR_IMAGE_REQUEST_CODE) {
             try {
-                System.out.println(data.getData());
                 InputStream inputStream = requireActivity().getContentResolver().openInputStream(data.getData());
 
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);

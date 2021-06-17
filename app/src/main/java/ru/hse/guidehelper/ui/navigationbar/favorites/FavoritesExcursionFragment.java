@@ -14,7 +14,7 @@ import ru.hse.guidehelper.excursions.ExcursionsFragment;
 public final class FavoritesExcursionFragment extends ExcursionsFragment {
     @Override
     protected View getViewIfListIsEmpty(@NonNull LayoutInflater inflater, ViewGroup container) {
-        if ((MainActivity.currentUser != null) && ((MainActivity)requireActivity()).isAnyFavoritesTours()) {
+        if ((MainActivity.currentUser != null) && ((MainActivity) requireActivity()).isAnyFavoritesTours()) {
             return null;
         }
         View view = inflater.inflate(R.layout.fragment_favorites_empty, container, false);

@@ -83,13 +83,7 @@ public class SignInFragment extends Fragment {
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     if (account != null) {
                         Log.d("LoginActivity", "firebaseAuthWithGoogle:" + account.getId());
-                        if (MainActivity.currentUser == null) {
-                            System.out.println("Очко 1");
-                        }
                         firebaseAuthWithGoogle(account.getIdToken());
-                        if (MainActivity.currentUser == null) {
-                            System.out.println("Очко 2");
-                        }
                     }
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
@@ -113,7 +107,7 @@ public class SignInFragment extends Fragment {
                                     .setIsGuide(false)
                                     .setName(currentUser.getDisplayName())
                                     .setAvatarUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
-                            if(MainActivity.getToken() != null) {
+                            if (MainActivity.getToken() != null) {
                                 MainActivity.currentUser.setToken(MainActivity.getToken());
                             }
                         }

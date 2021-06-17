@@ -75,11 +75,7 @@ public class AddOrderFragment extends Fragment {
         awesomeValidation.addValidation(editDate, s -> {
             try {
                 date[0] = LocalDateTime.parse(s, DateTimeFormatter.ofPattern(getString(R.string.order_format_date)));
-                System.out.println("--- awesomeValidation ---");
-                System.out.println(date[0].toString());
-                System.out.println(date[0]);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 return false;
             }
             return true;
