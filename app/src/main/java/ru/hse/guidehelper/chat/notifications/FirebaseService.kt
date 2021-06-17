@@ -38,7 +38,9 @@ class FirebaseService : FirebaseMessagingService() {
     override fun onNewToken(newToken: String) {
         super.onNewToken(newToken)
         token = newToken
-        RequestHelper.updateToken(MainActivity.currentUser.getId(), newToken)
+        if(MainActivity.currentUser != null) {
+            RequestHelper.updateToken(MainActivity.currentUser.getId(), newToken)
+        }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
