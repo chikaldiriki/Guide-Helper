@@ -128,17 +128,13 @@ public class DialogFragment extends Fragment
         adapter.setDatesFormatter(new CustomDateFormatter());
         addAllChatsInAdapter();
 
-
-
         adapter.sort(new Comparator<Chat>() {
             @Override
             public int compare(Chat o1, Chat o2) {
-                System.out.println(o1.getDialogName() + " vs " + o2.getDialogName());
                 return o1.getDialogName().compareTo(o2.getDialogName());
             }
         });
         adapter.notifyDataSetChanged();
-
 
         return root;
     }
