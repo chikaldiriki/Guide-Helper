@@ -19,9 +19,6 @@ public interface UserService {
     @PUT("users/{userId}")
     Call<Void> updateUser(@Body User user, @Path("userId") String userId);
 
-    @GET("users/token/{userMail}")
-    Call<String> getToken(@Path("userMail") String userMail);
-
     @PUT("users/token/{userMail}/{token}")
     Call<Void> updateToken(@Path("userMail") String userMail, @Path("token") String token);
 

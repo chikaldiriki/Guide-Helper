@@ -62,13 +62,18 @@ public class GuideInfoFragment extends Fragment {
             if (awesomeValidation.validate()) {
                 Toast.makeText(GuideInfoFragment.this.getActivity(), "Сохранено", Toast.LENGTH_LONG).show();
                 // обновить пользователя в БД
+                String token = RequestHelper.getToken(MainActivity.currentUser.getId());
+                if(token == null && MainActivity.getToken() != null) {
+                    token = MainActivity.getToken();
+                }
                 MainActivity.currentUser
                         .setCity(editLocation.getText().toString())
                         .setPhoneNumber(editMobilePhone.getText().toString())
                         .setDescription(editDescription.getText().toString())
-                        .setIsGuide(true);
+                        .setIsGuide(true)
+                        .setToken(token);
                 RequestHelper.updateUser(MainActivity.currentUser, MainActivity.currentUser.getId());
-
+                RequestHelper.updateToken(MainActivity.currentUser.getId(), token);
                 GuideInfoFragment.this.requireActivity().onBackPressed();
                 GuideInfoFragment.this.requireActivity().onBackPressed();
 

@@ -113,9 +113,11 @@ public class SignInFragment extends Fragment {
                                     .setIsGuide(false)
                                     .setName(currentUser.getDisplayName())
                                     .setAvatarUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
+                            if(MainActivity.getToken() != null) {
+                                MainActivity.currentUser.setToken(MainActivity.getToken());
+                            }
                         }
 
-                        //System.out.println(MainActivity.currentUser.getAvatar());
                         RequestHelper.addUser(MainActivity.currentUser);
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("LoginActivity", "signInWithCredential:success");

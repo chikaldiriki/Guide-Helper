@@ -337,10 +337,10 @@ public class RequestHelper {
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
         try {
             return singleThreadExecutor.submit(() -> Api.getInstance()
-                    .getUserService()
-                    .getToken(userMail).execute().body()).get();
+                    .getUserService().getUser(userMail)
+                    .execute().body()).get().getToken();
         } catch (ExecutionException | InterruptedException e) {
-            Log.e("error", "getToken");
+            Log.e("error", "getToken - " + e.getMessage());
             //throw new RuntimeException(e);
         }
         return null;

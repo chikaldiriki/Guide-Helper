@@ -1,6 +1,5 @@
 package ru.hse.guidehelper.chat;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +37,6 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import ru.hse.guidehelper.MainActivity;
-import ru.hse.guidehelper.chat.MessageViewHolder;
 
 import ru.hse.guidehelper.R;
 import ru.hse.guidehelper.api.RequestHelper;
@@ -134,12 +132,10 @@ public class MessagesFragment extends Fragment {
             mBinding.messageEditText.setText("");
 
             String title = MainActivity.currentUser.getName() + " пишет:";
-            System.out.println(chat.getUsers().get(0).getUserMail());
-            String currToren = RequestHelper.getToken(chat.getUsers().get(0).getUserMail()); // Вот нужен запрос
+
+            String currToren = RequestHelper.getToken(chat.getUsers().get(0).getUserMail());
             if (currToren != null) {
                 Sender.createAndSendNotification(title, message.getText(), currToren);
-            } else {
-                System.out.println("currToren == null");
             }
 
             mBinding.messageRecyclerView.smoothScrollToPosition(mBinding.messageRecyclerView.getAdapter().getItemCount() + 2);

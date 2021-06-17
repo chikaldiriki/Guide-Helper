@@ -26,6 +26,8 @@ public class User implements IUser, Serializable {
 
     private String avatarUrl;
 
+    private String token;
+
     @Override
     public String getId() {
         return userMail;

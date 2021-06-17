@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Tour> favoritesTours = null;
     private List<TourOrder> orders = null;
     private Map<Long, Tour> mapIdTour;
+    private static String token = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,4 +174,13 @@ public class MainActivity extends AppCompatActivity {
         }
         return !favoritesTours.isEmpty();
     }
+
+    public static String getToken() {
+        return token;
+    }
+
+    public static void setToken(String newToken) {
+        token = newToken;
+    }
+
 }

@@ -40,6 +40,8 @@ class FirebaseService : FirebaseMessagingService() {
         token = newToken
         if(MainActivity.currentUser != null) {
             RequestHelper.updateToken(MainActivity.currentUser.getId(), newToken)
+        } else {
+            MainActivity.setToken(newToken)
         }
     }
 
@@ -59,7 +61,7 @@ class FirebaseService : FirebaseMessagingService() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(message.data["title"])
                 .setContentText(message.data["message"])
-                .setSmallIcon(R.drawable.ic_orders_black_24dp) // TODO логотив приложения
+                .setSmallIcon(R.drawable.app_avatar_round)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .build()

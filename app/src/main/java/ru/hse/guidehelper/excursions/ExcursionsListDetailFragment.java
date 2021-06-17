@@ -159,7 +159,7 @@ public class ExcursionsListDetailFragment extends Fragment {
             tvPrice.setText(MainActivity.currentTour.getCost().toString() + Html.fromHtml(" &#x20bd"));
 
             User user = RequestHelper.getUser(MainActivity.currentTour.getGuide());
-            assert user.getIsGuide();
+            assert user.getIsGuide(); // ???
 
             String personImage = user.getAvatarUrl();
             CircleImageView profileImageView = root.findViewById(R.id.profileImage);
